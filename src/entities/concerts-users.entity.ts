@@ -6,7 +6,7 @@ import {ConcertsEntity} from "./concerts.entity";
 
 @Entity('concerts_users')
 
-export abstract class Concers_usersEntity extends BaseEntity {
+export abstract class ConcertsUsersEntity extends BaseEntity {
 
     @Column({type: 'boolean', default: false})
     voice: boolean;
