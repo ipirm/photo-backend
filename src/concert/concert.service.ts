@@ -4,7 +4,6 @@ import {ConcertsEntity} from "../entities/concerts.entity";
 import {Repository} from "typeorm";
 import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {CreateConcertDto} from "./dto/create-concert-dto";
-import {AddVoiceDto} from "./dto/add-voice-dto";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 
 @Injectable()
@@ -15,8 +14,11 @@ export class ConcertService {
     ) {
     }
 
-    async getAllConcerts(): Promise<any> {
-        return await this.concert.find()
+    async getAllConcerts(with_users): Promise<any> {
+        if (with_users)
+            return await this.concert.find({relations: ["concertsUsers"], order: {id: "ASC"}});
+
+        return await this.concert.find({order: {id: "ASC"}})
     }
 
     async findConcert(id): Promise<any> {
@@ -35,11 +37,5 @@ export class ConcertService {
         return await this.concert.update(id, updateConcertDto)
     }
 
-    async addVoiceToConcert(addVoiceDto: AddVoiceDto): Promise<any> {
-        let concertVoice:any = this.concert.findOne(addVoiceDto.concertId);
-         let userVoice = this.concert.findOne(addVoiceDto.userId);
-        concertVoice.concertsUsers = [addVoiceDto.userId]
-        return await this.concert.find({relations: ["concertsUsers"]});
-    }
 
 }

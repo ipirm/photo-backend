@@ -1,4 +1,4 @@
-import {Entity, Column, ManyToOne} from 'typeorm'
+import {Entity, Column, ManyToOne, JoinColumn} from 'typeorm'
 import {BaseEntity} from "./base.entity";
 import {UsersEntity} from "./users.entity";
 import {ConcertsEntity} from "./concerts.entity";
@@ -12,9 +12,17 @@ export abstract class ConcertsUsersEntity extends BaseEntity {
     voice: boolean;
 
     @ManyToOne(type => UsersEntity, user => user.concertsUsers, {primary: true})
+    @JoinColumn({name: 'userId'})
     public user: UsersEntity;
 
     @ManyToOne(type => ConcertsEntity, concert => concert.concertsUsers, {primary: true})
+    @JoinColumn({name: 'concertId'})
     public concert: ConcertsEntity;
+
+    @Column()
+    public userId: number;
+
+    @Column()
+    public concertId: number;
 }
 

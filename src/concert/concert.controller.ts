@@ -1,9 +1,8 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
 import {ConcertService} from "./concert.service";
 import {CreateConcertDto} from "./dto/create-concert-dto";
 import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {ApiTags, ApiOperation} from "@nestjs/swagger";
-import {AddVoiceDto} from "./dto/add-voice-dto";
 
 
 @ApiTags('Concerts')
@@ -15,8 +14,8 @@ export class ConcertController {
 
     @Get('/')
     @ApiOperation({summary: 'Get all concerts'})
-    getAllConcerts(): Promise<any[]> {
-        return this.concert.getAllConcerts();
+    getAllConcerts(@Query('with_users') with_users): Promise<any[]> {
+        return this.concert.getAllConcerts(with_users);
     }
 
     @Get(':id')
@@ -43,10 +42,4 @@ export class ConcertController {
         return this.concert.updateConcert(id, updateConcertDto);
     }
 
-
-    @Post('voice')
-    @ApiOperation({summary: 'Add voice to concert'})
-    addVoiceToConcert(@Body() addVoiceDto: AddVoiceDto): Promise<any> {
-        return this.concert.addVoiceToConcert(addVoiceDto)
-    }
 }

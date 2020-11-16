@@ -5,12 +5,12 @@ export class AddVoiceDto {
     @ApiProperty({example: '1', description: 'ID of user'})
     @IsNotEmpty()
     @IsString()
-    userId: string;
+    userId: number;
 
     @ApiProperty({example: '1', description: 'Concert ID'})
     @IsNotEmpty()
     @IsString()
-    concertId: string;
+    concertId: number;
 
     @ApiProperty({example: 'true', description: 'Voice or Participation'})
     @IsNotEmpty()
