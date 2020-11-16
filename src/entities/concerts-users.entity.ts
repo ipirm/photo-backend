@@ -24,5 +24,8 @@ export abstract class ConcertsUsersEntity extends BaseEntity {
 
     @Column()
     public concertId: number;
+
+    @Column('json', { default: null })
+    images: { url: string, name: string }[]
 }
 
