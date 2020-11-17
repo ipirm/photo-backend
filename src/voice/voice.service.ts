@@ -20,12 +20,12 @@ export class VoiceService {
         if (exist.length)
             return `This user exist in ${concertId} concert`;
 
-        if (files.length) {
-            const images = files.map((item) => {
-                return {name: item.originalname, url: `${process.env.FILE_URL}/${item.filename}`}
-            })
-            Object.assign(addVoiceDto,{images: images})
-        }
+        // if (files.length) {
+        //     const images = files.map((item) => {
+        //         return {name: item.originalname, url: `${process.env.FILE_URL}/${item.filename}`}
+        //     })
+        //     Object.assign(addVoiceDto,{images: images})
+        // }
 
         await this.concert_users.save(addVoiceDto);
         return true

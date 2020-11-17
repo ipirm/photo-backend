@@ -20,8 +20,8 @@ export class ConcertController {
 
     @Get(':id')
     @ApiOperation({summary: 'Get concert by id'})
-    findConcert(@Param('id') id: string): Promise<any[]> {
-        return this.concert.findConcert(id);
+    findConcert(@Param('id') id: string,@Query('with_users') with_users: boolean): Promise<any[]> {
+        return this.concert.findConcert(id,with_users);
     }
 
     @Delete(':id')

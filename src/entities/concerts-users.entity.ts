@@ -11,6 +11,9 @@ export abstract class ConcertsUsersEntity extends BaseEntity {
     @Column({type: 'boolean', default: false})
     voice: boolean;
 
+    @Column({type: 'boolean', default: false})
+    approve: boolean;
+
     @ManyToOne(type => UsersEntity, user => user.concertsUsers, {primary: true})
     @JoinColumn({name: 'userId'})
     public user: UsersEntity;
@@ -27,5 +30,7 @@ export abstract class ConcertsUsersEntity extends BaseEntity {
 
     @Column('json', { default: null })
     images: { url: string, name: string }[]
+
+
 }
 

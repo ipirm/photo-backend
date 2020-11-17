@@ -17,4 +17,10 @@ export class AddVoiceDto {
     @IsBoolean()
     voice: boolean;
 
+    @ApiProperty({example: 'false', description: 'Come from moderation'})
+    @IsNotEmpty()
+    @IsBoolean()
+    approve: boolean;
+
+
 }
