@@ -29,7 +29,7 @@ export class ConcertService {
             .orderBy("user.id", "ASC")
             .getCount();
 
-        const participation  = await this.concert.createQueryBuilder('concert')
+        const participation = await this.concert.createQueryBuilder('concert')
             .where("concert.id = :id", {id: id})
             .leftJoinAndSelect("concert.concertsUsers", "user")
             .where("user.voice = :voice", {voice: false})
@@ -38,7 +38,8 @@ export class ConcertService {
 
         const data = await this.concert.createQueryBuilder('concert')
             .where("concert.id = :id", {id: id})
-            .innerJoinAndSelect("concert.concertsUsers", "users")
+            .leftJoinAndSelect("concert.concertsUsers", "concertsUsers")
+            .innerJoinAndSelect("concertsUsers.user", "user")
             .getMany();
         if (with_users)
             return {
