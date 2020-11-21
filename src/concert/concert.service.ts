@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {ConcertsEntity} from "../entities/concerts.entity";
-import {Repository} from "typeorm";
+import {LessThan, Repository} from "typeorm";
 import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {CreateConcertDto} from "./dto/create-concert-dto";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
@@ -25,15 +25,21 @@ export class ConcertService {
 
         const data = await this.concert.createQueryBuilder('concert')
             .where("concert.id = :id", {id: id})
-             .leftJoinAndSelect("concert.concertsUsers", "concertsUsers")
-             .innerJoinAndSelect("concertsUsers.user", "user")
-             .leftJoinAndSelect("user.likes", "likes")
-            .getMany();
-
+            .leftJoinAndSelect("concert.concertsUsers", "concertsUsers")
+            .leftJoinAndSelect("concertsUsers.user", "user")
+            .loadRelationCountAndMap('user.likesCount', 'user.likes')
+            .orderBy('user.likesCount','DESC')
+            .leftJoinAndSelect("user.likes", "likes")
+            // .andWhere("likes IS NULL")
+            // .orWhere("likes.concertId = :concertId", {concertId: id})
+            .getOne()
+        // 2.3
+        // 3.2
         if (with_users)
             return {
-                ...data,
+                ...data
             }
+
         return {
             ...await this.concert.findOne(id),
         }

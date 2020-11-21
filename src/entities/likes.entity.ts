@@ -19,14 +19,18 @@ export abstract class LikesEntity extends BaseEntity {
     @Column({type: 'varchar', length: 500, nullable: false})
     email: string;
 
-    @Column({type: 'varchar', length: 500, nullable: false})
-    concertId: number;
 
     @ManyToOne(type => UsersEntity, concertsUser => concertsUser.likes)
     public user: UsersEntity;
 
     @Column()
     public userId: number
+
+    @ManyToOne(type => ConcertsEntity, concertsUser => concertsUser.likes)
+    public concert: UsersEntity;
+
+    @Column()
+    public concertId: number
 
 
 }

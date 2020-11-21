@@ -1,4 +1,4 @@
-import {Entity, Column, OneToMany, JoinTable} from 'typeorm'
+import {Entity, Column, OneToMany, JoinTable, AfterLoad} from 'typeorm'
 import {BaseEntity} from "./base.entity";
 import {ConcertsUsersEntity} from "./concerts-users.entity";
 import {LikesEntity} from "./likes.entity";
@@ -26,8 +26,13 @@ export abstract class UsersEntity extends BaseEntity {
     @Column({type: 'money', default: 0})
     balance: string;
 
+
+    @Column({type: 'int', default: 0})
+    likesCount: number;
+
+
     @OneToMany(type => LikesEntity, like => like.user,
-        {cascade: true})
+        {cascade: true, nullable: true})
     public likes: LikesEntity[]
 
     @OneToMany(type => ConcertsUsersEntity, concertsUser => concertsUser.user, {cascade: true})

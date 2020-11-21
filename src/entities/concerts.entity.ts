@@ -20,5 +20,8 @@ export abstract class ConcertsEntity extends BaseEntity {
     @JoinTable()
     public concertsUsers: ConcertsUsersEntity[];
 
+    @OneToMany(type => LikesEntity, like => like.concert,
+        {cascade: true})
+    public likes: LikesEntity[]
 }
 

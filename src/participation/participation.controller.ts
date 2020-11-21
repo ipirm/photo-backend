@@ -1,7 +1,7 @@
 import {Body, Controller, Post, UploadedFiles, UseInterceptors} from '@nestjs/common';
 import {ParticipationService} from "./participation.service";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
-import {AddVoiceDto} from "./dto/add-voice-dto";
+import {AddParticipationDto} from "./dto/add-participation-dto";
 import {FilesInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from 'multer';
 import {imageFileFilter} from "../helpers/check-file-type";
@@ -27,15 +27,15 @@ export class ParticipationController {
         }
     ))
     @ApiOperation({summary: 'Add participation to concert'})
-    addVoiceToConcert(@UploadedFiles() files, @Body() addVoiceDto: AddVoiceDto): Promise<any> {
-        return this.voice.addVoiceToConcert(addVoiceDto, files)
+    addVoiceToConcert(@UploadedFiles() files, @Body() addParticipationDto: AddParticipationDto): Promise<any> {
+        return this.voice.addVoiceToConcert(addParticipationDto, files)
     }
 
 
     @Post('delete')
     @ApiOperation({summary: 'Delete participation in concert'})
-    deleteVoiceToConcert(@Body() addVoiceDto: AddVoiceDto): Promise<any> {
-        return this.voice.deleteVoiceToConcert(addVoiceDto)
+    deleteVoiceToConcert(@Body() addParticipationDto: AddParticipationDto): Promise<any> {
+        return this.voice.deleteVoiceToConcert(addParticipationDto)
     }
 
 }

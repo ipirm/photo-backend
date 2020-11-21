@@ -1,7 +1,7 @@
 import {IsBoolean, IsNotEmpty, IsString} from 'class-validator';
 import {ApiProperty} from "@nestjs/swagger";
 
-export class AddVoiceDto {
+export class AddParticipationDto {
     @ApiProperty({example: '1', description: 'ID of user'})
     @IsNotEmpty()
     @IsString()
