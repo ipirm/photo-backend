@@ -22,37 +22,20 @@ export class ConcertService {
     }
 
     async findConcert(id, with_users): Promise<any> {
-        const voices = await this.concert.createQueryBuilder('concert')
-            .where("concert.id = :id", {id: id})
-            .leftJoinAndSelect("concert.concertsUsers", "user")
-            .where("user.voice = :voice", {voice: true})
-            .orderBy("user.id", "ASC")
-            .getCount();
-
-        const participation = await this.concert.createQueryBuilder('concert')
-            .where("concert.id = :id", {id: id})
-            .leftJoinAndSelect("concert.concertsUsers", "user")
-            .where("user.voice = :voice", {voice: false})
-            .orderBy("user.id", "ASC")
-            .getCount();
 
         const data = await this.concert.createQueryBuilder('concert')
             .where("concert.id = :id", {id: id})
-            .leftJoinAndSelect("concert.concertsUsers", "concertsUsers")
-            .innerJoinAndSelect("concertsUsers.user", "user")
+             .leftJoinAndSelect("concert.concertsUsers", "concertsUsers")
+             .innerJoinAndSelect("concertsUsers.user", "user")
+             .leftJoinAndSelect("user.likes", "likes")
             .getMany();
+
         if (with_users)
             return {
                 ...data,
-                voices: voices,
-                participation: participation
             }
-
-
         return {
             ...await this.concert.findOne(id),
-            voices: voices,
-            participation: participation
         }
     }
 

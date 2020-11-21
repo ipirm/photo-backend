@@ -1,6 +1,7 @@
-import {Entity, Column, OneToMany, JoinColumn, JoinTable} from 'typeorm'
+import {Entity, Column, OneToMany, JoinTable} from 'typeorm'
 import {BaseEntity} from "./base.entity";
 import {ConcertsUsersEntity} from "./concerts-users.entity";
+import {LikesEntity} from "./likes.entity";
 
 @Entity('concerts')
 
@@ -18,5 +19,6 @@ export abstract class ConcertsEntity extends BaseEntity {
         {cascade: true})
     @JoinTable()
     public concertsUsers: ConcertsUsersEntity[];
+
 }
 
