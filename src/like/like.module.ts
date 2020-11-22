@@ -3,10 +3,11 @@ import {LikeController} from './like.controller';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {LikesEntity} from "../entities/likes.entity";
 import {LikeService} from "./like.service";
+import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 
 @Module({
 
-    imports: [TypeOrmModule.forFeature([LikesEntity])],
+    imports: [TypeOrmModule.forFeature([LikesEntity,ConcertsUsersEntity])],
     providers: [LikeService],
     controllers: [LikeController]
 })

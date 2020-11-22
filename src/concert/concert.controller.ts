@@ -18,10 +18,23 @@ export class ConcertController {
         return this.concert.getAllConcerts(with_users);
     }
 
+    @Get(':id/concertUsers')
+    @ApiOperation({summary: 'Get concert users by concertId'})
+    findConcertUsers(
+        @Param('id') id: string,
+        @Query('with_users') with_users: boolean,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10
+    ): Promise<any[]> {
+        limit = limit > 100 ? 100 : limit;
+        return this.concert.findConcertUsers({id, with_users, page, limit});
+    }
+
+
     @Get(':id')
     @ApiOperation({summary: 'Get concert by id'})
-    findConcert(@Param('id') id: string,@Query('with_users') with_users: boolean): Promise<any[]> {
-        return this.concert.findConcert(id,with_users);
+    findConcert(@Param('id') id: string,): Promise<any> {
+        return this.concert.findConcert(id)
     }
 
     @Delete(':id')

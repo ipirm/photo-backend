@@ -27,9 +27,6 @@ export abstract class UsersEntity extends BaseEntity {
     balance: string;
 
 
-    @Column({type: 'int', default: 0})
-    likesCount: number;
-
 
     @OneToMany(type => LikesEntity, like => like.user,
         {cascade: true, nullable: true})

@@ -1,10 +1,11 @@
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {ConcertsEntity} from "../entities/concerts.entity";
-import {LessThan, Repository} from "typeorm";
+import {Repository} from "typeorm";
 import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {CreateConcertDto} from "./dto/create-concert-dto";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
+import {paginate} from "nestjs-typeorm-paginate";
 
 @Injectable()
 export class ConcertService {
@@ -21,28 +22,24 @@ export class ConcertService {
         return await this.concert.find({order: {id: "ASC"}})
     }
 
-    async findConcert(id, with_users): Promise<any> {
+    async findConcertUsers({id, with_users, page, limit}): Promise<any> {
 
-        const data = await this.concert.createQueryBuilder('concert')
-            .where("concert.id = :id", {id: id})
-            .leftJoinAndSelect("concert.concertsUsers", "concertsUsers")
-            .leftJoinAndSelect("concertsUsers.user", "user")
-            .loadRelationCountAndMap('user.likesCount', 'user.likes')
-            .orderBy('user.likesCount','DESC')
-            .leftJoinAndSelect("user.likes", "likes")
-            // .andWhere("likes IS NULL")
-            // .orWhere("likes.concertId = :concertId", {concertId: id})
-            .getOne()
-        // 2.3
-        // 3.2
+        const data = await this.concert_users.createQueryBuilder('concertUsers')
+            .where("concertUsers.concertId = :concertId", {concertId: id})
+            .leftJoinAndSelect("concertUsers.user", "user")
+            .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
+            .orderBy('concertUsers.likesCount', 'ASC')
+
         if (with_users)
-            return {
-                ...data
-            }
+            return paginate<ConcertsUsersEntity>(data, {page, limit})
 
         return {
             ...await this.concert.findOne(id),
         }
+    }
+
+    async findConcert(id): Promise<any> {
+        return await this.concert.findOne(id)
     }
 
     async deleteConcert(id): Promise<any> {
