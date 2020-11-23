@@ -12,9 +12,9 @@ export class ParticipationService {
     }
 
     // Учавствовать в конкурсе !
-    async addVoiceToConcert(addParticipationDto: AddParticipationDto, files): Promise<any> {
-        const {concertId, userId} = addParticipationDto;
-        const exist = await this.concert_users.find({where: {concertId: concertId, userId: userId}});
+    async addParticipationToConcert(addParticipationDto: AddParticipationDto, files, user): Promise<any> {
+        const {concertId} = addParticipationDto;
+        const exist = await this.concert_users.find({where: {concertId: concertId, userId: user.id}});
         if (exist.length)
             return `This user exist in ${concertId} concert`;
 
@@ -22,17 +22,25 @@ export class ParticipationService {
             const images = files.map((item) => {
                 return {name: item.filename, url: `${process.env.FILE_URL}/${item.filename}`}
             })
-            Object.assign(addParticipationDto, {images: images})
+            Object.assign(addParticipationDto, {images: images, userId: user.id})
         }
 
-        await this.concert_users.save(addParticipationDto);
-        return files
+        return await this.concert_users.save(addParticipationDto);
     }
 
     // Удалить участие из конкурса
-    async deleteVoiceToConcert(addParticipationDto: AddParticipationDto): Promise<any> {
-        const {concertId, userId} = addParticipationDto;
-        return await this.concert_users.delete({concertId: concertId, userId: userId});
+    async deleteParticipationFromConcert(addParticipationDto: AddParticipationDto, user): Promise<any> {
+        const {concertId} = addParticipationDto;
+        return await this.concert_users.delete({concertId: concertId, userId: user.id});
+    }
+
+
+    //  Подтвердить участие юзера в концерте по id
+    async approveConcertUser(id): Promise<any> {
+        const concertUser = await this.concert_users.findOne(id);
+        concertUser.approve = true;
+        await this.concert_users.update(id, concertUser)
+        return {success: true}
     }
 
 }

@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {use} from "passport";
 import PassportFacebookToken = require("passport-facebook-token");
-import {UserService} from "../user/user.service";
+import {UserService} from "../../user/user.service";
 
 @Injectable()
 export class FacebookStrategy {

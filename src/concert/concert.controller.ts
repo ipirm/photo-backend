@@ -1,8 +1,10 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
 import {ConcertService} from "./concert.service";
 import {CreateConcertDto} from "./dto/create-concert-dto";
 import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {ApiTags, ApiOperation} from "@nestjs/swagger";
+import {User} from "../decorators/user.decorator";
+import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
 
 
 @ApiTags('Concerts')
@@ -18,18 +20,31 @@ export class ConcertController {
         return this.concert.getAllConcerts(with_users);
     }
 
+
+    @UseGuards(JwtAuthGuard)
     @Get(':id/concertUsers')
-    @ApiOperation({summary: 'Get concert users by concertId'})
+    @ApiOperation({summary: 'Get concert users by concertId with token'})
     findConcertUsers(
+        @User() user: any,
         @Param('id') id: string,
-        @Query('with_users') with_users: boolean,
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ): Promise<any[]> {
         limit = limit > 100 ? 100 : limit;
-        return this.concert.findConcertUsers({id, with_users, page, limit});
+        return this.concert.findConcertUsers({id, page, limit, user});
     }
 
+    @Get(':id/concertUsersWithOutAuth')
+    @ApiOperation({summary: 'Get concert users by concertId without token'})
+    findConcertUsersWithOutAuth(
+        @User() user: any,
+        @Param('id') id: string,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10
+    ): Promise<any[]> {
+        limit = limit > 100 ? 100 : limit;
+        return this.concert.findConcertUsers({id, page, limit, user});
+    }
 
     @Get(':id')
     @ApiOperation({summary: 'Get concert by id'})
@@ -54,5 +69,4 @@ export class ConcertController {
     updateConcert(@Param('id') id: string, @Body() updateConcertDto: UpdateConcertDto): Promise<any> {
         return this.concert.updateConcert(id, updateConcertDto);
     }
-
 }

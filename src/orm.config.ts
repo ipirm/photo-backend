@@ -8,8 +8,15 @@ export const ormConfig: TypeOrmModuleOptions = {
     password: "root",
     database: "photo_db",
     entities: ["dist/**/*.entity.js"],
-    synchronize: true,
-    logging: true
+    migrations: ["dist/migrations/*{.ts,.js}"],
+    migrationsTableName: "migrations_typeorm",
+    migrationsRun: true,
+    synchronize: false,
+    logging: ['error'],
+    cli: {
+        migrationsDir: "migrations"
+    }
+
 
 
     // type: 'postgres',

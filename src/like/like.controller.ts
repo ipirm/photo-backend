@@ -1,7 +1,9 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import {LikeService} from "./like.service";
 import {AddLikeDto} from "./dto/add-like-dto";
+import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
+import {User} from "../decorators/user.decorator";
 
 
 @ApiTags('Likes')
@@ -10,11 +12,11 @@ export class LikeController {
     constructor(private like: LikeService) {
     }
 
-
+    @UseGuards(JwtAuthGuard)
     @Post('/')
     @ApiOperation({summary: 'Add like to concert'})
-    async addVoiceToConcert(@Body() addLikeDto: AddLikeDto): Promise<any> {
-        return await this.like.addLike(addLikeDto)
+    async addVoiceToConcert(@Body() addLikeDto: AddLikeDto, @User() user: any): Promise<any> {
+        return await this.like.addLike(addLikeDto, user)
     }
 
     @Get('/')
@@ -23,26 +25,11 @@ export class LikeController {
         return await this.like.getLikes()
     }
 
-    @Delete(':id')
+    @UseGuards(JwtAuthGuard)
+    @Post('delete')
     @ApiOperation({summary: 'Delete like by id'})
-    deleteConcert(@Param('id') id: string): Promise<any> {
-        return this.like.deleteLike(id);
+    deleteConcert(@Body() addLikeDto: AddLikeDto, @User() user: any): Promise<any> {
+        return this.like.deleteLike(addLikeDto, user);
     }
-
-
-    // @Post('delete')
-    // @ApiOperation({summary: 'Delete participation to concert'})
-    // deleteVoiceToConcert(@Body() addVoiceDto: AddParticipationDto): Promise<any> {
-    //     return this.like.deleteVoiceToConcert(addVoiceDto)
-    // }
-
-    //
-    // @Post()
-    // @ApiOperation({summary: 'Like the user in concert'})
-    // likeVoiceToConcert(@Body() addLikeDto: AddLikeDto): Promise<any> {
-    //
-    //     return this.participation.likeVoiceToConcert(addLikeDto)
-    // }
-
 
 }
