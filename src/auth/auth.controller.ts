@@ -10,6 +10,7 @@ export class AuthController {
     constructor(private auth: AuthService) {
     }
 
+    // access_token: EAAxSU05LZClgBAKdczPXL9cfxur8RJCcuHT9DSCwdlrAIEU2PeBhqxt0u1mNe4DBEya871monORYKy1DDp8vbpm6yXD0y2rs7qlvx0Nlx1vxMsaDnUxaTkTy7ZCAg5QZCYZCpofSzoU8pNQq5oPysSZCZAKKXejOsfQ39QKEuWzRGQGhUbmUzDQmmppnNkm607nO9TzBQduAZDZD
     @UseGuards(AuthGuard('facebook-token'))
     @Get('facebook')
     @ApiOperation({summary: 'Facebook auth'})
