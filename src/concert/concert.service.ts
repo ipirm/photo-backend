@@ -27,11 +27,10 @@ export class ConcertService {
     //  Получить концерты в завиисмости от того авторизирован юзер или нет
     async findConcertUsers({id, page, limit, user}): Promise<any> {
         let firstConcerts: any = [];
-
         //  Query для получения пользователей концерта
         const data = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
-            .andWhere("concertUsers.approve = :approve", {approve: true})
+            .andWhere("concertUsers.approve = :approve", {approve: false})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
             .orderBy('concertUsers.id', 'ASC')
@@ -44,7 +43,7 @@ export class ConcertService {
             // Найти участника за которого проголосовал пользователь
             const userLiked = await this.concert_users.createQueryBuilder('concertUsers')
                 .where("concertUsers.concertId = :concertId", {concertId: id})
-                .andWhere("concertUsers.approve = :approve", {approve: true})
+                .andWhere("concertUsers.approve = :approve", {approve: false})
                 .leftJoinAndSelect("concertUsers.user", "user")
                 .leftJoinAndSelect("user.likes", "likes")
                 .where("likes.user_id = :user_id", {user_id: user.id})
@@ -55,7 +54,7 @@ export class ConcertService {
             if (checkIds.length) {
                 data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
                 firstConcerts = await this.concert_users.findByIds(checkIds, {
-                    where: {approve: true},
+                    where: {approve: false},
                     relations: ['user', 'user.likes']
                 })
                 return {firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {page, limit})}
