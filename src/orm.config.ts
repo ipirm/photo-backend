@@ -45,7 +45,7 @@ export const ormConfig: TypeOrmModuleOptions = {
     migrations: ["dist/migrations/*{.ts,.js}"],
     migrationsTableName: "migrations_typeorm",
     migrationsRun: true,
-    synchronize: true,
+    synchronize: false,
     logging: true,
     cli: {
         migrationsDir: "migrations"
