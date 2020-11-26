@@ -10,24 +10,30 @@ export class UserService {
     }
 
     async findOrCreate(profile): Promise<any> {
-        const user = await this.user.findOne({facebook_id: profile.id});
-        if (user) {
-            return user;
+        const user = await this.user.findOne({email: profile.emails[0].value});
+        const {provider} = profile
+        if (!user) {
+            const createdUser = {
+                name: profile.name.givenName,
+                last_name: profile.name.familyName,
+                email: profile.emails[0].value,
+                password: '',
+                gender: profile.gender,
+                avatar: profile.photos[0].value
+            };
+            if (provider === 'google') {
+                Object.assign(createdUser, {google_id: profile.id,})
+            }
+            if (provider === 'facebook') {
+                Object.assign(createdUser, {facebook_id: profile.id,})
+            }
+            await this.user.save(createdUser)
         }
-        const createdUser = await this.user.save({
-            name: profile.name.givenName,
-            last_name: profile.name.familyName,
-            email: profile.emails[0].value,
-            password: '',
-            gender: profile.gender,
-            facebook_id: profile.id,
-            avatar: profile.photos[0].value
-        });
-        return createdUser
+        return await this.user.findOne({email: profile.emails[0].value});
     }
 
     async createUser(createUserDto: CreateUserDto): Promise<any> {
-        const user = await this.user.findOne({facebook_id: createUserDto.facebook_id});
+        const user = await this.user.findOne({email: createUserDto.email});
         if (user) {
             return user;
         }

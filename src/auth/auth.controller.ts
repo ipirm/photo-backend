@@ -23,4 +23,14 @@ export class AuthController {
     getProfile(@Request() req) {
         return req.user;
     }
+
+    @Get('google')
+    @UseGuards(AuthGuard('google'))
+    async googleAuth(@Request() req) {}
+
+    @Get('google/redirect')
+    @UseGuards(AuthGuard('google'))
+    googleAuthRedirect(@Request() req) {
+        return this.auth.login(req.user);
+    }
 }

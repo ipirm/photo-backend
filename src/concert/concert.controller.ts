@@ -22,7 +22,7 @@ export class ConcertController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Get(':id/concertUsers')
+    @Get('concertUsers/:id')
     @ApiOperation({summary: 'Get concert users by concertId with token'})
     findConcertUsers(
         @User() user: any,
@@ -30,11 +30,12 @@ export class ConcertController {
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ): Promise<any[]> {
-        limit = limit > 100 ? 100 : limit;
-        return this.concert.findConcertUsers({id, page, limit, user});
+        console.log('fafafaf')
+         limit = limit > 100 ? 100 : limit;
+         return this.concert.findConcertUsers({id, page, limit, user});
     }
 
-    @Get(':id/concertUsersWithOutAuth')
+    @Get('concertUsersWithOutAuth/:id')
     @ApiOperation({summary: 'Get concert users by concertId without token'})
     findConcertUsersWithOutAuth(
         @User() user: any,
@@ -42,6 +43,7 @@ export class ConcertController {
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ): Promise<any[]> {
+        console.log('fafafaf')
         limit = limit > 100 ? 100 : limit;
         return this.concert.findConcertUsers({id, page, limit, user});
     }

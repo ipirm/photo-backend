@@ -3,6 +3,11 @@ import {BaseEntity} from "./base.entity";
 import {ConcertsUsersEntity} from "./concerts-users.entity";
 import {LikesEntity} from "./likes.entity";
 
+enum Roles {
+    Admin = 'admin',
+    User = 'user',
+}
+
 @Entity('users')
 
 export abstract class UsersEntity extends BaseEntity {
@@ -22,10 +27,14 @@ export abstract class UsersEntity extends BaseEntity {
     avatar: string;
     @Column({type: 'varchar', length: 500, nullable: true})
     facebook_id: number;
-
+    @Column({type: 'varchar', length: 500, nullable: true})
+    google_id: number;
+    @Column({type: 'varchar', length: 500, nullable: true})
+    vk_id: number;
     @Column({type: 'money', default: 0})
     balance: string;
-
+    @Column('enum', { enum: Roles, default: Roles.User})
+    role: Roles
 
 
     @OneToMany(type => LikesEntity, like => like.user,

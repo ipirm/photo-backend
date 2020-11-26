@@ -18,8 +18,8 @@ export class AuthService {
             age: user.age,
             email: user.email,
             avatar: user.avatar,
-            facebook_id: user.facebook_id,
-            balance: user.balance
+            balance: user.balance,
+            role: user.role
         };
         return {
             access_token: this.jwtService.sign(payload),

@@ -6,7 +6,7 @@ import {UserService} from "../../user/user.service";
 @Injectable()
 export class FacebookStrategy {
     constructor(
-        private readonly userService: UserService,
+        private readonly userService: UserService
     ) {
         this.init();
     }
@@ -26,7 +26,7 @@ export class FacebookStrategy {
                     done: any,
                 ) => {
                     const user = await this.userService.findOrCreate(
-                        profile,
+                        profile
                     );
                     return done(null, user);
                 },

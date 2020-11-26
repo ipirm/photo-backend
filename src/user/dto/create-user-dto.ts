@@ -28,6 +28,14 @@ export class CreateUserDto {
     @IsString()
     facebook_id: number;
 
+    @ApiProperty({ example: '151212', description: 'vk_id' })
+    @IsString()
+    vk_id: number;
+
+    @ApiProperty({ example: '151212', description: 'google_id' })
+    @IsString()
+    google_id: number;
+
     @ApiProperty({ example: 'avatar.png', description: 'avatar' })
     @IsString()
     avatar: string;
