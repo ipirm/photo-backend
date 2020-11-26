@@ -42,6 +42,13 @@ export const ormConfig: TypeOrmModuleOptions = {
     password: '39145cf0c261888101417c96aa9bf8a476da0c08076f45b0d5ae2ffbf900aabe',
     database: 'dfi00as3gc4s3i',
     entities: ['dist/**/*.entity.js'],
+    migrations: ["dist/migrations/*{.ts,.js}"],
+    migrationsTableName: "migrations_typeorm",
+    migrationsRun: true,
     synchronize: true,
-    logging: true
+    logging: true,
+    cli: {
+        migrationsDir: "migrations"
+    }
+
 }
