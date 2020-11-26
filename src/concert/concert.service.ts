@@ -6,11 +6,12 @@ import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {CreateConcertDto} from "./dto/create-concert-dto";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 import {paginate} from "nestjs-typeorm-paginate";
+import {I18nRepository} from "typeorm-i18n";
 
 @Injectable()
 export class ConcertService {
     constructor(
-        @InjectRepository(ConcertsEntity) private readonly concert: Repository<ConcertsEntity>,
+        @InjectRepository(ConcertsEntity) private readonly concert: I18nRepository<ConcertsEntity>,
         @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>
     ) {
     }

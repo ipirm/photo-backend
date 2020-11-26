@@ -1,7 +1,8 @@
-import {Entity, Column, OneToMany, JoinTable, AfterLoad} from 'typeorm'
+import {Entity, Column, OneToMany, JoinTable, AfterLoad, OneToOne, JoinColumn} from 'typeorm'
 import {BaseEntity} from "./base.entity";
 import {ConcertsUsersEntity} from "./concerts-users.entity";
 import {LikesEntity} from "./likes.entity";
+import {PlacesEntity} from "./places.entity";
 
 enum Roles {
     Admin = 'admin',
@@ -44,5 +45,10 @@ export abstract class UsersEntity extends BaseEntity {
     @OneToMany(type => ConcertsUsersEntity, concertsUser => concertsUser.user, {cascade: true})
     @JoinTable()
     public concertsUsers: ConcertsUsersEntity[];
+
+
+    @OneToOne(() => PlacesEntity)
+    @JoinColumn()
+    place?: PlacesEntity;
 }
 

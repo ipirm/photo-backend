@@ -1,10 +1,7 @@
-import {Entity, Column, ManyToOne, JoinColumn} from 'typeorm'
+import {Entity, Column, ManyToOne} from 'typeorm'
 import {BaseEntity} from "./base.entity";
-import {ConcertsUsersEntity} from "./concerts-users.entity";
 import {ConcertsEntity} from "./concerts.entity";
 import {UsersEntity} from "./users.entity";
-import {ApiProperty} from "@nestjs/swagger";
-import {IsNotEmpty} from "class-validator";
 
 @Entity('likes')
 
