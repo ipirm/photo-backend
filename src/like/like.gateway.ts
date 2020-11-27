@@ -10,7 +10,7 @@ import {Inject, Logger} from '@nestjs/common';
 import {Socket, Server} from 'socket.io';
 import {LikeService} from "./like.service";
 
-@WebSocketGateway(4000)
+@WebSocketGateway( parseInt(process.env.PORT) || 4000)
 export class LikeGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
     @Inject()
