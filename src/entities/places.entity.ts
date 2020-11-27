@@ -14,7 +14,7 @@ export abstract class PlacesEntity extends BaseEntity {
         languages: SupportedLocales,
     })
     @Column({type: 'varchar', length: 500, nullable: false})
-    name: number;
+    name: string;
 
     @Column({type: 'varchar', length: 500, nullable: false})
     total: string;

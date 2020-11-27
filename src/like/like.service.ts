@@ -19,7 +19,7 @@ export class LikeService {
         const exist = await this.like.findOne({where: {user_id: user.id, concertId: addLikeDto.concertId}})
 
         if (exist)
-            return `Exist like likedId ${user.id} concertId ${addLikeDto.concertId}`
+            return exist
 
         Object.assign(addLikeDto, {
             user_id: user.id,

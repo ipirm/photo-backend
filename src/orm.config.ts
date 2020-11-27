@@ -11,27 +11,12 @@ export const ormConfig: TypeOrmModuleOptions = {
     // migrations: ["dist/migrations/*{.ts,.js}"],
     // migrationsTableName: "migrations_typeorm",
     // migrationsRun: true,
-    // synchronize: false,
+    // synchronize: true,
     // logging: ['error'],
     // cli: {
     //     migrationsDir: "migrations"
     // }
 
-
-    // Host
-    // ec2-54-75-244-161.eu-west-1.compute.amazonaws.com
-    // Database
-    // dfi00as3gc4s3i
-    // User
-    // tvjdvubhbjeorp
-    // Port
-    // 5432
-    // Password
-    // 39145cf0c261888101417c96aa9bf8a476da0c08076f45b0d5ae2ffbf900aabe
-    // URI
-    // postgres://tvjdvubhbjeorp:39145cf0c261888101417c96aa9bf8a476da0c08076f45b0d5ae2ffbf900aabe@ec2-54-75-244-161.eu-west-1.compute.amazonaws.com:5432/dfi00as3gc4s3i
-    // Heroku CLI
-    // heroku pg:psql postgresql-horizontal-03229 --app photo-backend-app
 
 
     type: 'postgres',
@@ -45,7 +30,7 @@ export const ormConfig: TypeOrmModuleOptions = {
     migrations: ["dist/migrations/*{.ts,.js}"],
     migrationsTableName: "migrations_typeorm",
     migrationsRun: true,
-    synchronize: false,
+    synchronize: true,
     logging: true,
     cli: {
         migrationsDir: "migrations"

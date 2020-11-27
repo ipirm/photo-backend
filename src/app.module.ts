@@ -8,8 +8,9 @@ import { ConcertModule } from './concert/concert.module';
 import { ParticipationModule } from './participation/participation.module';
 import {ConfigModule} from "@nestjs/config";
 import {UserModule} from "./user/user.module";
-import { LikeService } from './like/like.service';
 import { LikeModule } from './like/like.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { PlaceModule } from './place/place.module';
 
 @Module({
     imports: [
@@ -17,11 +18,13 @@ import { LikeModule } from './like/like.module';
             envFilePath: '.env',
         }),
         TypeOrmModule.forRoot(ormConfig),
+        ServeStaticModule.forRoot({rootPath:`${process.cwd()}/public`}),
         AuthModule,
         ConcertModule,
         ParticipationModule,
         UserModule,
-        LikeModule
+        LikeModule,
+        PlaceModule
     ],
     controllers: [AppController],
     providers: [AppService],
