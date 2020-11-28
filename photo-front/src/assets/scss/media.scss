@@ -1,0 +1,320 @@
+@media (max-width: 1300px) {
+  .contest-page {
+    padding: 77px 50px 148px 50px !important;
+    max-width: 1080px;
+  }
+  .participates_util_wrapper {
+    flex-direction: column;
+  }
+  .description_text_subtitle {
+    width: 400px;
+  }
+  .description_text_main-text {
+    width: 400px;
+  }
+  .description_text_date {
+    margin-bottom: 30px;
+  }
+  .account-page {
+    padding: 77px 50px 148px 50px !important;
+    max-width: 1080px;
+  }
+}
+
+@media (max-width: 520px) {
+  header {
+    display: none;
+  }
+  .user_profile {
+    margin-right: 0;
+    margin-bottom: 70px;
+    align-items: center;
+  }
+  .user_profile_text {
+    height: 130px;
+  }
+  .btn_avatar {
+    top: calc(100% - 50px);
+    left: calc(100% - 50px);
+    width: 50px;
+    height: 50px;
+  }
+  .user_profile_text_name {
+    font-size: 24px;
+    width: 140px;
+    line-height: 34px;
+    height: 62px;
+  }
+  .user_profile_picture {
+    margin-right: 15px;
+  }
+  .user_profile_text_city {
+    font-size: 14px;
+    height: 20px;
+  }
+  .user_profile_text_edit p {
+    font-size: 14px;
+  }
+  .user_profile_image {
+    width: 140px;
+    height: 140px;
+  }
+  .btn_add {
+    width: 150px;
+  }
+  .user_balans_maining {
+    margin-right: 20px;
+  }
+  .user_balans_text {
+    margin-right: 0px;
+  }
+  .contest_item {
+    width: 100%;
+    height: 420px;
+    margin-right: 0px;
+  }
+  .contest_item_review_margin {
+    margin-right: 30px;
+  }
+  .contest_item_review_margin svg {
+    width: 24px;
+    height: 24px;
+  }
+  .contest_item_title_subtitle {
+    font-size: 22px;
+  }
+  .contest_item_title_date {
+    font-size: 14px;
+  }
+  .contest_item_title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .contest_item_review_margin span {
+    font-size: 22px;
+  }
+  .contests_title {
+    margin-bottom: 20px;
+  }
+  .contests_container {
+    margin-bottom: 50px;
+  }
+  .account-page {
+    padding: 107px 15px 0 15px;
+  }
+  .user_statistics {
+    margin-right: 0px;
+    margin-bottom: 70px;
+  }
+  .user_balans {
+    margin-top: 0px;
+  }
+  .user_statistics {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1080px) {
+  .likes_popup {
+    width: 55%;
+  }
+  .contest-page {
+    padding: 77px 20px 148px 20px !important;
+    max-width: 780px;
+  }
+  .account-page {
+    padding: 77px 20px 148px 20px !important;
+    max-width: 780px;
+  }
+  .user {
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .user_balans {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 40px;
+  }
+  .user_balans_text {
+    margin-right: 10px;
+  }
+  .user_balans_maining {
+    margin-right: 30px;
+  }
+}
+
+@media (max-width: 780px) {
+  .participates_util_order {
+    margin-top: 75px;
+    right: 0;
+    left: 20px;
+    margin-left: 0;
+  }
+  .description_days_title {
+    font-size: 26px;
+  }
+  .likes_popup {
+    width: 80%;
+  }
+  .participate_wrapper {
+    margin-top: 20px;
+  }
+  .contest-page {
+    padding: 77px 20px 148px 20px !important;
+    max-width: 520px;
+  }
+  .description_days {
+    width: 100%;
+    margin-top: 50px;
+    flex-direction: row;
+  }
+  .description {
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+  }
+  .description_text {
+    width: 100%;
+  }
+  .description_text_main-text {
+    width: 100%;
+  }
+  .description_days_to-end {
+    text-align: left;
+  }
+  .account-page {
+    padding: 77px 20px 148px 20px !important;
+    max-width: 520px;
+  }
+  .user {
+    justify-content: center;
+  }
+  .user_statistics {
+    margin-top: 40px;
+  }
+  .user_statistics {
+    justify-content: flex-start;
+  }
+  .user_statistics_wrapper {
+    margin-bottom: 10px;
+  }
+}
+@media (max-height: 700px) {
+  .participate_popup_upload_container {
+    padding: 15px 0 15px 0;
+    height: 160px;
+  }
+  .participate_popup_title {
+    margin-bottom: 20px;
+  }
+  .participate_popup_upload {
+    margin-bottom: 25px;
+  }
+  .participate_popup_photo {
+    margin-bottom: 20px;
+  }
+  .participate_popup {
+    height: 600px;
+  }
+  .btn-upload {
+    margin: 10px 0;
+  }
+  .btn-exit-aligne {
+    margin-bottom: 0px;
+  }
+}
+
+@media (max-width: 520px) {
+  .participate_popup_photo_item img {
+    height: auto !important;
+  }
+  .popup_btn-style {
+    width: 133px;
+    height: 40px;
+  }
+  .btn_participate span {
+    font-size: 12px;
+  }
+  .btn-exit-aligne {
+    margin-top: 15px;
+  }
+  .participate_popup_upload_container {
+    padding: 20px;
+    width: 100%;
+  }
+  .participate_popup {
+    padding: 0 15px;
+  }
+  .participates_util_order {
+    width: 87%;
+    padding: 6px 18px 8px 18px;
+  }
+  .description_days {
+    flex-direction: column;
+  }
+  .description_days_to-end {
+    margin-bottom: 30px;
+  }
+  .participates_util {
+    flex-direction: column;
+  }
+  .participates_util_wrapper {
+    margin-bottom: 20px;
+  }
+  .description {
+    margin-bottom: 50px;
+  }
+  .description_text_subtitle {
+    width: 100%;
+    font-size: 30px;
+    line-height: 36px;
+  }
+  .description_days_title {
+    font-size: 24px;
+  }
+  .btn_contest_participate {
+    width: 200px;
+  }
+  .contest-page {
+    padding: 77px 20px 100px 20px !important;
+    max-width: 340px;
+  }
+  .participates_item {
+    width: 100%;
+    max-width: 300px;
+    height: 400px;
+  }
+  .participate_wrapper_overlay {
+    width: 100%;
+  }
+  .participate_wrapper {
+    margin: 0;
+  }
+  .participate_wrapper_overlay {
+    margin: 0;
+  }
+  .account-page {
+    padding: 77px 20px 40px 20px !important;
+    max-width: 340px;
+  }
+  .contest_item {
+    margin: 0 0 20px 0;
+  }
+  .user_statistics {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .user_balans {
+    margin-top: 0px;
+    flex-wrap: wrap;
+  }
+  .user_profile {
+    margin-bottom: 25px;
+  }
+  .user_balans_maining {
+    font-size: 24px;
+    width: fit-content;
+    margin-bottom: 0px;
+  }
+}

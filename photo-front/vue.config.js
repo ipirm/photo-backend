@@ -1,8 +1,10 @@
 module.exports = {
-    devServer: {
-        historyApiFallback: true,
-        port: 8080,   // you can change the port there
-        noInfo: true,
-        overlay: true
-    },
-}
+    lintOnSave: false,
+    chainWebpack: config => {
+        config.module
+            .rule("vue")
+            .use("vue-svg-inline-loader")
+                .loader("vue-svg-inline-loader")
+                .options({ });
+    }
+};

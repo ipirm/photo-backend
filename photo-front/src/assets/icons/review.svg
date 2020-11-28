@@ -1,0 +1,13 @@
+<svg
+                  width="10"
+                  height="13"
+                  viewBox="0 0 10 13"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="5" cy="3" r="3" fill="white" />
+                  <path
+                    d="M9.99998 11C9.99998 12.5 8 12 4.99998 12C1.99996 12 0 12.5 0 11C0 9.5 1.99996 7.5 4.99998 7.5C8 7.5 9.99998 9.5 9.99998 11Z"
+                    fill="white"
+                  />
+                </svg>
