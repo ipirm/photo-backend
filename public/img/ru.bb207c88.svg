@@ -1,0 +1,12 @@
+<svg
+          class="header_util_rus"
+          width="21"
+          height="15"
+          viewBox="0 0 21 15"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M21 0H0V15H21V0Z" fill="#F5F5F5" />
+          <path d="M21 10.125H0V15H21V10.125Z" fill="#FF3131" />
+          <path d="M21 4.875H0V10.125H21V4.875Z" fill="#3B7BF4" />
+        </svg>
