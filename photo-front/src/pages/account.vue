@@ -75,6 +75,7 @@
           <a
             class="contest_item"
             v-for="i in 8"
+            :key="i"
             :style="{
               backgroundImage:
                 'url(' + require('@/static/images/pic1.png') + ')'
@@ -100,6 +101,21 @@
                 />
 
                 <span> 24 </span>
+              </div>
+            </div>
+            <div class="contest_item_score-likes">
+              <div class="score">
+                <div class="number">5</div>
+                <div class="text">Место</div>
+              </div>
+              <div class="likes">
+                <img
+                  svg-inline
+                  class="icon"
+                  src="@/assets/icons/heart.svg"
+                  alt="example"
+                />
+                <div class="number">48</div>
               </div>
             </div>
             <div class="contest_item_title">

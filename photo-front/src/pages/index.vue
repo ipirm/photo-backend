@@ -87,23 +87,24 @@
               v-swiper:mySwiper2="swiperOption"
               class="participate_popup_photo"
             >
-              <div class="swiper-wrapper ">
-                <div
-                  class="swiper-slide participate_popup_photo_item"
-                  :key="item"
-                  v-for="(item, i) in files"
-                  v-if="i !== 3"
-                >
-                  <img :src="item" />
-                  <div class="popup_photo_item_close" @click="removeFile(i)">
-                    <img
-                      svg-inline
-                      class="icon upload_exit"
-                      src="@/assets/icons/btn-exit.svg"
-                      alt="example"
-                    />
+              <div class="swiper-wrapper">
+                <template v-for="(item, i) in files">
+                  <div
+                    class="swiper-slide participate_popup_photo_item"
+                    :key="item"
+                    v-if="i !== 3"
+                  >
+                    <img :src="item" />
+                    <div class="popup_photo_item_close" @click="removeFile(i)">
+                      <img
+                        svg-inline
+                        class="icon upload_exit"
+                        src="@/assets/icons/btn-exit.svg"
+                        alt="example"
+                      />
+                    </div>
                   </div>
-                </div>
+                </template>
               </div>
             </div>
 
@@ -150,35 +151,33 @@
               />
             </div>
             <div class="participates_util_options">
-              <p
-                v-for="item in sortItems"
-                v-if="item !== activeSelected"
-                @click="selectItem(item)"
-              >
-                {{ item }}
-              </p>
+              <template v-for="(item, i) in sortItems">
+                <p
+                  v-if="item !== activeSelected"
+                  @click="selectItem(item)"
+                  :key="i"
+                >
+                  {{ item }}
+                </p>
+              </template>
             </div>
           </div>
         </div>
         <div class="participate_wrapper">
-          <div class="participate_wrapper_overlay" v-for="(item, i) in 16">
+          <div class="participate_wrapper_overlay" v-for="(item, i) in 16" :key="i">
             <FancySwiper
               v-body-scroll-lock="activePhoto !== -1"
               v-if="activePhoto === i"
-              @closePopup="closePopupParrent(i)"
+              @closePopup="closePopupParrent()"
             />
-            <div
-              class="participates_item"
-              :style="{
-                backgroundImage:
-                  'url(' + require('@/static/images/lidia.png') + ')'
-              }"
-            >
+            <div class="participates_item">
+              <div class="participates_item_img" @click="showPhoto(i)">
+                <img src="@/static/images/lidia.png" alt="lidia">
+              </div>
               <div
                 class="participates_item_header"
-                @mouseout.self="activeLike = -1"
               >
-                <div class="like svg-path-color" @mouseover="mouseOver(i)">
+                <div class="like svg-path-color" :class="{hovered: activeLike == i}" @mouseover="mouseOver(i)" @mouseleave="activeLike = -1">
                   <img
                     svg-inline
                     class="icon"
@@ -186,18 +185,20 @@
                     alt="example"
                   />
                   <p class="style_text">{{ i + 1 }}</p>
-                </div>
-                <div class="likes-tooltip" v-if="activeLike === i">
-                  <div class="likes-tooltip-wrapper">
-                    <img
-                      v-for="item in i + 1"
-                      v-if="item <= 4"
-                      src="../static/images/tooltip-image.png"
-                    />
+                  <div class="likes-tooltip" v-if="activeLike == i">
+                    <div class="likes-tooltip-wrapper">
+                      <template v-for="item in i + 1">
+                        <img
+                          :key="item"
+                          v-if="item <= 4"
+                          src="../static/images/tooltip-image.png"
+                        />
+                      </template>
+                    </div>
+                    <a href="#" @click.prevent="showPopUp(i)"
+                      >... и еще {{ i + 1 }} человека</a
+                    >
                   </div>
-                  <a href="#" @click.prevent="showPopUp(i)"
-                    >... и еще {{ i + 1 }} человека</a
-                  >
                 </div>
                 <div v-if="i === 0" class="leader">
                   <p class="style_text">Ваш выбор</p>
@@ -249,11 +250,12 @@
                         Мисс Инстаграм 2020
                       </p>
                     </div>
-                    <vue-scroll>
+                    <vue-scroll :ops="vuescrollops">
                       <div class="likes_popup_wrapper">
                         <a
                           class="likes_popup_wrapper_item"
                           v-for="index in i + 1"
+                          :key="index"
                         >
                           <div
                             class="likes_popup_img"
@@ -318,6 +320,16 @@ export default {
         "Показать все"
       ],
       files: [],
+      vuescrollops: {
+        vuescroll: {
+          mode: 'native',
+          sizeStrategy: 'number',
+          detectResize: true
+        },
+        scrollPanel: {
+          scrollingX: false
+        }
+      },
       swiperOption: {
         slidesPerView: 3,
         centeredSlides: true,
@@ -343,16 +355,17 @@ export default {
       const file = e.target.files[0];
       this.files.push(URL.createObjectURL(file));
     },
-    closePopupParrent(i) {
-      this.activePhoto = i;
+    closePopupParrent() {
+      this.activePhoto = -1;
     },
     mouseOver(i) {
       this.activeLike = i;
     },
     showPopUp(i) {
+      this.activeSort = false;
       this.activePopUp = i;
     },
-    closePopUp(i) {
+    closePopUp() {
       this.activePopUp = -1;
       this.activeLike = -1;
     },
@@ -364,16 +377,13 @@ export default {
       this.activeLike = -1;
       this.activePhoto = i;
     },
-    closePopupParrent() {
-      this.activePhoto = -1;
-    },
     transform(props) {
       Object.entries(props).forEach(([key, value]) => {
         // Adds leading zero
         const digits = value < 10 ? `0${value}` : value;
 
         // uses singular form when the value is less than 2
-        const word = value < 2 ? key.replace(/s$/, "") : key;
+        // const word = value < 2 ? key.replace(/s$/, "") : key;
 
         props[key] = `${digits}`;
       });

@@ -8,8 +8,9 @@
       <a class="header_logo_text"> Топовые фото-конкурсы </a>
     </div>
     <div class="footer_links">
-      <a> Главная </a>
-      <a> Топы </a> <a> Архив </a> <a> О нас </a> <a> Правила </a>
+      <router-link to="/">Главная</router-link>
+      <router-link to="/about">О нас</router-link>
+      <router-link to="/rules">Правила</router-link>
     </div>
     <div class="footer_socials">
       <a>

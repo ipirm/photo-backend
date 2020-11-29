@@ -3,7 +3,7 @@
     <Header />
     <div class="text-page">
       <div class="text-page_title">
-        <h1>Правила</h1>
+        <h1>{{ h1 }}</h1>
         <span> Добавлено 21.06.2020 • Обновлено 08.11.2020 </span>
       </div>
       <h2>Заголовок H1</h2>
@@ -60,6 +60,16 @@ export default {
   components: {
     Header,
     Footer
+  },
+
+  name: 'TextPage',
+
+  computed: {
+    h1() {
+      if (this.$route.params.name === 'rules') return 'Правила';
+      if (this.$route.params.name === 'about') return 'О нас';
+      return '';
+    }
   }
 };
 </script>

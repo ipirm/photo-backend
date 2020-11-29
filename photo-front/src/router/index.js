@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 const Account = () => import(/* webpackChunkName: "account" */ '../pages/account.vue')
 const Contest = () => import(/* webpackChunkName: "contest" */ '../pages/contest.vue')
-const TextPage = () => import(/* webpackChunkName: "textPage" */ '../pages/text-page.vue')
+const TextPage = () => import(/* webpackChunkName: "textPage" */ '../pages/_text-page.vue')
 const Index = () => import(/* webpackChunkName: "index" */ '../pages/index.vue')
 
 
@@ -38,12 +38,15 @@ const router = new VueRouter({
             component: Contest
         },
         {
-            path: '/text-page',
-            component: TextPage
+            path: '/:name',
+            component: TextPage,
+            props: true,
+            name: 'text-page'
         },
         {
             path: '/',
-            component: Index
+            component: Index,
+            name: 'index'
         }
     ]
 })

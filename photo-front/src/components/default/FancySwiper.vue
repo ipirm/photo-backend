@@ -27,7 +27,7 @@ export default {
         "@/static/images/swiper3.png"
       ],
       swiperOption: {
-        slidesPerView: 2,
+        slidesPerView: 'auto',
         centeredSlides: true,
         spaceBetween: 10,
         grabCursor: true,
