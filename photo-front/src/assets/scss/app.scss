@@ -210,7 +210,7 @@ header {
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity .3s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
@@ -1684,12 +1684,18 @@ body {
   line-height: 20px;
   color: $main-color;
 }
+.header-ruble {
+  width: 12px;
+  height: 10px;
+  margin-left: -4px;
+}
 .likes_popup_wrapper {
   display: flex;
   flex-wrap: wrap;
   text-align: center;
   overflow-y: auto;
   justify-content: center;
+  max-height: 300px;
 }
 .likes_popup_img {
   width: 96px;
@@ -1898,9 +1904,8 @@ body {
   }
   img {
     max-width: 100%;
-    height: 120px;
     object-fit: cover;
-    height: auto;
+    max-height: 60vh;
   }
   &_text {
     display: flex;

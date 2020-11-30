@@ -28,7 +28,15 @@
             <img src="@/static/images/profile-mini.png" />
             <div class="header_login">
               <span> Александр </span>
-              <p>136 ₽</p>
+              <p>
+                136
+                <img
+                  svg-inline
+                  class="icon header_ruble"
+                  src="@/assets/icons/rub-yellow.svg"
+                  alt="ruble"
+                />
+              </p>
             </div>
           </router-link>
           <div class="dropdown-icon_wrapper" @click="isDropdownOpen = !isDropdownOpen">
@@ -91,7 +99,7 @@
                     </div>
                   </router-link>
                   <div class="header_menu_log login" v-else>
-                    <span @click="isLoginModalOpen = true">Войти</span>
+                    <span @click="isLoginModalOpen = true; isMenuActive = false">Войти</span>
                   </div>
                   <a class="header_util_container header_lang" @click="changeLang()">
                     <img
@@ -183,6 +191,7 @@ export default {
 
     goToLink(link) {
       this.isMenuActive = false;
+      this.$router.push('/');
       this.$router.push(link);
     },
 

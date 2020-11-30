@@ -342,6 +342,35 @@
   }
   .contest_item {
     margin: 0 0 20px 0;
+    width: 100%;
+    height: 420px;
+  }
+  .contest_item_review_margin {
+    margin-right: 30px;
+  }
+  .contest_item_review_margin svg {
+    width: 24px;
+    height: 24px;
+  }
+  .contest_item_title_subtitle {
+    font-size: 22px;
+  }
+  .contest_item_title_date {
+    font-size: 14px;
+  }
+  .contest_item_title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .contest_item_review_margin span {
+    font-size: 22px;
+  }
+  .contests_title {
+    margin-bottom: 20px;
+  }
+  .contests_container {
+    margin-bottom: 50px;
   }
   .user_statistics {
     margin-top: 0px;
@@ -430,46 +459,15 @@
     margin-right: 20px;
   }
   .user_balans_text { 
-    margin-right: 0px;
-  }
-  .contest_item {
-    width: 100%;
-    height: 420px;
-    margin-right: 0px;
-  }
-  .contest_item_review_margin {
-    margin-right: 30px;
-  }
-  .contest_item_review_margin svg {
-    width: 24px;
-    height: 24px;
-  }
-  .contest_item_title_subtitle {
-    font-size: 22px;
-  }
-  .contest_item_title_date {
-    font-size: 14px;
-  }
-  .contest_item_title {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .contest_item_review_margin span {
-    font-size: 22px;
-  }
-  .contests_title {
-    margin-bottom: 20px;
-  }
-  .contests_container {
-    margin-bottom: 50px;
+    margin-right: 5px;
+    margin-top: 6px;
   }
   .account-page {
     padding: 107px 15px 0 15px;
   }
   .user_statistics {
     margin-right: 0px;
-    margin-bottom: 70px;
+    margin-bottom: 30px;
   }
   .user_balans {
     margin-top: 0px;
@@ -486,6 +484,10 @@
     .swiper-container {
       width: calc(100% - 20px);
       margin-bottom: 10px;
+    }
+
+    .swiper-slide {
+      max-height: 300px;
     }
   }
 
