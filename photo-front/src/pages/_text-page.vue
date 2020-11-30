@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="fade" mode="out-in">
-      <div v-if="isPageShown" :key="i">
+      <div v-if="isPageShown" :key="1">
         <Header />
         <div class="text-page">
           <div class="text-page_title">

@@ -1696,6 +1696,7 @@ body {
   overflow-y: auto;
   justify-content: center;
   max-height: 300px;
+  -webkit-overflow-scrolling: touch;  
 }
 .likes_popup_img {
   width: 96px;
@@ -1944,6 +1945,7 @@ body {
   flex-direction: column;
   justify-content: center;
   max-height: 640px;
+  height: 100%;
 }
 .participate_popup_photo_item {
   min-width: 180px !important;
