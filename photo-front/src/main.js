@@ -7,20 +7,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import 'swiper/swiper-bundle.css'
-import vuescroll from 'vuescroll';
 import vClickOutside from 'v-click-outside'
 
-Vue.use(vuescroll, {
-  ops: {
-    scrollButton: {
-      background: '#eeb609',
-    },
-    bar:{
-      background: '#eeb609',
-    }
-  },
-  name: 'vueScroll' // customize component name, default -> vueScroll
-});
 Vue.component(VueCountdown.name, VueCountdown);
 Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 Vue.use(vClickOutside)
