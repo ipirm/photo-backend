@@ -113,7 +113,7 @@
       margin-bottom: 30px;
 
       .header_util_style {
-        margin-right: 0;
+        margin-right: 26px;
       }
     }
   }
@@ -138,6 +138,8 @@
   }
   .description_days_title {
     font-size: 26px;
+    width: unset;
+    white-space: nowrap;
   }
   .likes_popup {
     width: 80%;
@@ -153,6 +155,15 @@
     width: 100%;
     margin-top: 50px;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    > div {
+      &:last-of-type {
+        margin-left: auto;
+        margin-top: 20px;
+      }
+    }
   }
   .description {
     align-items: center;
@@ -232,6 +243,12 @@
     padding-left: 20px;
     padding-right: 20px;
   }
+
+  .header_menu-button {
+    &.is-active {
+      right: 20px;
+    }
+  }
 }
 
 @media (max-width: 540px) {
@@ -241,6 +258,16 @@
   .popup_btn-style {
     width: 133px;
     height: 40px;
+    margin-bottom: 10px;
+  }
+  .description_days {
+    > div:last-of-type {
+      margin-left: unset;
+    }
+  }
+  .description_prizes {
+    text-align: left;
+    justify-content: flex-start;
   }
   .btn_participate span {
     font-size: 12px;
@@ -253,7 +280,7 @@
     width: 100%;
   }
   .participate_popup {
-    padding: 0 15px 15px;
+    padding: 0 15px 10px;
   }
   .participates_util_order {
     padding: 6px 18px 8px 18px;
@@ -286,7 +313,7 @@
     width: 200px;
   }
   .contest-page {
-    padding: 77px 20px 100px 20px !important;
+    padding: 77px 15px 100px 15px !important;
     max-width: 340px;
   }
   .participates_item {
@@ -331,6 +358,14 @@
     font-size: 24px;
     width: fit-content;
     margin-bottom: 0px;
+  }
+
+  .participate-slider {
+    .participate_popup_photo_item {
+      img {
+        height: 120px !important;
+      }
+    }
   }
 }
 
@@ -450,16 +485,22 @@
 
     .swiper-container {
       width: calc(100% - 20px);
+      margin-bottom: 10px;
     }
+  }
+
+  .participate_popup_upload, .participate_popup_title {
+    margin-bottom: 10px;
+  }
+
+  .participate_popup .btn-exit-aligne {
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 }
 
 @media (max-width: 420px) {
   .participate_popup {
-    .btn-exit-aligne {
-      margin-bottom: 20px;
-    }
-
     &_title {
       text-align: center;
     }

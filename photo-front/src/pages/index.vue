@@ -30,6 +30,20 @@
             </countdown>
             <p class="description_days_to-end style_text">До завершения</p>
           </div>
+          <div class="description_prizes">
+            <div class="prize">
+              <div class="cost">$1000</div>
+              <div class="place">1 место</div>
+            </div>
+            <div class="prize">
+              <div class="cost">$500</div>
+              <div class="place">2 место</div>
+            </div>
+            <div class="prize">
+              <div class="cost">$300</div>
+              <div class="place">3 место</div>
+            </div>
+          </div>
           <div>
             <a
               class="btn_style btn_contest_participate"
@@ -42,7 +56,7 @@
       </div>
 
       <div
-        class="overlay-swiper"
+        class="overlay-swiper participate-slider"
         v-if="activeLoad"
         @click="activeLoad = false"
         v-body-scroll-lock="activeLoad"
@@ -250,26 +264,24 @@
                         Мисс Инстаграм 2020
                       </p>
                     </div>
-                    <vue-scroll :ops="vuescrollops">
-                      <div class="likes_popup_wrapper">
-                        <a
-                          class="likes_popup_wrapper_item"
-                          v-for="index in i + 1"
-                          :key="index"
-                        >
-                          <div
-                            class="likes_popup_img"
-                            :style="{
-                              backgroundImage:
-                                'url(' +
-                                require('@/static/images/elena.png') +
-                                ')'
-                            }"
-                          ></div>
-                          <p>Елена Свигова</p>
-                        </a>
-                      </div>
-                    </vue-scroll>
+                    <div class="likes_popup_wrapper">
+                      <a
+                        class="likes_popup_wrapper_item"
+                        v-for="index in i + 1"
+                        :key="index"
+                      >
+                        <div
+                          class="likes_popup_img"
+                          :style="{
+                            backgroundImage:
+                              'url(' +
+                              require('@/static/images/elena.png') +
+                              ')'
+                          }"
+                        ></div>
+                        <p>Елена Свигова</p>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -320,20 +332,10 @@ export default {
         "Показать все"
       ],
       files: [],
-      vuescrollops: {
-        vuescroll: {
-          mode: 'native',
-          sizeStrategy: 'number',
-          detectResize: true
-        },
-        scrollPanel: {
-          scrollingX: false
-        }
-      },
       swiperOption: {
-        slidesPerView: 3,
-        centeredSlides: true,
-        spaceBetween: 0,
+        centeredSlides: false,
+        slidesPerView: 2,
+        spaceBetween: 5,
         observer: true,
         observeParents: true,
         breakpoints: {

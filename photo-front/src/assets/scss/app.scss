@@ -51,6 +51,8 @@ header {
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.04);
   width: 100%;
   justify-content: space-between;
+  z-index: 1000000;
+  position: relative;
 }
 
 .header_logo {
@@ -159,8 +161,7 @@ header {
 .header_menu {
   background: white;
   max-height: 100vh;
-  max-width: 480px;
-  min-width: 320px;
+  max-width: 320px;
   width: 100%;
   padding-top: 100px;
   padding-bottom: 20px;
@@ -204,7 +205,15 @@ header {
     font-weight: 600;
     text-align: center;
     color: $main-color;
+    cursor: pointer;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 
 .header_menu_slider {
@@ -213,6 +222,8 @@ header {
   top: 0;
   bottom: 0;
   right: 0;
+  width: 100%;
+  max-width: 320px;
   transition: transform .2s ease;
   display: flex;
 
@@ -231,6 +242,11 @@ header {
 .header_menu-button {
   display: none;
   outline: none;
+
+  &.is-active {
+    position: fixed;
+    right: 60px;
+  }
 
   .hamburger {
     &-box {
@@ -280,6 +296,7 @@ header {
       min-height: 29px;
       outline: none;
       cursor: pointer;
+      margin-right: 48px;
     }
 
     ul {
@@ -634,6 +651,36 @@ footer {
   flex-direction: column;
   position: relative;
 }
+.description_days_to-end {
+  opacity: 0.5;
+}
+.description_prizes {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+
+  .prize {
+    margin-right: 32px;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    .cost {
+      font-size: 20px;
+      line-height: 27px;
+      color: #000000;
+    }
+
+    .place {
+      font-size: 14px;
+      line-height: 19px;
+      color: #000000;
+      opacity: 0.5;
+      white-space: nowrap;
+    }
+  }
+}
 .description_text_subtitle {
   margin-bottom: 8px;
   color: $main-color;
@@ -651,14 +698,15 @@ footer {
 }
 .style_text span {
   font-size: 20px;
+  line-height: 100%;
   margin-right: 4px;
   color: $main-color;
 }
 .style_text p {
   font-size: 14px;
+  line-height: 100%;
   margin-right: 16px;
   opacity: 0.5;
-  text-align: bottom;
 }
 .description_text_stata_column {
   display: flex;
@@ -1480,6 +1528,73 @@ body {
 
   &-button {
     color: $main-color;
+    cursor: pointer;
+  }
+}
+
+.login-modal {
+  background: rgba(0,0,0,.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__close-button {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    width: 14px;
+    height: 14px;
+    background-image: url(~@/assets/icons/btn-exit-yellow.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  &__card {
+    max-width: calc(100% - 40px);
+    width: 420px;
+    padding: 54px 50px;
+    background: white;
+    border-radius: 8px;
+    position: relative;
+  }
+
+  &__title {
+    font-size: 24px;
+    line-height: 33px;
+    text-align: center;
+    color: #000000;
+    margin-bottom: 40px;
+    font-weight: 400;
+  }
+
+  &__social-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      width: 100px;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid $main-color;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
   }
 }
 
@@ -1783,8 +1898,7 @@ body {
   }
   img {
     max-width: 100%;
-    max-height: 75vh;
-    min-height: 250px;
+    height: 120px;
     object-fit: cover;
     height: auto;
   }
@@ -1797,6 +1911,19 @@ body {
     color: #fff;
   }
 }
+
+.participate-slider {
+  .swiper-container {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .participate_popup_photo_item {
+    min-width: unset !important;
+    min-height: unset !important;
+  }
+}
+
 .active-body {
   width: 100%;
   height: 100%;

@@ -1,14 +1,14 @@
 <template>
   <header>
     <div class="header_logo">
-      <a class="header_logo_img" href="contest.html">
+      <router-link class="header_logo_img" to="/">
         <!-- <img src="">  -->
         Лого
-      </a>
+      </router-link>
       <a class="header_logo_text"> Топовые фото-конкурсы </a>
     </div>
     <div class="header_main">
-      <router-link to='/' :class="{header_main_active: $route.path == '/'}">Главная</router-link>
+      <router-link to="/" :class="{header_main_active: $route.path == '/'}">Главная</router-link>
       <router-link to="/about" :class="{header_main_active: $route.path == '/about'}">О нас</router-link>
       <router-link to="/rules" :class="{header_main_active: $route.path == '/rules'}">Правила</router-link>
     </div>
@@ -39,7 +39,7 @@
               alt="example"
             />
           </div>
-          <div class="dropdown" v-if="isDropdownOpen">
+          <div class="dropdown" v-if="isDropdownOpen" v-click-outside="() => {isDropdownOpen = false}">
             <ul>
               <li>
                 <router-link to="/account"><span>Аккаунт</span></router-link>
@@ -49,7 +49,7 @@
           </div>
         </template>
         <div class="header_util_style header_login-button desktop" v-else>
-          <span>Войти</span>
+          <span @click="isLoginModalOpen = true">Войти</span>
         </div>
 
         <button class="hamburger hamburger--spin header_menu-button" @click="toggleMenu()" :class="{ 'is-active': isMenuActive }">
@@ -63,13 +63,13 @@
             <div class="header_menu">
               <ul class="header_menu_list">
                 <li>
-                  <router-link to='/' :class="{header_main_active: $route.path == '/'}">Главная</router-link>
+                  <a @click.prevent="goToLink('/')" href="/" :class="{header_main_active: $route.path == '/'}">Главная</a>
                 </li>
                 <li>
-                  <router-link to="/about" :class="{header_main_active: $route.path == '/about'}">О нас</router-link>
+                  <a @click.prevent="goToLink('/about')" href="/about" :class="{header_main_active: $route.path == '/about'}">О нас</a>
                 </li>
                 <li>
-                  <router-link to="/rules" :class="{header_main_active: $route.path == '/rules'}">Правила</router-link>
+                  <a @click.prevent="goToLink('/rules')" href="/rules" :class="{header_main_active: $route.path == '/rules'}">Правила</a>
                 </li>
               </ul>
               <div class="header_menu_footer">
@@ -91,7 +91,7 @@
                     </div>
                   </router-link>
                   <div class="header_menu_log login" v-else>
-                    <span>Войти</span>
+                    <span @click="isLoginModalOpen = true">Войти</span>
                   </div>
                   <a class="header_util_container header_lang" @click="changeLang()">
                     <img
@@ -124,6 +124,41 @@
         /> -->
       </a>
     </div>
+
+    <transition name="fade" mode="out-in">
+      <div class="login-modal" v-if="isLoginModalOpen" :key="1" @click="isLoginModalOpen = false">
+        <div class="login-modal__card" @click.prevent>
+          <button class="login-modal__close-button" @click="isLoginModalOpen = false"></button>
+          <h2 class="login-modal__title">Войти</h2>
+          <div class="login-modal__social-buttons">
+            <button>
+              <img
+                svg-inline
+                class="icon svg-path-color"
+                src="@/assets/icons/vk.svg"
+                alt="example"
+              />
+            </button>
+            <button>
+              <img
+                svg-inline
+                class="icon svg-path-color"
+                src="@/assets/icons/facebook.svg"
+                alt="example"
+              />
+            </button>
+            <button>
+              <img
+                svg-inline
+                class="icon svg-path-color"
+                src="@/assets/icons/facebook.svg"
+                alt="example"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </header>
 </template>
 <script>
@@ -135,7 +170,8 @@ export default {
       lang: 'ru',
       isLoggedIn: true,
       isDropdownOpen: false,
-      isMenuActive: false
+      isMenuActive: false,
+      isLoginModalOpen: false
     }
   },
 
@@ -143,6 +179,11 @@ export default {
     changeLang() {
       if (this.lang == 'ru') this.lang = 'en';
       else if (this.lang == 'en') this.lang = 'ru';
+    },
+
+    goToLink(link) {
+      this.isMenuActive = false;
+      this.$router.push(link);
     },
 
     logout() {
