@@ -65,7 +65,15 @@
         </div>
         <div class="user_balans">
           <p class="user_balans_text">Баланс</p>
-          <p class="user_balans_maining">136 ₽</p>
+          <p class="user_balans_maining">
+            136
+            <img
+              svg-inline
+              class="icon"
+              src="@/assets/icons/rub-black.svg"
+              alt="ruble"
+            />
+          </p>
           <a class="btn_style btn_add"><span> Пополнить </span> </a>
         </div>
       </div>
