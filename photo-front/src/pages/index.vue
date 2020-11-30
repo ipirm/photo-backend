@@ -243,7 +243,6 @@
                 class="overlay-swiper"
                 v-if="activePopUp === i"
                 @click="activePopUp = -1"
-                v-body-scroll-lock="activePopUp === i"
               >
                 <div class="overlay-swiper-row">
                   <div class="likes_popup" @click.stop>
@@ -264,7 +263,7 @@
                         Мисс Инстаграм 2020
                       </p>
                     </div>
-                    <div class="likes_popup_wrapper">
+                    <div class="likes_popup_wrapper" v-body-scroll-lock="activePopUp === i">
                       <a
                         class="likes_popup_wrapper_item"
                         v-for="index in i + 1"
