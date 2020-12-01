@@ -78,7 +78,7 @@ export class ConcertService {
                 data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
                 firstConcerts = await this.concert_users.findByIds(checkIds, {
                     where: {approve: false},
-                    relations: ['user', 'user.likes','likes.user']
+                    relations: ['user', 'user.likes','user.likes.user']
                 })
 
                 return {
