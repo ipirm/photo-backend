@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router'
 import Vue from 'vue'
+import store from '../store';
 
 const Account = () => import(/* webpackChunkName: "account" */ '../pages/account.vue')
 const Contest = () => import(/* webpackChunkName: "contest" */ '../pages/contest.vue')
@@ -51,6 +52,16 @@ const router = new VueRouter({
     ]
 })
 
+
+router.beforeEach(async (to, from, next) => {
+    const authToken =  window.location.search.replace('?access_token=', '') || localStorage.getItem('auth_token');
+    if (authToken) {
+      localStorage.setItem('auth_token', authToken);
+      await store.dispatch('getUser');
+    }
+
+    next();
+});
 
 
 export default router
