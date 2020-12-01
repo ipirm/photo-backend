@@ -1008,8 +1008,14 @@ body {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-}
 
+  &_image {
+  	width: 120px;
+  	height: 120px;
+  	border-radius: 50%;
+  	object-fit: cover;
+  }
+}
 .user_profile_text {
   display: flex;
   justify-content: space-between;
@@ -1580,7 +1586,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    button {
+    .link {
       width: 100px;
       height: 48px;
       display: flex;
@@ -1599,7 +1605,6 @@ body {
 }
 
 .header_login_wrapper {
-  width: 129px;
   align-items: center;
   height: 35px;
   display: flex;
@@ -1614,6 +1619,9 @@ body {
 .header_login_wrapper img {
   width: 32px;
   height: 32px;
+  margin-right: 8px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .likes_popup {
@@ -1978,4 +1986,17 @@ body {
     height: 100%;
     padding: 15px 29px;
   }
+}
+
+.header_search_input {
+	border: 1px solid transparent;
+	color: black;
+	width: 68px;
+	outline: none;
+	text-align: left;
+	transition: width .2s ease;
+
+	&.active {
+		width: 120px;
+	}
 }

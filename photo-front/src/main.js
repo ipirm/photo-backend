@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 import SvgSprite from 'vue-svg-sprite';
 import BodyScrollLockDirective from 'v-body-scroll-lock';
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -18,5 +19,6 @@ Vue.use(BodyScrollLockDirective);
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')

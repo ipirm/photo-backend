@@ -1,11 +1,11 @@
 <template>
   <div>
     <Header />
-    <div class="account-page">
+    <div class="account-page" v-if="user">
       <div class="user">
         <div class="user_profile">
           <a class="user_profile_picture">
-            <img src="@/static/images/profile.png" class="user_profile_image" />
+            <img :src="user.avatar" class="user_profile_image" />
             <img
               svg-inline
               class="icon btn_avatar svg-path-color "
@@ -14,8 +14,8 @@
             />
           </a>
           <div class="user_profile_text">
-            <p class="user_profile_text_name">Александр Мельников</p>
-            <p class="user_profile_text_city">г. Москва • 28 лет</p>
+            <p class="user_profile_text_name">{{ user.name }} {{ user.last_name }}</p>
+            <p class="user_profile_text_city" v-if="user.age || user.city">{{ user.city +  ' • ' }}{{ user.age }} лет</p>
             <a class="user_profile_text_edit">
               <img
                 svg-inline
@@ -23,7 +23,6 @@
                 src="@/assets/icons/edit.svg"
                 alt="example"
               />
-
               <p>Редактировать</p>
             </a>
           </div>
@@ -66,13 +65,7 @@
         <div class="user_balans">
           <p class="user_balans_text">Баланс</p>
           <p class="user_balans_maining">
-            136
-            <img
-              svg-inline
-              class="icon"
-              src="@/assets/icons/rub-black.svg"
-              alt="ruble"
-            />
+            {{ user.balance }}
           </p>
           <a class="btn_style btn_add"><span> Пополнить </span> </a>
         </div>
@@ -143,10 +136,22 @@
 <script>
 import Header from "@/components/default/Header.vue";
 import Footer from "@/components/default/Footer.vue";
+
+import {mapState} from 'vuex'
+
 export default {
   components: {
     Header,
     Footer
+  },
+
+  created() {
+    if (!this.user)
+      this.$router.push('/');
+  },
+
+  computed: {
+    ...mapState(['user'])
   }
 };
 </script>
