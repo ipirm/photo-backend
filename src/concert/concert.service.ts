@@ -7,12 +7,14 @@ import {CreateConcertDto} from "./dto/create-concert-dto";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 import {paginate} from "nestjs-typeorm-paginate";
 import {I18nRepository} from "typeorm-i18n";
+import {LikesEntity} from "../entities/likes.entity";
 
 @Injectable()
 export class ConcertService {
     constructor(
         @InjectRepository(ConcertsEntity) private readonly concert: I18nRepository<ConcertsEntity>,
-        @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>
+        @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>,
+        @InjectRepository(LikesEntity) private readonly likes: Repository<LikesEntity>,
     ) {
     }
 
@@ -26,6 +28,16 @@ export class ConcertService {
 
     //  Получить концерты в завиисмости от того авторизирован юзер или нет
     async findConcertUsers({id, page, limit, user}): Promise<any> {
+        //  Получить количество участников
+        let participations = await this.concert_users.createQueryBuilder('concertUsers')
+            .where("concertUsers.concertId = :concertId", {concertId: id})
+            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .getCount()
+//  Получить количество лайков
+        let likes = await this.likes.createQueryBuilder('likes')
+            .where("likes.concertId = :concertId", {concertId: id})
+            .getCount()
+
         let firstConcerts: any = [];
         //  Query для получения пользователей концерта
         const data = await this.concert_users.createQueryBuilder('concertUsers')
@@ -57,16 +69,21 @@ export class ConcertService {
                     where: {approve: false},
                     relations: ['user', 'user.likes']
                 })
-                return {firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {page, limit})}
+                return {
+                    likes, participations, firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {
+                        page,
+                        limit
+                    })
+                }
             }
         }
-        return await paginate<ConcertsUsersEntity>(data, {page, limit})
+        return {likes, participations, ...await paginate<ConcertsUsersEntity>(data, {page, limit})}
 
     }
 
     //  Получить концерт по id
     async findConcert(id): Promise<any> {
-        return await this.concert.findOne(id,{relations: ["places"]})
+        return await this.concert.findOne(id, {relations: ["places"]})
     }
 
     //  Удалить концерт по id
