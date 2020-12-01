@@ -10,13 +10,23 @@ export class UserService {
     }
 
     async findOrCreate(profile): Promise<any> {
-        const user = await this.user.findOne({email: profile.emails[0].value});
         const {provider} = profile
+        let user;
+        if (provider === 'google') {
+            user = await this.user.findOne({google_id: profile.id});
+        }
+        if (provider === 'facebook') {
+            user = await this.user.findOne({facebook_id: profile.id})
+        }
+        if (provider === 'vkontakte') {
+            user = await this.user.findOne({vk_id: profile.id})
+        }
+
         if (!user) {
             const createdUser = {
-                name: profile.name.givenName? profile.name.givenName : '',
+                name: profile.name.givenName ? profile.name.givenName : '',
                 last_name: profile.name.familyName ? profile.name.familyName : '',
-                email:profile.emails[0].value ? profile.emails[0].value : '',
+                email: profile.emails[0].value ? profile.emails[0].value : '',
                 password: '',
                 gender: profile.gender ? profile.gender : '',
                 avatar: profile.photos[0].value ? profile.photos[0].value : ''
@@ -30,9 +40,10 @@ export class UserService {
             if (provider === 'vkontakte') {
                 Object.assign(createdUser, {vk_id: profile.id})
             }
-            await this.user.save(createdUser)
+            user = await this.user.save(createdUser)
         }
-        return await this.user.findOne({email: profile.emails[0].value});
+        console.log(user);
+        return user
     }
 
     async createUser(createUserDto: CreateUserDto): Promise<any> {

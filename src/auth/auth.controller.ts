@@ -12,7 +12,7 @@ export class AuthController {
 
     @Get("/facebook")
     @UseGuards(AuthGuard("facebook"))
-    async facebookLogin(): Promise<any> {
+    facebookLogin() {
         return HttpStatus.OK;
     }
 
@@ -25,7 +25,7 @@ export class AuthController {
 
     @Get("/vkontakte")
     @UseGuards(AuthGuard("vkontakte"))
-    async vkontakteLogin(): Promise<any> {
+     vkontakteLogin() {
         return HttpStatus.OK;
     }
 
@@ -33,7 +33,7 @@ export class AuthController {
     @UseGuards(AuthGuard("vkontakte"))
     async vkontakteLoginRedirect(@Req() req, @Res() res): Promise<any> {
         const url = await this.auth.login(req.user);
-        return res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
+         res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
     }
 
     @UseGuards(JwtAuthGuard)
@@ -44,7 +44,7 @@ export class AuthController {
 
     @Get('google')
     @UseGuards(AuthGuard('google'))
-    async googleAuth(@Request() req) {
+    googleAuth(@Request() req) {
         return HttpStatus.OK;
     }
 
