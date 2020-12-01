@@ -1,6 +1,6 @@
-import {Controller, Get, Request, UseGuards} from '@nestjs/common';
+import {Controller, Get, Request, UseGuards, Res, HttpStatus, Req} from '@nestjs/common';
 import {AuthGuard} from "@nestjs/passport";
-import {ApiOperation, ApiTags} from "@nestjs/swagger";
+import {ApiTags} from "@nestjs/swagger";
 import {AuthService} from "./auth.service";
 import {JwtAuthGuard} from "./jwt/jwt-auth.guard";
 
@@ -10,12 +10,30 @@ export class AuthController {
     constructor(private auth: AuthService) {
     }
 
-    // access_token: EAAxSU05LZClgBAKdczPXL9cfxur8RJCcuHT9DSCwdlrAIEU2PeBhqxt0u1mNe4DBEya871monORYKy1DDp8vbpm6yXD0y2rs7qlvx0Nlx1vxMsaDnUxaTkTy7ZCAg5QZCYZCpofSzoU8pNQq5oPysSZCZAKKXejOsfQ39QKEuWzRGQGhUbmUzDQmmppnNkm607nO9TzBQduAZDZD
-    @UseGuards(AuthGuard('facebook-token'))
-    @Get('facebook')
-    @ApiOperation({summary: 'Facebook auth'})
-    async login(@Request() req) {
-        return this.auth.login(req.user);
+    @Get("/facebook")
+    @UseGuards(AuthGuard("facebook"))
+    async facebookLogin(): Promise<any> {
+        return HttpStatus.OK;
+    }
+
+    @Get("/facebook/redirect")
+    @UseGuards(AuthGuard("facebook"))
+    async facebookLoginRedirect(@Req() req, @Res() res): Promise<any> {
+        const url = await this.auth.login(req.user);
+        return res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
+    }
+
+    @Get("/vkontakte")
+    @UseGuards(AuthGuard("vkontakte"))
+    async vkontakteLogin(): Promise<any> {
+        return HttpStatus.OK;
+    }
+
+    @Get("/vkontakte/redirect")
+    @UseGuards(AuthGuard("vkontakte"))
+    async vkontakteLoginRedirect(@Req() req, @Res() res): Promise<any> {
+        const url = await this.auth.login(req.user);
+        return res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
     }
 
     @UseGuards(JwtAuthGuard)
@@ -26,11 +44,14 @@ export class AuthController {
 
     @Get('google')
     @UseGuards(AuthGuard('google'))
-    async googleAuth(@Request() req) {}
+    async googleAuth(@Request() req) {
+        return HttpStatus.OK;
+    }
 
     @Get('google/redirect')
     @UseGuards(AuthGuard('google'))
-    googleAuthRedirect(@Request() req) {
-        return this.auth.login(req.user);
+    async googleAuthRedirect(@Request() req, @Res() res) {
+        const url = await this.auth.login(req.user);
+        return res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
     }
 }

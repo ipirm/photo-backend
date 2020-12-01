@@ -10,6 +10,7 @@ import VueCountdown from '@chenfengyuan/vue-countdown';
 import 'swiper/swiper-bundle.css'
 import vClickOutside from 'v-click-outside'
 
+
 Vue.component(VueCountdown.name, VueCountdown);
 Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 Vue.use(vClickOutside)

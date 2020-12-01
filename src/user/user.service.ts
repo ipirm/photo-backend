@@ -14,18 +14,21 @@ export class UserService {
         const {provider} = profile
         if (!user) {
             const createdUser = {
-                name: profile.name.givenName,
-                last_name: profile.name.familyName,
-                email: profile.emails[0].value,
+                name: profile.name.givenName? profile.name.givenName : '',
+                last_name: profile.name.familyName ? profile.name.familyName : '',
+                email:profile.emails[0].value ? profile.emails[0].value : '',
                 password: '',
-                gender: profile.gender,
-                avatar: profile.photos[0].value
+                gender: profile.gender ? profile.gender : '',
+                avatar: profile.photos[0].value ? profile.photos[0].value : ''
             };
             if (provider === 'google') {
-                Object.assign(createdUser, {google_id: profile.id,})
+                Object.assign(createdUser, {google_id: profile.id})
             }
             if (provider === 'facebook') {
-                Object.assign(createdUser, {facebook_id: profile.id,})
+                Object.assign(createdUser, {facebook_id: profile.id})
+            }
+            if (provider === 'vkontakte') {
+                Object.assign(createdUser, {vk_id: profile.id})
             }
             await this.user.save(createdUser)
         }
