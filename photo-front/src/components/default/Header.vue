@@ -181,6 +181,12 @@ export default {
     }
   },
 
+  mounted() {
+    this.$root.$on('auth', () => {
+      this.isLoginModalOpen = true;
+    })
+  },
+
   computed: {
     ...mapState(['user']),
 

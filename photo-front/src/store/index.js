@@ -30,6 +30,25 @@ export default new Vuex.Store({
 			if (res && res.data) {
 				commit('setUser', res.data);
 			}
+		},
+
+		// eslint-disable-next-line no-empty-pattern
+		async participate({}, payload) {
+			let formData = new FormData();
+			formData.append('concertId', '1');
+			payload.map(f => f.file).forEach(f => {
+				formData.append('files', f);	
+			});
+
+			await api.postFormData('api/participation', formData)
+				.then(res => {
+					if (res.status === 201) this._vm.$toasted.error('Вы уже участвуете на данном концерце');
+					else this._vm.$toasted.success('После модерации мы сообщим вам о вашем статусе участия');
+				})
+				.catch(e => {
+					this._vm.$toasted.error('Произошла ошибка при попытке добавления в список участников');
+					console.log(e);
+				});
 		}
 	}
 });

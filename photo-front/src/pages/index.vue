@@ -105,10 +105,10 @@
                 <template v-for="(item, i) in files">
                   <div
                     class="swiper-slide participate_popup_photo_item"
-                    :key="item"
+                    :key="i"
                     v-if="i !== 3"
                   >
-                    <img :src="item" />
+                    <img :src="item.url" />
                     <div class="popup_photo_item_close" @click="removeFile(i)">
                       <img
                         svg-inline
@@ -123,9 +123,12 @@
             </div>
 
             <div class="participate_popup_footer">
-              <a class="btn_participate btn_style popup_btn-style">
+              <div class="btn_participate btn_style popup_btn-style" @click="onParticipate()" v-if="user">
                 <span> Участвовать </span>
-              </a>
+              </div>
+              <div class="btn_participate btn_style popup_btn-style" v-else @click="toAuth()">
+                <span>Авторизуйтесь</span>
+              </div>
               <p>С вашего баланса спишется</p>
               <span class="participate_popup_text-style"> 34 ₽ </span>
             </div>
@@ -309,6 +312,8 @@ import Header from "@/components/default/Header.vue";
 import Footer from "@/components/default/Footer.vue";
 import FancySwiper from "@/components/default/FancySwiper.vue";
 
+import {mapState, mapActions} from 'vuex'
+
 export default {
   components: {
     Header,
@@ -317,6 +322,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       activeLike: -1,
       activePopUp: -1,
       activeSort: false,
@@ -348,13 +354,43 @@ export default {
       }
     };
   },
+
+  computed: {
+    ...mapState(['user'])
+  },
+
   methods: {
+    ...mapActions(['participate']),
+
+    toAuth() {
+      this.$root.$emit('auth');
+      this.activeLoad = false;
+    },
+
+    async onParticipate() {
+      if (!this.user) {
+        this.$toasted.error('Пожалуйста авторизуйтесь');
+        return;
+      }
+
+      if (this.files.length) {
+        await this.participate(this.files)
+      } else {
+        this.$toasted.error('Укажите минимум 1 фото');
+      }
+    },
+
     removeFile(i) {
       this.files = this.files.filter((item, index) => index !== i);
     },
     onFileChange(e) {
       const file = e.target.files[0];
-      this.files.push(URL.createObjectURL(file));
+      if (file) {
+        this.files.push({
+          url: URL.createObjectURL(file),
+          file
+        });
+      }
     },
     closePopupParrent() {
       this.activePhoto = -1;
