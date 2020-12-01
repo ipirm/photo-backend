@@ -6,15 +6,13 @@ import { Injectable } from '@nestjs/common';
 import {UserService} from "../../user/user.service";
 
 config();
-
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-
     constructor(private readonly userService: UserService) {
         super({
-            clientID: '17653774292-a18pndk5e5q1479cfoiofkgiu1diiqrc.apps.googleusercontent.com',
-            clientSecret: 'xfDPfc552VyomPsAVKs4dg3n',
-            callbackURL: 'https://photo-backend-app.herokuapp.com/api/auth/google/redirect',
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: process.env.GOOGLE_REDIRECT_URL,
             scope: ['email', 'profile'],
         });
     }

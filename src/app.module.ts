@@ -16,6 +16,7 @@ import { PlaceModule } from './place/place.module';
     imports: [
         ConfigModule.forRoot({
             envFilePath: '.env',
+            isGlobal: true
         }),
         TypeOrmModule.forRoot(ormConfig),
         ServeStaticModule.forRoot({rootPath:`${process.cwd()}/public`}),

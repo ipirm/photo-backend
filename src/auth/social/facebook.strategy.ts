@@ -7,9 +7,9 @@ import {UserService} from "../../user/user.service";
 export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
     constructor(private readonly userService: UserService) {
         super({
-            clientID: '3468217469894232',
-            clientSecret: 'dbd315621b0e9127f0b70df0851267ba',
-            callbackURL: "https://photo-backend-app.herokuapp.com/api/auth/facebook/redirect",
+            clientID: process.env.FB_CLIENT_ID,
+            clientSecret: process.env.FB_CLIENT_SECRET,
+            callbackURL: process.env.FB_REDIRECT_URL,
             profileFields: ['id', 'displayName', 'name', 'gender','email', 'picture.type(large)']
         });
     }

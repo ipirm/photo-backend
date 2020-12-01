@@ -8,9 +8,9 @@ export class VkontakteStrategy extends PassportStrategy(Strategy, "vkontakte") {
     constructor(private readonly userService: UserService) {
         super({
             passReqToCallBack: false,
-            clientID: '7678205',
-            clientSecret: 'kaEWZCSsu8CyyQnnUAXG',
-            callbackURL: "https://photo-backend-app.herokuapp.com/api/auth/vkontakte/redirect",
+            clientID: process.env.VK_CLIENT_ID,
+            clientSecret: process.env.VK_CLIENT_SECRET,
+            callbackURL: process.env.VK_REDIRECT_URL,
             scope: ['id', 'displayName', 'name', 'gender', 'email', 'photos'],
             profileFields: ["email"]
         }, async (accessToken: any,
