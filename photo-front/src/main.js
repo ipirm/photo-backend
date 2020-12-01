@@ -9,6 +9,7 @@ import VueCountdown from '@chenfengyuan/vue-countdown';
 import 'swiper/swiper-bundle.css'
 import vClickOutside from 'v-click-outside'
 
+
 Vue.component(VueCountdown.name, VueCountdown);
 Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 Vue.use(vClickOutside)
@@ -17,6 +18,6 @@ Vue.config.productionTip = false
 Vue.use(BodyScrollLockDirective);
 
 new Vue({
-  router,
-  render: h => h(App),
+    router,
+    render: h => h(App),
 }).$mount('#app')
