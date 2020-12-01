@@ -42,7 +42,6 @@ export class UserService {
             }
             user = await this.user.save(createdUser)
         }
-        console.log(user);
         return user
     }
 
