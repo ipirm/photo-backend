@@ -30,7 +30,8 @@ export class AuthController {
 
     @Get('google/redirect')
     @UseGuards(AuthGuard('google'))
-    googleAuthRedirect(@Request() req,@Res() res) {
-        return res.redirect(`http://localhost:8080/access_token=${this.auth.login(req.user)}`)
+   async googleAuthRedirect(@Request() req,@Res() res) {
+        const url = await this.auth.login(req.user);
+        return res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
     }
 }
