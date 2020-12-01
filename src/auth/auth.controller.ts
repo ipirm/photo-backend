@@ -1,4 +1,4 @@
-import {Controller, Get, Request, UseGuards} from '@nestjs/common';
+import {Controller, Get, Request, UseGuards,Res} from '@nestjs/common';
 import {AuthGuard} from "@nestjs/passport";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "./auth.service";
@@ -30,7 +30,7 @@ export class AuthController {
 
     @Get('google/redirect')
     @UseGuards(AuthGuard('google'))
-    googleAuthRedirect(@Request() req) {
-        return this.auth.login(req.user);
+    googleAuthRedirect(@Request() req,@Res() res) {
+        return res.redirect(`http://localhost:8080/access_token=${this.auth.login(req.user)}`)
     }
 }
