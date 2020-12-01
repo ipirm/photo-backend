@@ -10,6 +10,8 @@ export class VkontakteStrategy extends PassportStrategy(Strategy, "vkontakte") {
             clientID: '7678205',
             clientSecret: 'kaEWZCSsu8CyyQnnUAXG',
             callbackURL: "https://photo-backend-app.herokuapp.com/api/auth/vkontakte/redirect",
+            scope: ['id', 'email', 'displayName', 'name','gender']
+            // profileFields: ['id', 'displayName', 'name', 'gender','email', 'picture.type(large)']
         });
     }
     async validate(accessToken:any, refreshToken:any, params:any, profile: any, done:any): Promise<any> {
