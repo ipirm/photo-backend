@@ -11,10 +11,11 @@ import {JwtModule} from "@nestjs/jwt";
 import {jwtConstants} from './jwt/constants'
 import {JwtStrategy} from "./jwt/jwt.strategy";
 import {GoogleStrategy} from "./social/google.strategy";
+import {VkontakteStrategy} from "./social/vkontakte.strategy";
 
 @Module({
     controllers: [AuthController, UserController],
-    providers: [FacebookStrategy,GoogleStrategy, AuthService,JwtStrategy],
+    providers: [FacebookStrategy,GoogleStrategy, AuthService,JwtStrategy,VkontakteStrategy],
     imports: [
         PassportModule,
         JwtModule.register({
