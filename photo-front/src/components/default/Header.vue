@@ -13,29 +13,24 @@
       <router-link to="/rules" :class="{header_main_active: $route.path == '/rules'}">Правила</router-link>
     </div>
     <div class="header_util">
-      <a class="header_util_container header_search desktop">
+      <div class="header_util_container header_search desktop" @click="isSearchActive = true" v-click-outside="() => {isSearchActive = false}">
         <img
           svg-inline
           class="icon header_util_img svg-stroke-color"
           src="@/assets/icons/search.svg"
           alt="example"
+          @click="search()"
         />
-        <span class="header_util_style"> Поиск </span>
-      </a>
+        <input class="header_util_style header_search_input" v-model="searchInput" :class="{active: searchInput || isSearchActive}" placeholder="Поиск" @keydown.enter="search()">
+      </div>
       <div class="header_util_container header_util_style header_login_container">
         <template v-if="isLoggedIn">
           <router-link to="/account" class="header_login_wrapper desktop">
-            <img src="@/static/images/profile-mini.png" />
+            <img :src="user.avatar" />
             <div class="header_login">
-              <span> Александр </span>
+              <span> {{ user.name }} </span>
               <p>
-                136
-                <img
-                  svg-inline
-                  class="icon header_ruble"
-                  src="@/assets/icons/rub-yellow.svg"
-                  alt="ruble"
-                />
+                {{ user.balance }}
               </p>
             </div>
           </router-link>
@@ -135,34 +130,34 @@
 
     <transition name="fade" mode="out-in">
       <div class="login-modal" v-if="isLoginModalOpen" :key="1" @click="isLoginModalOpen = false">
-        <div class="login-modal__card" @click.prevent>
+        <div class="login-modal__card" @click.stop>
           <button class="login-modal__close-button" @click="isLoginModalOpen = false"></button>
           <h2 class="login-modal__title">Войти</h2>
           <div class="login-modal__social-buttons">
-            <button>
+            <a class="link" :href="`${apiUrl}/api/auth/vk`">
               <img
                 svg-inline
                 class="icon svg-path-color"
                 src="@/assets/icons/vk.svg"
                 alt="example"
               />
-            </button>
-            <button>
+            </a>
+            <a class="link" :href="`${apiUrl}/api/auth/google`">
+              <img
+                svg-inline
+                class="icon svg-path-color"
+                src="@/assets/icons/vk.svg"
+                alt="example"
+              />
+            </a>
+            <a class="link" :href="`${apiUrl}/api/auth/facebook`">
               <img
                 svg-inline
                 class="icon svg-path-color"
                 src="@/assets/icons/facebook.svg"
                 alt="example"
               />
-            </button>
-            <button>
-              <img
-                svg-inline
-                class="icon svg-path-color"
-                src="@/assets/icons/facebook.svg"
-                alt="example"
-              />
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -170,20 +165,41 @@
   </header>
 </template>
 <script>
+import {mapState, mapMutations} from 'vuex'
+
 export default {
   name: "Header",
 
   data () {
     return {
+      isSearchActive: false,
+      searchInput: '',
       lang: 'ru',
-      isLoggedIn: true,
       isDropdownOpen: false,
       isMenuActive: false,
       isLoginModalOpen: false
     }
   },
 
+  computed: {
+    ...mapState(['user']),
+
+    isLoggedIn() {
+      return this.user ? true : false;
+    },
+
+    apiUrl() {
+      return process.env.VUE_APP_API_URL;
+    }
+  },
+
   methods: {
+    ...mapMutations(['removeUser']),
+
+    search() {
+
+    },
+
     changeLang() {
       if (this.lang == 'ru') this.lang = 'en';
       else if (this.lang == 'en') this.lang = 'ru';
@@ -196,7 +212,8 @@ export default {
     },
 
     logout() {
-      this.isLoggedIn = false;
+      localStorage.removeItem('auth_token');
+      this.removeUser();
     },
 
     toggleMenu() {
