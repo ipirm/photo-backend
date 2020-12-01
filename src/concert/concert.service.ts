@@ -38,6 +38,7 @@ export class ConcertService {
             .where("likes.concertId = :concertId", {concertId: id})
             .getCount()
 
+
         let firstConcerts: any = [];
         //  Query для получения пользователей концерта
         const data = await this.concert_users.createQueryBuilder('concertUsers')
@@ -62,7 +63,7 @@ export class ConcertService {
                 .getOne()
 
             // Добавить вначало участинка за которого проголосовал пользователь и кого он лайкнул
-            const checkIds = [userLiked, userConcert].filter(v => v !== undefined).map(v => v.id)
+            const checkIds = [userConcert, userLiked].filter(v => v !== undefined).map(v => v.id)
             if (checkIds.length) {
                 data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
                 firstConcerts = await this.concert_users.findByIds(checkIds, {
