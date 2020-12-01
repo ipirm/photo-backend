@@ -6,9 +6,11 @@ import {
     OnGatewayConnection,
     OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import {Inject, Logger} from '@nestjs/common';
+import {Inject, Logger, UseGuards} from '@nestjs/common';
 import {Socket, Server} from 'socket.io';
 import {LikeService} from "./like.service";
+import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
+import {User} from "../decorators/user.decorator";
 
 @WebSocketGateway( {namespace: 'like'})
 export class LikeGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -24,24 +26,16 @@ export class LikeGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
         this.server.emit('msgToClient', payload);
     }
 
-
+    @UseGuards(JwtAuthGuard)
     @SubscribeMessage('addLike')
-    async addLikeToUser(client: Socket, payload: any): Promise<any> {
-        const user = {
-            id: 1,
-            last_name: 'Pirmmamadov',
-            name: 'Ilham',
-            email: 'ilham.prim@gmail.com',
-        }
+    async addLikeToUser(client: Socket, payload: any,@User() user: any): Promise<any> {
         await this.like.addLike(payload, user);
         this.server.emit('msgToClient', {success: true});
     }
 
+    @UseGuards(JwtAuthGuard)
     @SubscribeMessage('deleteLike')
-    async deleteLikeToUser(client: Socket, payload: any): Promise<any> {
-        const user = {
-            id: 1
-        }
+    async deleteLikeToUser(client: Socket, payload: any,@User() user: any): Promise<any> {
         await this.like.deleteLike(payload, user);
         this.server.emit('msgToClient', {success: true});
     }

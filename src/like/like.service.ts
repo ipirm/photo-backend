@@ -24,7 +24,7 @@ export class LikeService {
         Object.assign(addLikeDto, {
             user_id: user.id,
             name: user.name + ' ' + user.last_name,
-            email: user.email,
+            email: user.email
         })
         await this.like.save(addLikeDto)
         const concert = await this.concert_users.findOne({

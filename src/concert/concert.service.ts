@@ -27,7 +27,8 @@ export class ConcertService {
     }
 
     //  Получить концерты в завиисмости от того авторизирован юзер или нет
-    async findConcertUsers({id, page, limit, user}): Promise<any> {
+    async findConcertUsers({id, page, limit, user,sort_by}): Promise<any> {
+
         //  Получить количество участников
         let participations = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
@@ -41,12 +42,21 @@ export class ConcertService {
 
         let firstConcerts: any = [];
         //  Query для получения пользователей концерта
+
         const data = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
             .andWhere("concertUsers.approve = :approve", {approve: false})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
+            .leftJoinAndSelect("likes.user", "user_likes")
             .orderBy('concertUsers.id', 'ASC')
+
+        if(sort_by === 'likes'){
+             data.orderBy('concertUsers.likesCount', 'DESC')
+        }
+        if(sort_by === 'date'){
+            data.orderBy('concertUsers.createdAt', 'DESC')
+        }
 
         if (user) {
             // Найти пользователя который учавствует в концерте
@@ -68,8 +78,9 @@ export class ConcertService {
                 data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
                 firstConcerts = await this.concert_users.findByIds(checkIds, {
                     where: {approve: false},
-                    relations: ['user', 'user.likes']
+                    relations: ['user', 'user.likes','likes.user']
                 })
+
                 return {
                     likes, participations, firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {
                         page,
@@ -78,6 +89,7 @@ export class ConcertService {
                 }
             }
         }
+
         return {likes, participations, ...await paginate<ConcertsUsersEntity>(data, {page, limit})}
 
     }
