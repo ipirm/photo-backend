@@ -48,7 +48,7 @@ export class ConcertService {
             .andWhere("concertUsers.approve = :approve", {approve: false})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
-            .orderBy("concertUsers.id",'ASC')
+            .orderBy('concertUsers.id', 'ASC')
 
         if(sort_by === 'likes'){
              data.orderBy('concertUsers.likesCount', 'DESC')
