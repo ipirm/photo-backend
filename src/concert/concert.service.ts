@@ -41,7 +41,7 @@ export class ConcertService {
 
 
         let firstConcerts: any = [];
-        //  Query для получения пользователей концерта
+        //  Query для получения пользователей концертаA
 
         const data = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
