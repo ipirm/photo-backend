@@ -29,7 +29,7 @@ export class UserService {
                 email: profile.emails[0].value ? profile.emails[0].value : '',
                 password: '',
                 gender: profile.gender ? profile.gender : '',
-                avatar: profile.photos[0].value ? profile.photos[0].value : ''
+                // avatar: profile.photos[0].value ? profile.photos[0].value : ''
             };
             if (provider === 'google') {
                 Object.assign(createdUser, {google_id: profile.id})
