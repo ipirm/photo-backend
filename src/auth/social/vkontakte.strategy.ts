@@ -18,7 +18,6 @@ export class VkontakteStrategy extends PassportStrategy(Strategy, "vkontakte") {
                   params: any,
                   profile: any,
                   done: VerifyCallback) => {
-            console.log(profile);
             const user = await this.userService.findOrCreate(profile)
             done(null, user)
         });
