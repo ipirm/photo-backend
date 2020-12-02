@@ -16,6 +16,8 @@ export abstract class LikesEntity extends BaseEntity {
     @Column({type: 'varchar', length: 500, nullable: false})
     email: string;
 
+    @Column({type: 'varchar', length: 500, nullable: true})
+    avatar: string;
 
     @ManyToOne(type => UsersEntity, concertsUser => concertsUser.likes)
     public user: UsersEntity;

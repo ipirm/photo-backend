@@ -48,8 +48,7 @@ export class ConcertService {
             .andWhere("concertUsers.approve = :approve", {approve: false})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
-            .leftJoinAndSelect("likes.user", "user_likes")
-            .orderBy('concertUsers.id', 'ASC')
+            .orderBy("RAND()")
 
         if(sort_by === 'likes'){
              data.orderBy('concertUsers.likesCount', 'DESC')
@@ -78,7 +77,7 @@ export class ConcertService {
                 data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
                 firstConcerts = await this.concert_users.findByIds(checkIds, {
                     where: {approve: false},
-                    relations: ['user', 'user.likes','user.likes.user']
+                    relations: ['user', 'user.likes']
                 })
 
                 return {
