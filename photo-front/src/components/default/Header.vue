@@ -100,7 +100,7 @@
                     <img
                       svg-inline
                       class="icon header_util_rus"
-                      :src="require(`@/assets/icons/${lang}.svg`)"
+                      :src="`/svg/${locale}.svg`"
                       alt="example"
                     />
                   </a>
@@ -115,7 +115,7 @@
         <img
           svg-inline
           class="icon header_util_rus"
-          :src="require(`@/assets/icons/${lang}.svg`)"
+          :src="`/svg/${locale}.svg`"
           alt="example"
         />
 
@@ -165,7 +165,7 @@
   </header>
 </template>
 <script>
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
   name: "Header",
@@ -174,7 +174,6 @@ export default {
     return {
       isSearchActive: false,
       searchInput: '',
-      lang: 'ru',
       isDropdownOpen: false,
       isMenuActive: false,
       isLoginModalOpen: false
@@ -188,7 +187,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user', 'locale']),
 
     isLoggedIn() {
       return this.user ? true : false;
@@ -200,15 +199,16 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['removeUser', 'getParticipants']),
+    ...mapMutations(['removeUser', 'setLocale']),
+    ...mapActions(['getParticipants']),
 
     search() {
 
     },
 
     changeLang() {
-      if (this.lang == 'ru') this.lang = 'en';
-      else if (this.lang == 'en') this.lang = 'ru';
+      if (this.$i18n.locale == 'RU') this.setLocale('EN');
+      else if (this.$i18n.locale == 'EN') this.setLocale('RU');
     },
 
     goToLink(link) {

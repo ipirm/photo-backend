@@ -252,7 +252,7 @@
                   </div>
                 </div>
               </div>
-              <div class="btn_like" @click="like(item.user.id)" v-if="!user || item.user.id != user.id">
+              <div class="btn_like" @click="like({userId: item.user.id, isLike: user && participants && !(participants.firstConcerts && item.user.id !== user.id && participants.firstConcerts.find(i => i.user.id == item.user.id))})" v-if="!user || item.user.id != user.id" :class="{active: user && participants && participants.firstConcerts && item.user.id !== user.id && participants.firstConcerts.find(i => i.user.id == item.user.id) }">
                 <img
                   svg-inline
                   class="icon svg-path-color"
@@ -292,6 +292,7 @@ export default {
     FancySwiper,
     InfiniteLoading
   },
+
   data() {
     return {
       infinityDistance: 100,
@@ -304,14 +305,12 @@ export default {
       activeSort: false,
       activePhoto: -1,
       activeLoad: false,
-      activeSelected: this.$t('sorting.default'),
+      activeSelected: this.$t('sorting.show-all'),
       sortItems: [
         this.$t('sorting.by-likes'),
-        this.$t('sorting.by-voters'),
         this.$t('sorting.by-created-date'),
         this.$t('sorting.show-all')
       ],
-      sortBy: '',
       files: [],
       swiperOption: {
         centeredSlides: false,
@@ -372,14 +371,20 @@ export default {
     },
 
     infiniteHandler($state) {
-      if (this.participants.length < parseInt(this.participants.meta.totalItems)) {
-        this.increasePage();
-        this.getMoreParticipants().then(() => {
-          $state.loaded();
-        })
+      if (this.participants) {
+        if (this.participants.length < parseInt(this.participants.meta.totalItems)) {
+          this.increasePage();
+          this.getMoreParticipants().then(() => {
+            $state.loaded();
+          })
+        } else {
+          $state.complete()
+          this.loadedAllParticipants = true;
+        }
       } else {
-        $state.complete()
-        this.loadedAllParticipants = true;
+        setTimeout(() => {
+          $state.loaded();
+        }, 5000);
       }
     },
 
@@ -424,6 +429,10 @@ export default {
     },
     selectItem(item) {
       this.activeSelected = item;
+      let query;
+      if (item == this.$t('sorting.by-likes')) query = 'likes'
+      else if (item == this.$t('sorting.by-created-date')) query = 'date'
+      this.getParticipants(query);
     },
     showPhoto(i) {
       this.activePopUp = -1;

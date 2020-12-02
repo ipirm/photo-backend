@@ -1887,7 +1887,7 @@ body {
     color: $main-color;
   }
 }
-.btn_like:hover {
+.btn_like:hover, .btn_like.active {
   cursor: pointer;
   background: $main-color;
   svg {

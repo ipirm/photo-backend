@@ -32,11 +32,13 @@ const router = new VueRouter({
     routes: [
         {
             path: '/account',
-            component: Account
+            component: Account,
+            name: 'account'
         },
         {
             path: '/contest',
-            component: Contest
+            component: Contest,
+            name: 'contest'
         },
         {
             path: '/:name',
@@ -48,6 +50,10 @@ const router = new VueRouter({
             path: '/',
             component: Index,
             name: 'index'
+        },
+        {
+            path: '*',
+            redirect: 'index'
         }
     ]
 })
@@ -58,6 +64,9 @@ router.beforeEach(async (to, from, next) => {
     if (authToken) {
       localStorage.setItem('auth_token', authToken);
       await store.dispatch('getUser');
+    }
+    if (window.location.search.replace('?access_token=', '')) {
+        window.location.href = window.location.origin;
     }
 
     next();

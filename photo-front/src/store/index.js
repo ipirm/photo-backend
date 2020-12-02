@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import i18n from '../locales'
+import lsService from '../services/lsService'
 
 import api from '@/utils/apiRequest'
 
@@ -11,6 +13,7 @@ export default new Vuex.Store({
 		concert: null,
 		participants: null,
 		lastQuery: null,
+		locale: lsService.getLocale(),
 
 		page: 0
 	},
@@ -43,6 +46,12 @@ export default new Vuex.Store({
 
 		setTotal(state, data) {
 			state.total = data;
+		},
+
+		setLocale (state, locale) {
+			state.locale = locale;
+			lsService.setLocale(locale);
+			i18n.locale = locale;
 		}
 	},
 
@@ -66,13 +75,13 @@ export default new Vuex.Store({
 		},
 
 		async getParticipants({ commit, state }, query) {
-			state.lastQuery = query;
+			state.lastQuery = query || null;
 
 			let res;
 			if (state.user) {
-				res = await api.get('api/concerts/concertUsers/1');
+				res = await api.get('api/concerts/concertUsers/1' + (query ? `?sort_by=${query}` : ''));
 			} else {
-				res = await api.get('api/concerts/concertUsersWithOutAuth/1');
+				res = await api.get('api/concerts/concertUsersWithOutAuth/1' + (query ? `?sort_by=${query}` : ''));
 			}
 			commit('setParticipants', res.data);
 		},
@@ -91,16 +100,18 @@ export default new Vuex.Store({
 		},
 
 		// eslint-disable-next-line no-empty-pattern
-		async like({dispatch, state}, userId) {
-			await api.post('api/like', {
-				concertId: '1',
-				userId: userId.toString()
-			}).then(() => {
-				dispatch('getParticipants', state.lastQuery);
-			}).catch(e => {
-				this._vm.$toasted.error('Произошла ошибка при попытке поставить лайк');
-				console.log(e);
-			});
+		async like({dispatch, state}, data) {
+			if (state.user) {
+				await api.post(data.isLike ? 'api/like' : 'api/like/delete', {
+					concertId: '1',
+					userId: data.userId.toString()
+				}).then(() => {
+					dispatch('getParticipants', state.lastQuery);
+				}).catch(e => {
+					this._vm.$toasted.error('Произошла ошибка при попытке поставить лайк/дизлайк');
+					console.log(e);
+				});
+			}
 		},
 
 		// eslint-disable-next-line no-empty-pattern
