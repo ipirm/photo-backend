@@ -10,7 +10,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
             clientID: process.env.FB_CLIENT_ID,
             clientSecret: process.env.FB_CLIENT_SECRET,
             callbackURL: process.env.FB_REDIRECT_URL,
-            profileFields: ['id', 'displayName', 'name', 'gender','email', 'picture.type(large)']
+            profileFields: ['id', 'displayName', 'name', 'gender','emails', 'picture.type(large)']
         });
     }
     async validate(accessToken: string, refreshToken: string, profile: Profile, done: (err: any, user: any, info?: any) => void): Promise<any> {
