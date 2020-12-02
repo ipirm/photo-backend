@@ -134,7 +134,7 @@
           <button class="login-modal__close-button" @click="isLoginModalOpen = false"></button>
           <h2 class="login-modal__title">Войти</h2>
           <div class="login-modal__social-buttons">
-            <a class="link" :href="`${apiUrl}/api/auth/vk`">
+            <a class="link" :href="`${apiUrl}/api/auth/vkontakte`">
               <img
                 svg-inline
                 class="icon svg-path-color"
@@ -200,7 +200,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['removeUser']),
+    ...mapMutations(['removeUser', 'getParticipants']),
 
     search() {
 
@@ -220,6 +220,7 @@ export default {
     logout() {
       localStorage.removeItem('auth_token');
       this.removeUser();
+      this.getParticipants();
     },
 
     toggleMenu() {

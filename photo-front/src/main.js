@@ -5,11 +5,15 @@ import store from './store'
 import SvgSprite from 'vue-svg-sprite';
 import BodyScrollLockDirective from 'v-body-scroll-lock';
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import i18n from './locales'
+import lsService from './services/lsService'
 
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import 'swiper/swiper-bundle.css'
 import vClickOutside from 'v-click-outside'
 import Toasted from 'vue-toasted';
+
+i18n.locale = lsService.getLocale();
 
 
 Vue.component(VueCountdown.name, VueCountdown);
@@ -24,6 +28,7 @@ Vue.use(Toasted, {
 })
 
 new Vue({
+	i18n,
   router,
   store,
   render: h => h(App),

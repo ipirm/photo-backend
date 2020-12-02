@@ -27,6 +27,10 @@ body {
   margin-right: 25px;
 }
 
+.cursor-pointer {
+	cursor: pointer !important;
+}
+
 .svg-path-color {
   path {
     fill: $main-color;
@@ -658,6 +662,7 @@ footer {
   display: flex;
   justify-content: flex-end;
   text-align: right;
+  margin-bottom: 20px;
 
   .prize {
     margin-right: 32px;
@@ -734,17 +739,18 @@ body {
 .description_days_title {
   color: $main-color;
   font-size: 32px;
-  line-height: 39px;
+  line-height: 59px;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: -5px;
   width: 290px;
 }
 .btn_contest_participate {
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 0.1em;
-
+  width: 200px;
   height: 60px;
+  margin-left: auto;
   text-transform: uppercase;
   color: $white;
   background: $main-color;
@@ -757,7 +763,7 @@ body {
 .description_days_to-end {
   font-size: 14px;
   text-align: right;
-  margin-right: 12px;
+  margin-bottom: 20px;
 }
 .participates_item {
   width: 230px;
@@ -776,7 +782,7 @@ body {
   display: flex;
   position: relative;
   justify-content: space-between;
-  z-index: 9999;
+  z-index: 99;
 }
 .participates_item_img {
   position: absolute;
@@ -790,6 +796,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px;
   }
 
   &:after {
@@ -805,7 +812,7 @@ body {
       rgba(0, 0, 0, 0) 51.56%
     );
     border-radius: 8px;
-    z-index: 100;
+    z-index: 97;
   }
 }
 
@@ -818,8 +825,7 @@ body {
   flex-direction: row;
   align-items: center;
   padding: 6px 8px;
-  z-index: 999;
-  cursor: pointer;
+  z-index: 99;
 
   &.hovered {
     &:before {
@@ -888,6 +894,11 @@ body {
   margin: 0px auto;
   top: calc(100% - 25px);
   z-index: 150;
+  outline: none;
+
+  * {
+  	outline: none;
+  }
 }
 .participate_wrapper_overlay {
   position: relative;
@@ -910,6 +921,12 @@ body {
   padding-bottom: 50px;
   width: fit-content;
   margin: 0 -10px;
+
+  &.all {
+  	&:after {
+  		display: none;
+  	}
+  }
 }
 .participate_wrapper::after {
   content: "";
@@ -1661,8 +1678,6 @@ body {
   margin-bottom: 48px;
 }
 .likes_popup_title_number {
-  width: 29px;
-  height: 59px;
   font-family: Commissioner;
   font-style: normal;
   font-weight: 300;
@@ -1672,8 +1687,6 @@ body {
   margin-bottom: 8px;
 }
 .likes_popup_title_voted {
-  width: 203px;
-  height: 20px;
   font-family: Commissioner;
   font-style: normal;
   font-weight: normal;
@@ -1683,9 +1696,6 @@ body {
   margin-bottom: 8px;
 }
 .likes_popup_title_subtitle {
-  width: 167px;
-  height: 20px;
-  font-family: Commissioner;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -1793,7 +1803,6 @@ body {
 }
 
 .likes-tooltip {
-  width: 244px;
   height: 88px;
   background: #ffffff;
   border-radius: 8px;

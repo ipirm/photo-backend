@@ -1,56 +1,38 @@
 <template>
   <div>
     <Header />
-    <div class="contest-page" @click="activeSort = false">
+    <div class="contest-page" @click="activeSort = false" v-if="concert">
       <div class="description">
         <div class="description_text">
           <p class="description_text_subtitle style_title">
-            Мисс Инстаграм 2020
+            {{ $i18n.locale === 'RU' ? concert.title : ($i18n.locale === 'EN' ? concert.title__en : '') }}
           </p>
 
           <div class="description_text_date style_text">
-            <p>Создан 10.11.2020 • Идет с 10.11.2020 по 10.12.2020</p>
+            <p>{{ $t('description.created') }} {{ moment(concert.createdAt).format('DD.MM.YYYY') }} • {{ $t('description.starts') }} {{ concert.startDate }} {{ $t('description.to') }} {{ concert.endDate }}</p>
           </div>
           <p class="description_text_main-text style_text">
-            Phasellus egestas adipiscing accumsan nulla purus. Augue turpis
-            tincidunt quis id diam nec. Habitasse erat velit ac pellentesque.
-            Porttitor enim cras a aliquet volutpat urna. Ac ac eu, at duis. Amet
-            ipsum varius ut dignissim. Ultrices ornare sit ac augue lorem
+            {{ $i18n.locale === 'RU' ? concert.description : ($i18n.locale === 'EN' ? concert.description__en : '') }}
           </p>
         </div>
         <div class="description_days">
           <div>
-            <countdown :time="27 * 24 * 60 * 60 * 1000" :transform="transform">
+            <countdown :time="Math.max(startDateTimestamp - moment().unix() * 1000, 0)" :transform="transform" class="description_days_title style_title">
               <template slot-scope="props">
-                <p class="description_days_title style_title">
-                  {{ props.days }}д : {{ props.hours }}ч : {{ props.minutes }}м
-                  : {{ props.seconds }}с
-                </p>
+                {{ props.days }}{{ $t('timer.d') }} : {{ props.hours }}{{ $t('timer.h') }} : {{ props.minutes }}{{ $t('timer.m') }}
+                  : {{ props.seconds }}{{ $t('timer.s') }}
               </template>
             </countdown>
-            <p class="description_days_to-end style_text">До завершения</p>
+            <p class="description_days_to-end style_text" v-t="'description.to-end'" />
           </div>
           <div class="description_prizes">
-            <div class="prize">
-              <div class="cost">$1000</div>
-              <div class="place">1 место</div>
-            </div>
-            <div class="prize">
-              <div class="cost">$500</div>
-              <div class="place">2 место</div>
-            </div>
-            <div class="prize">
-              <div class="cost">$300</div>
-              <div class="place">3 место</div>
+            <div class="prize" v-for="(place, i) in concert.places" :key="i">
+              <div class="cost">${{ place.total }}</div>
+              <div class="place">{{ i+1 }} {{ $t('description.place') }}</div>
             </div>
           </div>
           <div>
-            <a
-              class="btn_style btn_contest_participate"
-              @click="activeLoad = true"
-            >
-              Участвовать</a
-            >
+            <div class="btn_style btn_contest_participate" @click="activeLoad = true" v-t="'description.participate'" />
           </div>
         </div>
       </div>
@@ -72,16 +54,12 @@
               />
             </a>
             <div class="participate_popup_title">
-              <span class="participate_popup_text-style">
-                Загрузите фото для участия в конкурсе
-              </span>
-              <p>Мисс Инстаграм 2020</p>
+              <span class="participate_popup_text-style" v-t="'participate.upload'" />
+              <p>{{ $i18n.locale === 'RU' ? concert.title : ($i18n.locale === 'EN' ? concert.title__en : '') }}</p>
             </div>
             <div class="participate_popup_upload">
               <div class="participate_popup_upload_container">
-                <span class="participate_popup_text-style">
-                  Перетащите файлы сюда
-                </span>
+                <span class="participate_popup_text-style" v-t="'participate.drag-here'" />
                 <a class="btn-upload btn_style">
                   <input
                     placeholder="Загрузить файлы"
@@ -91,10 +69,10 @@
                     @change="onFileChange"
                     class="inputStyle"
                   />
-                  <label for="file">Загрузите файл</label>
+                  <label for="file" v-t="'participate.upload-file'" />
                 </a>
 
-                <p>Максимальный размер файла 10 Мб. Форматы JPEG, PNG.</p>
+                <p v-t="'participate.max-size'" />
               </div>
             </div>
             <div
@@ -124,13 +102,13 @@
 
             <div class="participate_popup_footer">
               <div class="btn_participate btn_style popup_btn-style" @click="onParticipate()" v-if="user">
-                <span> Участвовать </span>
+                <span v-t="'participate.participate'" />
               </div>
               <div class="btn_participate btn_style popup_btn-style" v-else @click="toAuth()">
-                <span>Авторизуйтесь</span>
+                <span v-t="'participate.auth'" />
               </div>
-              <p>С вашего баланса спишется</p>
-              <span class="participate_popup_text-style"> 34 ₽ </span>
+              <p v-t="'participate.cost'" />
+              <span class="participate_popup_text-style"> $10 </span>
             </div>
           </div>
         </div>
@@ -138,15 +116,15 @@
       <div class="participates">
         <div class="participates_util">
           <div class="participates_util_wrapper">
-            <p class="participates_util_title style_text">Участники</p>
+            <p class="participates_util_title style_text" v-t="'participants.participants'" />
             <div class="description_text_stata style_text">
               <div class="description_text_stata_column">
-                <span> 36 </span>
-                <p>Участников</p>
+                <span> {{ concert.participants }} </span>
+                <p v-t="'participants.total-participants'" />
               </div>
               <div class="description_text_stata_column">
-                <span> 148 </span>
-                <p>Проголосовало</p>
+                <span> {{ concert.voters }} </span>
+                <p v-t="'participants.voted'" />
               </div>
             </div>
           </div>
@@ -180,16 +158,17 @@
             </div>
           </div>
         </div>
-        <div class="participate_wrapper">
-          <div class="participate_wrapper_overlay" v-for="(item, i) in 16" :key="i">
+        <div class="participate_wrapper" v-if="participantsToShow" :class="{all: loadedAllParticipants}">
+          <div class="participate_wrapper_overlay" v-for="(item, i) in participantsToShow" :key="i">
             <FancySwiper
               v-body-scroll-lock="activePhoto !== -1"
               v-if="activePhoto === i"
               @closePopup="closePopupParrent()"
+              :banners="item.images"
             />
             <div class="participates_item">
               <div class="participates_item_img" @click="showPhoto(i)">
-                <img src="@/static/images/lidia.png" alt="lidia">
+                <img :src="item.images[0].url" :alt="item.user.name + ' ' + item.user.last_name">
               </div>
               <div
                 class="participates_item_header"
@@ -201,38 +180,31 @@
                     src="@/assets/icons/like.svg"
                     alt="example"
                   />
-                  <p class="style_text">{{ i + 1 }}</p>
-                  <div class="likes-tooltip" v-if="activeLike == i">
+                  <p class="style_text">{{ item.likesCount.toString() }}</p>
+                  <div class="likes-tooltip" v-if="item.likesCount && i == activeLike">
                     <div class="likes-tooltip-wrapper">
-                      <template v-for="item in i + 1">
+                      <template v-for="(like, k) in item.user.likes">
                         <img
-                          :key="item"
-                          v-if="item <= 4"
-                          src="../static/images/tooltip-image.png"
+                          :key="k"
+                          v-if="k <= 4"
+                          :src="like.user.avatar"
+                          :alt="like.name"
                         />
                       </template>
                     </div>
-                    <a href="#" @click.prevent="showPopUp(i)"
-                      >... и еще {{ i + 1 }} человека</a
-                    >
+                    <a href="#" @click.prevent="showPopUp(i)">... {{ i > 1 ? $t('tooltips.likes.also') + (i + 1) : $t('tooltips.likes.more') }}</a>
                   </div>
                 </div>
-                <div v-if="i === 0" class="leader">
-                  <p class="style_text">Ваш выбор</p>
+                <div v-if="user && item.user.id === user.id" class="leader">
+                  <p class="style_text" v-t="'you'" />
                 </div>
-                <div v-if="i === 1" class="leader">
-                  <img
-                    svg-inline
-                    class="icon"
-                    src="@/assets/icons/crown.svg"
-                    alt="example"
-                  />
-                  <p class="style_text">Лидер</p>
+                <div v-if="user && participants && participants.firstConcerts && item.user.id !== user.id && participants.firstConcerts.find(i => i.user.id == item.user.id)" class="leader">
+                  <p class="style_text" v-t="'your-choice'" />
                 </div>
               </div>
               <div class="participates_item_name" @click="showPhoto(i)">
-                <p class="style_text">Лидия Русакова</p>
-                <span class="style_text"> г. Москва</span>
+                <p class="style_text">{{ item.user.name }} {{ item.user.last_name }}</p>
+                <span class="style_text">{{ item.user.city }}</span>
                 <a class="participates_item_share">
                   <img
                     svg-inline
@@ -258,49 +230,46 @@
                       />
                     </a>
                     <div class="likes_popup_title">
-                      <p class="likes_popup_title_number">{{ i + 1 }}</p>
-                      <p class="likes_popup_title_voted">
-                        Проголосовали в конкурсе
-                      </p>
-                      <p class="likes_popup_title_subtitle">
-                        Мисс Инстаграм 2020
-                      </p>
+                      <p class="likes_popup_title_number">{{ item.likesCount }}</p>
+                      <p class="likes_popup_title_voted" v-t="'likes.voted'" />
+                      <p class="likes_popup_title_subtitle">{{ $i18n.locale === 'RU' ? concert.title : ($i18n.locale === 'EN' ? concert.title__en : '') }}</p>
                     </div>
                     <div class="likes_popup_wrapper" v-body-scroll-lock="activePopUp === i">
                       <a
                         class="likes_popup_wrapper_item"
-                        v-for="index in i + 1"
-                        :key="index"
+                        v-for="(like, i) in item.user.likes"
+                        :key="i"
                       >
                         <div
                           class="likes_popup_img"
                           :style="{
-                            backgroundImage:
-                              'url(' +
-                              require('@/static/images/elena.png') +
-                              ')'
+                            backgroundImage: `url(${like.user.avatar})`
                           }"
                         ></div>
-                        <p>Елена Свигова</p>
+                        <p>{{ like.name }}</p>
                       </a>
                     </div>
                   </div>
                 </div>
               </div>
-              <a class="btn_like">
+              <div class="btn_like" @click="like(item.user.id)" v-if="!user || item.user.id != user.id">
                 <img
                   svg-inline
                   class="icon svg-path-color"
                   src="@/assets/icons/btn-like.svg"
                   alt="example"
                 />
-              </a>
+              </div>
             </div>
           </div>
         </div>
-        <a href="#" class="btn_style btn_load" @click.prevent>
-          <span>Загрузить еще </span>
-        </a>
+        <infinite-loading 
+          @infinite="infiniteHandler"
+          :key="infinityKey" 
+          :distance="infinityDistance"
+        >
+          <div slot="no-results"></div>
+        </infinite-loading>
       </div>
     </div>
     <Footer />
@@ -311,31 +280,38 @@
 import Header from "@/components/default/Header.vue";
 import Footer from "@/components/default/Footer.vue";
 import FancySwiper from "@/components/default/FancySwiper.vue";
+import InfiniteLoading from 'vue-infinite-loading';
+import moment from 'moment'
 
-import {mapState, mapActions} from 'vuex'
+import {mapState, mapActions, mapMutations} from 'vuex'
 
 export default {
   components: {
     Header,
     Footer,
-    FancySwiper
+    FancySwiper,
+    InfiniteLoading
   },
   data() {
     return {
-      loading: false,
+      infinityDistance: 100,
+      infinityKey: 1,
+      loadedAllParticipants: false,
+
+      loading: false, // TODO
       activeLike: -1,
       activePopUp: -1,
       activeSort: false,
       activePhoto: -1,
       activeLoad: false,
-      activeSelected: "Сортировка",
+      activeSelected: this.$t('sorting.default'),
       sortItems: [
-        "По количеству лайков",
-        "По количеству проголосовавших",
-        "По дате создания",
-        "По дате завершения",
-        "Показать все"
+        this.$t('sorting.by-likes'),
+        this.$t('sorting.by-voters'),
+        this.$t('sorting.by-created-date'),
+        this.$t('sorting.show-all')
       ],
+      sortBy: '',
       files: [],
       swiperOption: {
         centeredSlides: false,
@@ -355,16 +331,56 @@ export default {
     };
   },
 
+  created() {
+    this.getConcert();
+    this.getParticipants();
+  },
+
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'concert', 'participants']),
+
+    moment() {
+      return moment
+    },
+
+    startDateTimestamp() {
+      const date = this.concert.startDate.split('.');
+      return (new Date(date[2], date[1] - 1, date[0])).getTime();
+    },
+
+    participantsToShow() {
+      if (this.participants) {
+        if (this.user && this.participants.firstConcerts) {
+          if (this.participants.firstConcerts.length === 1)
+            return [...this.participants.firstConcerts, ...this.participants.items]
+
+          return [this.participants.firstConcerts.find(i => i.user.id == this.user.id), this.participants.firstConcerts.find(i => i.user.id != this.user.id), ...this.participants.items]
+        } else
+          return this.participants.items
+      }
+      return null
+    }
   },
 
   methods: {
-    ...mapActions(['participate']),
+    ...mapActions(['participate', 'getConcert', 'getParticipants', 'like', 'getMoreParticipants']),
+    ...mapMutations(['increasePage']),
 
     toAuth() {
       this.$root.$emit('auth');
       this.activeLoad = false;
+    },
+
+    infiniteHandler($state) {
+      if (this.participants.length < parseInt(this.participants.meta.totalItems)) {
+        this.increasePage();
+        this.getMoreParticipants().then(() => {
+          $state.loaded();
+        })
+      } else {
+        $state.complete()
+        this.loadedAllParticipants = true;
+      }
     },
 
     async onParticipate() {
@@ -374,7 +390,7 @@ export default {
       }
 
       if (this.files.length) {
-        await this.participate(this.files)
+        await this.participate(this.files);
       } else {
         this.$toasted.error('Укажите минимум 1 фото');
       }
