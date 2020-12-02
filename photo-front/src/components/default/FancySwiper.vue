@@ -1,13 +1,13 @@
 <template>
   <div class="overlay-swiper" @click="closeModal">
     <div class="overlay-swiper-row">
-      <div class="overlay-swiper_text" @click="closeModal">
-        <span>Закрыть</span>
+      <div class="overlay-swiper_text cursor-pointer" @click="closeModal">
+        <span v-t="'close'" />
       </div>
       <div v-swiper:mySwiper="swiperOption" @click.stop>
         <div class="swiper-wrapper">
-          <div class="swiper-slide" :key="banner" v-for="banner in banners">
-            <img src="@/static/images/swiper1.png" />
+          <div class="swiper-slide" :key="i" v-for="(banner, i) in banners">
+            <img :src="banner.url" :alt="banner.name" />
           </div>
           <div class="swiper-pagination"></div>
         </div>
@@ -19,13 +19,11 @@
 <script>
 export default {
   name: "FancySwiper",
+
+  props: ['banners'],
+
   data() {
     return {
-      banners: [
-        "@/static/images/swiper1.png",
-        "@/static/images/swiper2.png",
-        "@/static/images/swiper3.png"
-      ],
       swiperOption: {
         slidesPerView: 'auto',
         centeredSlides: true,
@@ -37,10 +35,18 @@ export default {
           el: ".swiper-pagination",
           clickable: true
         }
-        // ...
       }
     };
   },
+
+  mounted() {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.mySwiper.slideTo(0);
+      }, 500)
+    });
+  },
+
   methods: {
     closeModal() {
       this.$emit("closePopup");
