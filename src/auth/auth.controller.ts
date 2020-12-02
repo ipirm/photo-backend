@@ -20,6 +20,7 @@ export class AuthController {
     @UseGuards(AuthGuard("facebook"))
     async facebookLoginRedirect(@Req() req, @Res() res): Promise<any> {
         const url = await this.auth.login(req.user);
+        console.log(url);
         return res.redirect(`${process.env.FRONT_URL}/?access_token=${url.access_token}`)
     }
 
