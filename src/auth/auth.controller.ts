@@ -20,7 +20,7 @@ export class AuthController {
     @UseGuards(AuthGuard("facebook"))
     async facebookLoginRedirect(@Req() req, @Res() res): Promise<any> {
         const url = await this.auth.login(req.user);
-        return res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
+        return res.redirect(`${process.env.FRONT_URL}/?access_token=${url.access_token}`)
     }
 
     @Get("/vkontakte")
@@ -33,7 +33,7 @@ export class AuthController {
     @UseGuards(AuthGuard("vkontakte"))
     async vkontakteLoginRedirect(@Req() req, @Res() res): Promise<any> {
         const url = await this.auth.login(req.user);
-         res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
+         res.redirect(`${process.env.FRONT_URL}/?access_token=${url.access_token}`)
     }
 
     @UseGuards(JwtAuthGuard)
@@ -52,6 +52,6 @@ export class AuthController {
     @UseGuards(AuthGuard('google'))
     async googleAuthRedirect(@Request() req, @Res() res) {
         const url = await this.auth.login(req.user);
-        return res.redirect(`http://localhost:8080/?access_token=${url.access_token}`)
+        return res.redirect(`${process.env.FRONT_URL}/?access_token=${url.access_token}`)
     }
 }
