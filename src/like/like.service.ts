@@ -16,7 +16,7 @@ export class LikeService {
     // Проголосовать за участника
 
     async addLike(addLikeDto: AddLikeDto, user): Promise<any> {
-        const exist = await this.like.findOne({where: {user_id: user.id, concertId: addLikeDto.concertId, userId: addLikeDto.userId}})
+        const exist = await this.like.findOne({where: {user_id: user.id, concertId: addLikeDto.concertId}})
 
         if (exist)
             return exist
@@ -42,7 +42,7 @@ export class LikeService {
     // Удалить голос за участника
 
     async deleteLike(addLikeDto: AddLikeDto, user): Promise<any> {
-        const exist = await this.like.findOne({where: {user_id: user.id, concertId: addLikeDto.concertId, userId: addLikeDto.userId}})
+        const exist = await this.like.findOne({where: {user_id: user.id, concertId: addLikeDto.concertId}})
 
         if(!exist)
             return 'Like not exist'
