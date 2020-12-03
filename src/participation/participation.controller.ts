@@ -1,12 +1,20 @@
-import {Body, Controller, Param,Req, Post, Put, UploadedFiles,UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Param,
+    Req,
+    Post,
+    Put,
+    UploadedFiles,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors
+} from '@nestjs/common';
 import {ParticipationService} from "./participation.service";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import {AddParticipationDto} from "./dto/add-participation-dto";
-import {FilesInterceptor,FileInterceptor} from "@nestjs/platform-express";
-import {diskStorage} from 'multer';
+import {FilesInterceptor, FileInterceptor} from "@nestjs/platform-express";
 import {imageFileFilter} from "../helpers/check-file-type";
-import {editFileName} from "../helpers/edit-file-name";
-import {editFilePath} from "../helpers/change-file-path";
 import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
 import {User} from "../decorators/user.decorator";
 
@@ -19,12 +27,6 @@ export class ParticipationController {
     @UseGuards(JwtAuthGuard)
     @Post('/')
     @UseInterceptors(FilesInterceptor('files', 5, {
-            storage: diskStorage({
-                path: editFilePath,
-                destination: './uploads',
-                filename: editFileName,
-            }),
-
             fileFilter: imageFileFilter,
         }
     ))
@@ -53,9 +55,4 @@ export class ParticipationController {
         return this.participation.approveConcertUser(id)
     }
 
-    @Post('avatar')
-    @UseInterceptors(FileInterceptor('file'))
-    async addAvatar(@Req() request: any, @UploadedFile() file: any) {
-        return this.participation.uploadPublicFile(file.buffer, file.originalname);
-    }
 }

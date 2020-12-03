@@ -3,6 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {UsersEntity} from "../entities/users.entity";
 import {Repository} from "typeorm";
 import {CreateUserDto} from "./dto/create-user-dto";
+import {S3} from "aws-sdk";
 
 @Injectable()
 export class UserService {
@@ -57,15 +58,47 @@ export class UserService {
         return await this.user.delete(id)
     }
 
-    async updateUser(id, createUserDto: CreateUserDto): Promise<any> {
-        return await this.user.update(id, createUserDto)
+    async updateUser(createUserDto: CreateUserDto, user): Promise<any> {
+        return await this.user.update(user.id, createUserDto)
     }
 
     async findUser(id): Promise<any> {
-        return await this.user.findOne(id)
+        const participations = await this.user.createQueryBuilder('user')
+            .where("user.id = :id", {id: id})
+            .leftJoinAndSelect("user.concertsUsers", "concertsUsers")
+            .getCount()
+
+        const likes = await this.user.createQueryBuilder('user')
+            .where("user.id = :id", {id: id})
+            .leftJoinAndSelect("user.likes", "likes")
+            .getCount()
+
+        const winner = await this.user.createQueryBuilder('user')
+            .where("user.id = :id", {id: id})
+            .innerJoinAndSelect("user.places", "places")
+            .getOne()
+
+        const user = await this.user.createQueryBuilder('user')
+            .where("user.id = :id", {id: id})
+            .leftJoinAndSelect("user.concertsUsers", "concertsUsers")
+            .getOne()
+
+        return {participations,winner, likes, user}
     }
 
     async getAllUser(): Promise<any> {
         return await this.user.find()
+    }
+
+    async uploadPublicFile(file, user) {
+        const s3 = new S3();
+        const uploadResult = await s3.upload({
+            Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
+            Body: file.buffer,
+            Key: file.originalname,
+            ACL: 'public-read'
+        }).promise();
+
+        return await this.user.update(user.id, {avatar: uploadResult.Location})
     }
 }

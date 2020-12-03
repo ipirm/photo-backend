@@ -14,6 +14,13 @@ enum Roles {
 export abstract class UsersEntity extends BaseEntity {
     @Column({type: 'varchar', length: 500, nullable: false})
     name: string;
+
+    @Column({type: 'varchar', length: 500, nullable: true})
+    city: string;
+
+    @Column({type: 'varchar', length: 500, nullable: true})
+    country: string;
+
     @Column({type: 'varchar', length: 500, nullable: true})
     last_name: string;
     @Column({type: 'varchar', length: 500, nullable: true})
@@ -34,7 +41,7 @@ export abstract class UsersEntity extends BaseEntity {
     vk_id: number;
     @Column({type: 'money', default: 0})
     balance: string;
-    @Column('enum', { enum: Roles, default: Roles.User})
+    @Column('enum', {enum: Roles, default: Roles.User})
     role: Roles
 
 
@@ -47,8 +54,7 @@ export abstract class UsersEntity extends BaseEntity {
     public concertsUsers: ConcertsUsersEntity[];
 
 
-    @OneToOne(() => PlacesEntity)
-    @JoinColumn()
-    place?: PlacesEntity;
+    @OneToMany(type => PlacesEntity, place => place.concert, {cascade: true})
+    public places?: PlacesEntity;
 }
 

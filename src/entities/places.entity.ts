@@ -3,6 +3,7 @@ import {BaseEntity} from "./base.entity";
 import {ConcertsEntity} from "./concerts.entity";
 import {I18nColumn} from "typeorm-i18n";
 import {DefaultLocale, SupportedLocales} from "../locale/locale";
+import {UsersEntity} from "./users.entity";
 
 
 @Entity('places')
@@ -21,6 +22,9 @@ export abstract class PlacesEntity extends BaseEntity {
 
     @ManyToOne(type => ConcertsEntity, concertsUser => concertsUser.places)
     public concert: ConcertsEntity;
+
+    @ManyToOne(type => UsersEntity, concertsUser => concertsUser.places)
+    public user?: ConcertsEntity;
 
     @Column()
     public concertId: number

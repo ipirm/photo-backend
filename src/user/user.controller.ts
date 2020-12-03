@@ -1,7 +1,22 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    Req,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors
+} from '@nestjs/common';
 import {UserService} from "./user.service";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import {CreateUserDto} from "./dto/create-user-dto";
+import {FileInterceptor} from "@nestjs/platform-express";
+import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
+import {User} from "../decorators/user.decorator";
 
 @ApiTags('Users')
 @Controller('user')
@@ -34,9 +49,19 @@ export class UserController {
         return await this.user.createUser(createUserDto);
     }
 
-    @Put(':id')
+    @UseGuards(JwtAuthGuard)
+    @Put('/edit')
     @ApiOperation({summary: 'Update user'})
-    async updateConcert(@Param('id') id: string, @Body() createUserDto: CreateUserDto): Promise<any> {
-        return await this.user.updateUser(id, createUserDto);
+    async updateConcert(@Body() createUserDto: CreateUserDto, @User() user: any): Promise<any> {
+        return await this.user.updateUser(createUserDto, user);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('avatar')
+    @UseInterceptors(FileInterceptor('file'))
+    async addAvatar(@Req() request: any, @UploadedFile() file: any, @User() user: any) {
+        return this.user.uploadPublicFile(file, user);
+    }
+
+
 }

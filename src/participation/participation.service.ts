@@ -3,7 +3,7 @@ import {AddParticipationDto} from "./dto/add-participation-dto";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
-import { S3 } from 'aws-sdk';
+import {S3} from 'aws-sdk';
 
 @Injectable()
 export class ParticipationService {
@@ -14,18 +14,18 @@ export class ParticipationService {
 
     // Учавствовать в конкурсе !
     async addParticipationToConcert(addParticipationDto: AddParticipationDto, files, user): Promise<any> {
+        let images = []
         const {concertId} = addParticipationDto;
         const exist = await this.concert_users.find({where: {concertId: concertId, userId: user.id}});
         if (exist.length)
             return `This user exist in ${concertId} concert`;
 
-        if (files.length) {
-            const images = files.map((item) => {
-                return {name: item.filename, url: `${process.env.FILE_URL}/${item.filename}`}
-            })
-            Object.assign(addParticipationDto, {images: images, userId: user.id})
+
+        for (const item of files) {
+            images.push(await this.uploadPublicFile(item))
         }
 
+        Object.assign(addParticipationDto, {images: images, userId: user.id})
         return await this.concert_users.save(addParticipationDto);
     }
 
@@ -44,19 +44,18 @@ export class ParticipationService {
         return {success: true}
     }
 
-    async uploadPublicFile(dataBuffer: Buffer, filename: string) {
+    async uploadPublicFile(file) {
         const s3 = new S3();
         const uploadResult = await s3.upload({
             Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
-            Body: dataBuffer,
-            Key: `${filename}`
-        })
-            .promise();
+            Body: file.buffer,
+            Key: file.originalname,
+            ACL: 'public-read'
+        }).promise();
 
-        const newFile = {
+        return {
             key: uploadResult.Key,
             url: uploadResult.Location
         };
-        return newFile;
     }
 }
