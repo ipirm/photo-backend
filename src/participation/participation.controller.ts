@@ -53,9 +53,9 @@ export class ParticipationController {
         return this.participation.approveConcertUser(id)
     }
 
-    @Post('avatar')
-    @UseInterceptors(FileInterceptor('file'))
-    async addAvatar(@Req() request: any, @UploadedFile() file: any) {
-        return this.participation.uploadPublicFile(file.buffer, file.originalname);
-    }
+    // @Post('avatar')
+    // @UseInterceptors(FileInterceptor('file'))
+    // async addAvatar(@Req() request: any, @UploadedFile() file: any) {
+    //     return this.participation.uploadPublicFile(file.buffer, file.originalname);
+    // }
 }
