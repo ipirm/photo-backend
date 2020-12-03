@@ -1,15 +1,14 @@
-import {Body, Controller, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Param,Req, Post, Put, UploadedFiles,UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
 import {ParticipationService} from "./participation.service";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import {AddParticipationDto} from "./dto/add-participation-dto";
-import {FilesInterceptor} from "@nestjs/platform-express";
+import {FilesInterceptor,FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from 'multer';
 import {imageFileFilter} from "../helpers/check-file-type";
 import {editFileName} from "../helpers/edit-file-name";
 import {editFilePath} from "../helpers/change-file-path";
 import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
 import {User} from "../decorators/user.decorator";
-
 
 @ApiTags('Participation')
 @Controller('participation')
@@ -52,5 +51,11 @@ export class ParticipationController {
     @ApiOperation({summary: 'Approve concert'})
     approveConcert(@Param('id') id: string) {
         return this.participation.approveConcertUser(id)
+    }
+
+    @Post('avatar')
+    @UseInterceptors(FileInterceptor('file'))
+    async addAvatar(@Req() request: any, @UploadedFile() file: any) {
+        return this.participation.uploadPublicFile(file.buffer, file.originalname);
     }
 }

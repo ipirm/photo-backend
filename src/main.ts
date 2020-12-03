@@ -2,12 +2,15 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import {ValidationPipe} from "@nestjs/common";
-import { IoAdapter } from '@nestjs/platform-socket.io';
+import {IoAdapter} from '@nestjs/platform-socket.io';
 import {WsAdapter} from "@nestjs/platform-ws";
 // import {RedisIoAdapter} from "./common/adapters/redis-io.adapter";
+import {config} from 'aws-sdk';
+
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe());
     const options = new DocumentBuilder()
@@ -19,6 +22,13 @@ async function bootstrap() {
     // app.useWebSocketAdapter(new WsAdapter(app));
     SwaggerModule.setup('api', app, document);
     app.enableCors();
+
+    console.log(process.env.AWS_REGION)
+    config.update({
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        region: process.env.AWS_REGION
+    });
     // app.useWebSocketAdapter(new WsAdapter());
     await app.listen(process.env.PORT || 3000);
 }
