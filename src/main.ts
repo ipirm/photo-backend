@@ -18,8 +18,6 @@ async function bootstrap() {
         .setVersion('1.0')
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    // app.useWebSocketAdapter(new RedisIoAdapter(app));
-    // app.useWebSocketAdapter(new WsAdapter(app));
     SwaggerModule.setup('api', app, document);
     app.enableCors();
 
