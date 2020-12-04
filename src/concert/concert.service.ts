@@ -27,7 +27,7 @@ export class ConcertService {
     }
 
     //  Получить концерты в завиисмости от того авторизирован юзер или нет
-    async findConcertUsers({id, page, limit, user,sort_by}): Promise<any> {
+    async findConcertUsers({id, page, limit, user, sort_by}): Promise<any> {
 
         //  Получить количество участников
         let participations = await this.concert_users.createQueryBuilder('concertUsers')
@@ -50,10 +50,10 @@ export class ConcertService {
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
             .orderBy('concertUsers.id', 'ASC')
 
-        if(sort_by === 'likes'){
-             data.orderBy('concertUsers.likesCount', 'DESC')
+        if (sort_by === 'likes') {
+            data.orderBy('concertUsers.likesCount', 'DESC')
         }
-        if(sort_by === 'date'){
+        if (sort_by === 'date') {
             data.orderBy('concertUsers.createdAt', 'DESC')
         }
 
@@ -111,5 +111,27 @@ export class ConcertService {
     //  Изменить концерт по id
     async updateConcert(id, updateConcertDto: UpdateConcertDto): Promise<any> {
         return await this.concert.update(id, updateConcertDto)
+    }
+
+    //  Искать концерт
+    async searchConcert(id, search, page, limit, sort_by) {
+
+        const data = await this.concert_users.createQueryBuilder('concertUsers')
+            .where("concertUsers.concertId = :concertId", {concertId: id})
+            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .leftJoinAndSelect("concertUsers.user", "user")
+            .where("LOWER(user.last_name) like LOWER(:last_name)", {last_name: `%${search}%`})
+            .orWhere("LOWER(user.name) like LOWER(:name)", {name: `%${search}%`})
+            .leftJoinAndSelect("user.likes", "likes")
+
+        if (sort_by === 'likes') {
+            data.orderBy('concertUsers.likesCount', 'DESC')
+        }
+        if (sort_by === 'date') {
+            data.orderBy('concertUsers.createdAt', 'DESC')
+        }
+
+        return await paginate<ConcertsUsersEntity>(data, {page, limit})
+
     }
 }

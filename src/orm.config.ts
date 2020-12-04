@@ -1,4 +1,5 @@
 import {TypeOrmModuleOptions} from "@nestjs/typeorm";
+
 export const ormConfig: TypeOrmModuleOptions = {
 
     // type: 'postgres',
@@ -16,8 +17,6 @@ export const ormConfig: TypeOrmModuleOptions = {
     // cli: {
     //     migrationsDir: "migrations"
     // }
-
-
 
     type: 'postgres',
     host: 'ec2-54-75-244-161.eu-west-1.compute.amazonaws.com',

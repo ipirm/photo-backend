@@ -5,6 +5,7 @@ import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {ApiTags, ApiOperation} from "@nestjs/swagger";
 import {User} from "../decorators/user.decorator";
 import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
+import {SearchDto} from "./dto/search-dto";
 
 
 @ApiTags('Concerts')
@@ -31,8 +32,8 @@ export class ConcertController {
         @Query('limit') limit: number = 10,
         @Query('sort_by') sort_by: string = null
     ): Promise<any[]> {
-         limit = limit > 100 ? 100 : limit;
-         return this.concert.findConcertUsers({id, page, limit, user,sort_by});
+        limit = limit > 100 ? 100 : limit;
+        return this.concert.findConcertUsers({id, page, limit, user, sort_by});
     }
 
     @Get('concertUsersWithOutAuth/:id')
@@ -45,7 +46,7 @@ export class ConcertController {
         @Query('sort_by') sort_by: string = null
     ): Promise<any[]> {
         limit = limit > 100 ? 100 : limit;
-        return this.concert.findConcertUsers({id, page, limit, user,sort_by});
+        return this.concert.findConcertUsers({id, page, limit, user, sort_by});
     }
 
     @Get(':id')
@@ -70,5 +71,18 @@ export class ConcertController {
     @ApiOperation({summary: 'Update concert'})
     updateConcert(@Param('id') id: string, @Body() updateConcertDto: UpdateConcertDto): Promise<any> {
         return this.concert.updateConcert(id, updateConcertDto);
+    }
+
+    @Get('search/data')
+    @ApiOperation({summary: 'Search Concert'})
+    searchConcert(
+        @Query('id') id: number = 1,
+        @Query('search') search: string = null,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('sort_by') sort_by: string = null
+    ): Promise<any> {
+        limit = limit > 100 ? 100 : limit;
+        return this.concert.searchConcert(id, search, page, limit, sort_by);
     }
 }
