@@ -28,7 +28,9 @@ export class ConcertService {
 
     //  Получить концерты в завиисмости от того авторизирован юзер или нет
     async findConcertUsers({id, page, limit, user, sort_by}): Promise<any> {
-
+        user = {
+            id: 8
+        }
         //  Получить количество участников
         let participations = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
@@ -74,18 +76,17 @@ export class ConcertService {
             // Добавить вначало участинка за которого проголосовал пользователь и кого он лайкнул
             const checkIds = [userConcert].filter(v => v !== undefined).map(v => v.id)
 
-
-            let leaders = await this.concert_users.createQueryBuilder('concertUsers')
-                .where("concertUsers.concertId = :concertId", {concertId: id})
-                .andWhere("concertUsers.approve = :approve", {approve: false})
-                .andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
-                .leftJoinAndSelect("concertUsers.user", "user")
-                .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
-                .orderBy('concertUsers.likesCount', 'DESC')
-                .take(3)
-                .getMany()
-
             if (checkIds.length) {
+                let leaders = await this.concert_users.createQueryBuilder('concertUsers')
+                    .where("concertUsers.concertId = :concertId", {concertId: id})
+                    .andWhere("concertUsers.approve = :approve", {approve: false})
+                    .andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
+                    .leftJoinAndSelect("concertUsers.user", "user")
+                    .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
+                    .orderBy('concertUsers.likesCount', 'DESC')
+                    .take(3)
+                    .getMany()
+
                 data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: [...checkIds, ...leaders.filter(v => v !== undefined).map(v => v.id)]})
 
                 firstConcerts = await this.concert_users.findByIds(checkIds, {
@@ -104,7 +105,7 @@ export class ConcertService {
                     }
                 }
                 return {
-                    likes, participations, firstConcerts, leaders, ...await paginate<ConcertsUsersEntity>(data, {
+                    likes, participations, firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {
                         page,
                         limit
                     })
@@ -124,7 +125,6 @@ export class ConcertService {
 
         data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: leaders.filter(v => v !== undefined).map(v => v.id)})
         return {likes, participations, leaders, ...await paginate<ConcertsUsersEntity>(data, {page, limit})}
-
     }
 
     //  Получить концерт по id
