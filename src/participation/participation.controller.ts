@@ -26,7 +26,7 @@ export class ParticipationController {
 
     @UseGuards(JwtAuthGuard)
     @Post('/')
-    @UseInterceptors(FilesInterceptor('files', 5, {
+    @UseInterceptors(FilesInterceptor('files', 6, {
             fileFilter: imageFileFilter,
         }
     ))
