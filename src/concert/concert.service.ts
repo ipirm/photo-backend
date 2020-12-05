@@ -28,9 +28,6 @@ export class ConcertService {
 
     //  Получить концерты в завиисмости от того авторизирован юзер или нет
     async findConcertUsers({id, page, limit, user, sort_by}): Promise<any> {
-        user = {
-            id: 8
-        }
         //  Получить количество участников
         let participations = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
