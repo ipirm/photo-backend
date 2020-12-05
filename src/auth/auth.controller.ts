@@ -1,9 +1,10 @@
-import {Controller, Get, Request, UseGuards, Res, HttpStatus, Req} from '@nestjs/common';
+import {Controller, Get, Request, UseGuards, Res, HttpStatus, Req,Post} from '@nestjs/common';
 import {AuthGuard} from "@nestjs/passport";
 import {ApiTags} from "@nestjs/swagger";
 import {AuthService} from "./auth.service";
 import {JwtAuthGuard} from "./jwt/jwt-auth.guard";
 import {User} from "../decorators/user.decorator";
+import {AdminLoginDto} from "./dto/admin-login-dto";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -55,4 +56,11 @@ export class AuthController {
         const url = await this.auth.login(req.user);
         return res.redirect(`${process.env.FRONT_URL}/?access_token=${url.access_token}`)
     }
+
+    @Post('admin/login')
+    loginAsAdmin(adminLoginDto: AdminLoginDto){
+        return this.auth.signAdminIn(adminLoginDto)
+    }
+
+
 }

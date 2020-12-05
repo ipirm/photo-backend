@@ -2,9 +2,7 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import {ValidationPipe} from "@nestjs/common";
-import {IoAdapter} from '@nestjs/platform-socket.io';
-import {WsAdapter} from "@nestjs/platform-ws";
-// import {RedisIoAdapter} from "./common/adapters/redis-io.adapter";
+import * as helmet from 'helmet';
 import {config} from 'aws-sdk';
 
 
@@ -22,7 +20,7 @@ async function bootstrap() {
     // app.useWebSocketAdapter(new WsAdapter(app));
     SwaggerModule.setup('api', app, document);
     app.enableCors();
-
+    app.use(helmet());
     config.update({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
