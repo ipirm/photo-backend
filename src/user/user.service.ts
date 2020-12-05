@@ -24,6 +24,7 @@ export class UserService {
         }
 
         if (!user) {
+            console.log(profile)
             const createdUser = {
                 name: profile.name.givenName ? profile.name.givenName : '',
                 last_name: profile.name.familyName ? profile.name.familyName : '',
