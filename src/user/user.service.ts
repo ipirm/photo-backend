@@ -102,6 +102,7 @@ export class UserService {
             ACL: 'public-read'
         }).promise();
 
-        return await this.user.update(user.id, {avatar: uploadResult.Location})
+        await this.user.update(user.id, {avatar: uploadResult.Location})
+        return await this.user.findOne(user.id)
     }
 }
