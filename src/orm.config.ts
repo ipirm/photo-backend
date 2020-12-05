@@ -18,7 +18,7 @@ export const ormConfig: TypeOrmModuleOptions = {
     //     migrationsDir: "migrations"
     // }
 
-    
+
 
     type: 'postgres',
     host: 'ec2-54-75-244-161.eu-west-1.compute.amazonaws.com',

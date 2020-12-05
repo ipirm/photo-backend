@@ -1,10 +1,14 @@
 import {Injectable} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
+import {InjectRepository} from "@nestjs/typeorm";
+import {UsersEntity} from "../entities/users.entity";
+import {Repository} from "typeorm";
 
 @Injectable()
 export class AuthService {
     constructor(
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @InjectRepository(UsersEntity) private readonly user: Repository<UsersEntity>
     ) {
     }
 
@@ -24,5 +28,9 @@ export class AuthService {
         return {
             access_token: this.jwtService.sign(payload),
         };
+    }
+
+    async profile(user: any) {
+        return await this.user.findOne(user.id)
     }
 }

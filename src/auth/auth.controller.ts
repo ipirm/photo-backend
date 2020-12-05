@@ -3,6 +3,7 @@ import {AuthGuard} from "@nestjs/passport";
 import {ApiTags} from "@nestjs/swagger";
 import {AuthService} from "./auth.service";
 import {JwtAuthGuard} from "./jwt/jwt-auth.guard";
+import {User} from "../decorators/user.decorator";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -38,8 +39,8 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Get('profile')
-    getProfile(@Request() req) {
-        return req.user;
+    getProfile(@Request() req,@User() user: any,) {
+        return this.auth.profile(user);
     }
 
     @Get('google')
