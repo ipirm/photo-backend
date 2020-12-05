@@ -65,26 +65,6 @@ export class ConcertService {
             // Добавить вначало участинка за которого проголосовал пользователь и кого он лайкнул
             const checkIds = [userConcert].filter(v => v !== undefined).map(v => v.id)
 
-            let leaders = await this.concert_users.createQueryBuilder('concertUsers')
-                .where("concertUsers.concertId = :concertId", {concertId: id})
-                .andWhere("concertUsers.approve = :approve", {approve: false})
-                .andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
-                .leftJoinAndSelect("concertUsers.user", "user")
-                .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
-                .orderBy('concertUsers.likesCount', 'DESC')
-                .take(3)
-                .getMany()
-
-            if (checkIds.length) {
-
-                data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: [...checkIds, ...leaders.filter(v => v !== undefined).map(v => v.id)]})
-
-                firstConcerts = await this.concert_users.findByIds(checkIds, {
-                    where: {approve: false},
-                    relations: ['user', 'user.likes']
-                })
-
-            }
             if (sort_by === 'user_likes') {
                 data.where("likes.user_id = :user_id", {user_id: user.id})
                 return {
@@ -94,11 +74,29 @@ export class ConcertService {
                     })
                 }
             }
-            return {
-                likes, participations, firstConcerts, leaders, ...await paginate<ConcertsUsersEntity>(data, {
-                    page,
-                    limit
+            if (checkIds.length) {
+                let leaders = await this.concert_users.createQueryBuilder('concertUsers')
+                    .where("concertUsers.concertId = :concertId", {concertId: id})
+                    .andWhere("concertUsers.approve = :approve", {approve: false})
+                    .andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
+                    .leftJoinAndSelect("concertUsers.user", "user")
+                    .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
+                    .orderBy('concertUsers.likesCount', 'DESC')
+                    .take(3)
+                    .getMany()
+
+                data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: [...checkIds, ...leaders.filter(v => v !== undefined).map(v => v.id)]})
+
+                firstConcerts = await this.concert_users.findByIds(checkIds, {
+                    where: {approve: false},
+                    relations: ['user', 'user.likes']
                 })
+                return {
+                    likes, participations, firstConcerts, leaders, ...await paginate<ConcertsUsersEntity>(data, {
+                        page,
+                        limit
+                    })
+                }
             }
         }
 
