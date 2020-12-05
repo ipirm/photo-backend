@@ -1,4 +1,4 @@
-import {Entity, Column, OneToMany, JoinTable, AfterLoad, OneToOne, JoinColumn} from 'typeorm'
+import {Entity, Column, OneToMany, JoinTable, BeforeInsert} from 'typeorm'
 import {BaseEntity} from "./base.entity";
 import {ConcertsUsersEntity} from "./concerts-users.entity";
 import {LikesEntity} from "./likes.entity";
@@ -14,6 +14,9 @@ enum Roles {
 export abstract class UsersEntity extends BaseEntity {
     @Column({type: 'varchar', length: 500, nullable: false})
     name: string;
+
+    @Column({type: 'varchar', length: 500, nullable: true})
+    full_name: string;
 
     @Column({type: 'varchar', length: 500, nullable: true})
     city: string;

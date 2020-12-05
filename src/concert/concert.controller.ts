@@ -46,6 +46,7 @@ export class ConcertController {
         @Query('sort_by') sort_by: string = null
     ): Promise<any[]> {
         limit = limit > 100 ? 100 : limit;
+
         return this.concert.findConcertUsers({id, page, limit, user, sort_by});
     }
 

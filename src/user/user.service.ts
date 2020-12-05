@@ -41,6 +41,7 @@ export class UserService {
             if (provider === 'vkontakte') {
                 Object.assign(createdUser, {vk_id: profile.id})
             }
+            Object.assign(createdUser, {full_name: createdUser.name + createdUser.last_name})
             user = await this.user.save(createdUser)
         }
         return user
@@ -48,6 +49,7 @@ export class UserService {
 
     async createUser(createUserDto: CreateUserDto): Promise<any> {
         const user = await this.user.findOne({email: createUserDto.email});
+        Object.assign(createUserDto, {full_name: createUserDto.name + createUserDto.last_name})
         if (user) {
             return user;
         }
@@ -83,7 +85,7 @@ export class UserService {
             .leftJoinAndSelect("user.concertsUsers", "concertsUsers")
             .getOne()
 
-        return {participations,winner, likes, user}
+        return {participations, winner, likes, user}
     }
 
     async getAllUser(): Promise<any> {

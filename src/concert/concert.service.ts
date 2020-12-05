@@ -28,6 +28,7 @@ export class ConcertService {
 
     //  Получить концерты в завиисмости от того авторизирован юзер или нет
     async findConcertUsers({id, page, limit, user, sort_by}): Promise<any> {
+        let firstConcerts: any = [];
         //  Получить количество участников
         let participations = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
@@ -39,7 +40,6 @@ export class ConcertService {
             .where("likes.concertId = :concertId", {concertId: id})
             .getCount()
 
-        let firstConcerts: any = [];
         //  Query для получения пользователей концертаA
 
         const data = await this.concert_users.createQueryBuilder('concertUsers')
@@ -61,28 +61,21 @@ export class ConcertService {
             // Найти пользователя который учавствует в концерте
             const userConcert = await this.concert_users.findOne({where: {userId: user.id, concertId: id}})
 
-            // Найти участника за которого проголосовал пользователь
-            // const userLiked = await this.concert_users.createQueryBuilder('concertUsers')
-            //     .where("concertUsers.concertId = :concertId", {concertId: id})
-            //     .andWhere("concertUsers.approve = :approve", {approve: false})
-            //     .leftJoinAndSelect("concertUsers.user", "user")
-            //     .leftJoinAndSelect("user.likes", "likes")
-            //     .where("likes.user_id = :user_id", {user_id: user.id})
-            //     .getMany()
 
             // Добавить вначало участинка за которого проголосовал пользователь и кого он лайкнул
             const checkIds = [userConcert].filter(v => v !== undefined).map(v => v.id)
 
+            let leaders = await this.concert_users.createQueryBuilder('concertUsers')
+                .where("concertUsers.concertId = :concertId", {concertId: id})
+                .andWhere("concertUsers.approve = :approve", {approve: false})
+                .andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
+                .leftJoinAndSelect("concertUsers.user", "user")
+                .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
+                .orderBy('concertUsers.likesCount', 'DESC')
+                .take(3)
+                .getMany()
+
             if (checkIds.length) {
-                let leaders = await this.concert_users.createQueryBuilder('concertUsers')
-                    .where("concertUsers.concertId = :concertId", {concertId: id})
-                    .andWhere("concertUsers.approve = :approve", {approve: false})
-                    .andWhere("concertUsers.id NOT IN (:...ids)", {ids: checkIds})
-                    .leftJoinAndSelect("concertUsers.user", "user")
-                    .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
-                    .orderBy('concertUsers.likesCount', 'DESC')
-                    .take(3)
-                    .getMany()
 
                 data.andWhere("concertUsers.id NOT IN (:...ids)", {ids: [...checkIds, ...leaders.filter(v => v !== undefined).map(v => v.id)]})
 
@@ -91,22 +84,21 @@ export class ConcertService {
                     relations: ['user', 'user.likes']
                 })
 
-                if (sort_by === 'user_likes') {
-                    data.andWhere("likes.user_id = :user_id", {user_id: user.id})
-
-                    return {
-                        likes, participations, firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {
-                            page,
-                            limit
-                        })
-                    }
-                }
+            }
+            if (sort_by === 'user_likes') {
+                data.where("likes.user_id = :user_id", {user_id: user.id})
                 return {
-                    likes, participations, firstConcerts,leaders, ...await paginate<ConcertsUsersEntity>(data, {
+                    likes, participations, firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {
                         page,
                         limit
                     })
                 }
+            }
+            return {
+                likes, participations, firstConcerts, leaders, ...await paginate<ConcertsUsersEntity>(data, {
+                    page,
+                    limit
+                })
             }
         }
 
@@ -151,8 +143,7 @@ export class ConcertService {
             .where("concertUsers.concertId = :concertId", {concertId: id})
             .andWhere("concertUsers.approve = :approve", {approve: false})
             .leftJoinAndSelect("concertUsers.user", "user")
-            .where("LOWER(user.last_name) like LOWER(:last_name)", {last_name: `%${search}%`})
-            .orWhere("LOWER(user.name) like LOWER(:name)", {name: `%${search}%`})
+            .where("LOWER(user.full_name) like LOWER(:full_name)", {full_name: `%${search}%`})
             .leftJoinAndSelect("user.likes", "likes")
 
         if (sort_by === 'likes') {
