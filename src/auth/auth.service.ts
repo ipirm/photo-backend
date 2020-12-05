@@ -53,6 +53,7 @@ export class AuthService {
     }
 
     async profile(user: any) {
-        return await this.user.findOne(user.id)
+        return await this.user.findOne(user.id, {relations: ['concertsUsers']})
+
     }
 }
