@@ -102,7 +102,7 @@ export class ConcertService {
                     }
                 }
                 return {
-                    likes, participations, firstConcerts, ...await paginate<ConcertsUsersEntity>(data, {
+                    likes, participations, firstConcerts,leaders, ...await paginate<ConcertsUsersEntity>(data, {
                         page,
                         limit
                     })
