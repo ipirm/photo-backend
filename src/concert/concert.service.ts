@@ -136,6 +136,15 @@ export class ConcertService {
 
     //  Искать концерт
     async searchConcert(id, search, page, limit, sort_by) {
+        let participations = await this.concert_users.createQueryBuilder('concertUsers')
+            .where("concertUsers.concertId = :concertId", {concertId: id})
+            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .getCount()
+
+        //  Получить количество лайков
+        let likes = await this.likes.createQueryBuilder('likes')
+            .where("likes.concertId = :concertId", {concertId: id})
+            .getCount()
 
         const data = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
@@ -151,7 +160,7 @@ export class ConcertService {
             data.orderBy('concertUsers.createdAt', 'DESC')
         }
 
-        return await paginate<ConcertsUsersEntity>(data, {page, limit})
+        return {likes, participations, ...await paginate<ConcertsUsersEntity>(data, {page, limit})}
 
     }
 }
