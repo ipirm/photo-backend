@@ -178,7 +178,10 @@ export class ConcertService {
             .where("concertUsers.concertId = :concertId", {concertId: id})
             .andWhere("concertUsers.approve = :approve", {approve: false})
             .leftJoinAndSelect("concertUsers.user", "user")
-            .where("LOWER(user.full_name) like LOWER(:full_name)", {full_name: `%${search}%`})
+            .where("LOWER(user.full_name) like LOWER(:full_name) AND LOWER(user.city) like LOWER(:city)", {
+                full_name: `%${search}%`,
+                city: `%${search}%`
+            })
             .leftJoinAndSelect("user.likes", "likes")
 
         if (sort_by === 'likes') {
