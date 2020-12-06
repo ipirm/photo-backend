@@ -30,10 +30,11 @@ export class ConcertController {
         @Param('id') id: string,
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
-        @Query('sort_by') sort_by: string = null
+        @Query('sort_by') sort_by: string = null,
+        @Query('linkID') linkID: number=100000000
     ): Promise<any[]> {
         limit = limit > 100 ? 100 : limit;
-        return this.concert.findConcertUsers({id, page, limit, user, sort_by});
+        return this.concert.findConcertUsers({id, page, limit, user, sort_by, linkID});
     }
 
     @Get('concertUsersWithOutAuth/:id')
@@ -43,11 +44,12 @@ export class ConcertController {
         @Param('id') id: string,
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
-        @Query('sort_by') sort_by: string = null
+        @Query('sort_by') sort_by: string = null,
+        @Query('linkID') linkID: number=100000000
     ): Promise<any[]> {
         limit = limit > 100 ? 100 : limit;
 
-        return this.concert.findConcertUsers({id, page, limit, user, sort_by});
+        return this.concert.findConcertUsers({id, page, limit, user, sort_by,linkID});
     }
 
     @Get(':id')
