@@ -53,7 +53,12 @@ export class AuthService {
     }
 
     async profile(user: any) {
-        return await this.user.findOne(user.id, {relations: ['concertsUsers']})
+        return await this.user
+            .createQueryBuilder('user')
+            .where("user.id = :id", {id: user.id})
+            .leftJoinAndSelect('user.concertsUsers', 'user')
+            .addSelect(["user.balance,user.facebook_id,user.google_id,user."])
+            .getOne();
 
     }
 }

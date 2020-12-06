@@ -15,7 +15,7 @@ export abstract class UsersEntity extends BaseEntity {
     @Column({type: 'varchar', length: 500, nullable: false})
     name: string;
 
-    @Column({type: 'varchar', length: 500, nullable: true})
+    @Column({type: 'varchar', length: 500, nullable: true, select: false})
     full_name: string;
 
     @Column({type: 'varchar', length: 500, nullable: true})
@@ -32,19 +32,19 @@ export abstract class UsersEntity extends BaseEntity {
     age: string;
     @Column({type: 'varchar', length: 500, nullable: false})
     email: string;
-    @Column({type: 'varchar', length: 500, nullable: false})
+    @Column({type: 'varchar', length: 500, nullable: false, select: false})
     password: string;
     @Column({type: 'varchar', length: 500, nullable: false})
     avatar: string;
-    @Column({type: 'varchar', length: 500, nullable: true})
+    @Column({type: 'varchar', length: 500, nullable: true, select: false})
     facebook_id: number;
-    @Column({type: 'varchar', length: 500, nullable: true})
+    @Column({type: 'varchar', length: 500, nullable: true, select: false})
     google_id: number;
-    @Column({type: 'varchar', length: 500, nullable: true})
+    @Column({type: 'varchar', length: 500, nullable: true, select: false})
     vk_id: number;
-    @Column({type: 'money', default: 0})
+    @Column({type: 'money', default: 0, select: false})
     balance: string;
-    @Column('enum', {enum: Roles, default: Roles.User})
+    @Column('enum', {enum: Roles, default: Roles.User, select: false})
     role: Roles
 
 
