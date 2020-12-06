@@ -5,7 +5,6 @@ import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {ApiTags, ApiOperation} from "@nestjs/swagger";
 import {User} from "../decorators/user.decorator";
 import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
-import {SearchDto} from "./dto/search-dto";
 
 
 @ApiTags('Concerts')

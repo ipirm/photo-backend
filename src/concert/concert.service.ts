@@ -110,7 +110,7 @@ export class ConcertService {
                     })
                     .leftJoinAndSelect("concertUsers.user", "user")
                     .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
-                    .getOne()
+                    .getMany()
 
                 return {
                     linkItem,
