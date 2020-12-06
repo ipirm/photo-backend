@@ -4,11 +4,15 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 import {S3} from 'aws-sdk';
+import {ConcertsEntity} from "../entities/concerts.entity";
+import {PlacesEntity} from "../entities/places.entity";
 
 @Injectable()
 export class ParticipationService {
     constructor(
-        @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>
+        @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>,
+        @InjectRepository(ConcertsEntity) private readonly concert: Repository<ConcertsEntity>,
+        @InjectRepository(PlacesEntity) private readonly place: Repository<PlacesEntity>,
     ) {
     }
 
@@ -24,6 +28,24 @@ export class ParticipationService {
         for (const item of files) {
             images.push(await this.uploadPublicFile(item))
         }
+        const concert = await this.concert.findOne(concertId)
+
+        // Поменять значение призов
+        const newTotal = concert.total + parseInt(process.env.PRICE);
+        await this.concert.update(concertId, {total: newTotal})
+
+
+        const firstPlace = await this.place.findOne(1)
+        const secondPlace = await this.place.findOne(2)
+        const thirdPlace = await this.place.findOne(2)
+
+        await this.place.update(1, {total: firstPlace.total + (concert.total / 100 * parseInt(process.env.FIRST_PLACE))})
+        await this.place.update(2, {total: secondPlace.total + (concert.total / 100 * parseInt(process.env.SECOND_PLACE))})
+        await this.place.update(3, {total: thirdPlace.total + (concert.total / 100 * parseInt(process.env.THIRD_PLACE))})
+
+
+        await this.place.update(1, {})
+
 
         Object.assign(addParticipationDto, {images: images, userId: user.id})
         return await this.concert_users.save(addParticipationDto);
