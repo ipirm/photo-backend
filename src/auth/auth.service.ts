@@ -57,7 +57,7 @@ export class AuthService {
             .createQueryBuilder('user')
             .where("user.id = :id", {id: user.id})
             .leftJoinAndSelect('user.concertsUsers', 'concertsUsers')
-            .addSelect(["user.balance,user.facebook_id,user.google_id,user.vk_id"])
+            .addSelect(["user.balance","user.facebook_id","user.google_id","user.vk_id"])
             .getOne();
 
     }
