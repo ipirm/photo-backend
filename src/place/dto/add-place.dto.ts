@@ -17,6 +17,5 @@ export class AddPlaceDto {
     name__en: string;
 
     @ApiProperty({example: '1000', description: 'total balance'})
-    @IsString()
-    total: string;
+    total: number;
 }

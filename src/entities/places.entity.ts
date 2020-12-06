@@ -18,7 +18,7 @@ export abstract class PlacesEntity extends BaseEntity {
     name: string;
 
     @Column({type: 'varchar', length: 500, nullable: false})
-    total: string;
+    total: number;
 
     @ManyToOne(type => ConcertsEntity, concertsUser => concertsUser.places)
     public concert: ConcertsEntity;

@@ -144,7 +144,13 @@ export class ConcertService {
 
     //  Получить концерт по id
     async findConcert(id): Promise<any> {
-        return await this.concert.findOne(id, {relations: ["places"]})
+        return await this.concert.findOne(id,
+            {
+                relations: ["places"],
+                order: {
+                    total: 'ASC'
+                }
+            })
     }
 
     //  Удалить концерт по id

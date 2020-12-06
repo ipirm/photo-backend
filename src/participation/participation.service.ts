@@ -34,18 +34,11 @@ export class ParticipationService {
         const newTotal = concert.total + parseInt(process.env.PRICE);
         await this.concert.update(concertId, {total: newTotal})
 
+        const places = await this.place.find({where: {concertId: concertId}})
 
-        const firstPlace = await this.place.findOne(1)
-        const secondPlace = await this.place.findOne(2)
-        const thirdPlace = await this.place.findOne(2)
-
-        await this.place.update(1, {total: String(parseInt(firstPlace.total) + concert.total / 100 * parseInt(process.env.FIRST_PLACE))})
-        await this.place.update(2, {total: String(parseInt(secondPlace.total) + concert.total / 100 * parseInt(process.env.SECOND_PLACE))})
-        await this.place.update(3, {total: String(parseInt(thirdPlace.total) + concert.total / 100 * parseInt(process.env.THIRD_PLACE))})
-
-
-        await this.place.update(1, {})
-
+        for (const [i, item] of places.entries()) {
+            await this.place.update(item.id, {total: newTotal / 100 * parseInt(item.name)})
+        }
 
         Object.assign(addParticipationDto, {images: images, userId: user.id})
         return await this.concert_users.save(addParticipationDto);
