@@ -19,5 +19,7 @@ export class UpdateConcertDto {
     @IsString()
     endDate: string;
 
+    @ApiProperty({ example: '16.11.2020', description: 'The endDate of Concert' })
+    total: string;
     concertsUsers: Array<any>
 }
