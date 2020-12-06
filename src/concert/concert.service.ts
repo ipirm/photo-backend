@@ -148,7 +148,7 @@ export class ConcertService {
             {
                 relations: ["places"],
                 order: {
-                    total: 'ASC'
+                    total: 'DESC'
                 }
             })
     }
