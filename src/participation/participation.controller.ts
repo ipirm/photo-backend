@@ -24,7 +24,7 @@ export class ParticipationController {
     constructor(private participation: ParticipationService) {
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post('/')
     @UseInterceptors(FilesInterceptor('files', 6, {
             fileFilter: imageFileFilter,

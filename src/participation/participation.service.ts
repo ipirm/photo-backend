@@ -39,9 +39,9 @@ export class ParticipationService {
         const secondPlace = await this.place.findOne(2)
         const thirdPlace = await this.place.findOne(2)
 
-        await this.place.update(1, {total: firstPlace.total + (concert.total / 100 * parseInt(process.env.FIRST_PLACE))})
-        await this.place.update(2, {total: secondPlace.total + (concert.total / 100 * parseInt(process.env.SECOND_PLACE))})
-        await this.place.update(3, {total: thirdPlace.total + (concert.total / 100 * parseInt(process.env.THIRD_PLACE))})
+        await this.place.update(1, {total: String(parseInt(firstPlace.total) + concert.total / 100 * parseInt(process.env.FIRST_PLACE))})
+        await this.place.update(2, {total: String(parseInt(secondPlace.total) + concert.total / 100 * parseInt(process.env.SECOND_PLACE))})
+        await this.place.update(3, {total: String(parseInt(thirdPlace.total) + concert.total / 100 * parseInt(process.env.THIRD_PLACE))})
 
 
         await this.place.update(1, {})
