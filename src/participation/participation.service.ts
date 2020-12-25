@@ -6,6 +6,7 @@ import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 import {S3} from 'aws-sdk';
 import {ConcertsEntity} from "../entities/concerts.entity";
 import {PlacesEntity} from "../entities/places.entity";
+import {UsersEntity} from "../entities/users.entity";
 
 @Injectable()
 export class ParticipationService {
@@ -13,6 +14,7 @@ export class ParticipationService {
         @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>,
         @InjectRepository(ConcertsEntity) private readonly concert: Repository<ConcertsEntity>,
         @InjectRepository(PlacesEntity) private readonly place: Repository<PlacesEntity>,
+        @InjectRepository(UsersEntity) private readonly user: Repository<UsersEntity>,
     ) {
     }
 
@@ -23,6 +25,11 @@ export class ParticipationService {
         const exist = await this.concert_users.find({where: {concertId: concertId, userId: user.id}});
         if (exist.length)
             return `This user exist in ${concertId} concert`;
+
+        const userData = await this.user.findOne(user.id)
+
+        if(!userData.purchased)
+            return `You have no money sorry`
 
 
         for (const item of files) {

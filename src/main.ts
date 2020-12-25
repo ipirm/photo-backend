@@ -4,6 +4,7 @@ import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import {ValidationPipe} from "@nestjs/common";
 import * as helmet from 'helmet';
 import {config} from 'aws-sdk';
+const paypal = require('paypal-rest-sdk');
 
 
 async function bootstrap() {
@@ -25,6 +26,11 @@ async function bootstrap() {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         region: process.env.AWS_REGION
+    });
+    paypal.configure({
+        'mode': 'sandbox', //sandbox or live
+        'client_id': process.env.PAYPAL_CLIENT_ID,
+        'client_secret': process.env.PAYPAL_CLIENT_SECRET
     });
     // app.useWebSocketAdapter(new WsAdapter());
     await app.listen(process.env.PORT || 3000);

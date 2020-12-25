@@ -1,4 +1,4 @@
-import {Controller, Get, Request, UseGuards, Res, HttpStatus, Req,Post} from '@nestjs/common';
+import {Controller, Get, Request, UseGuards, Res, HttpStatus, Req, Post, Body} from '@nestjs/common';
 import {AuthGuard} from "@nestjs/passport";
 import {ApiTags} from "@nestjs/swagger";
 import {AuthService} from "./auth.service";
@@ -58,7 +58,7 @@ export class AuthController {
     }
 
     @Post('admin/login')
-    loginAsAdmin(adminLoginDto: AdminLoginDto){
+    loginAsAdmin(@Body() adminLoginDto: AdminLoginDto){
         return this.auth.signAdminIn(adminLoginDto)
     }
 

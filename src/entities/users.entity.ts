@@ -44,6 +44,10 @@ export abstract class UsersEntity extends BaseEntity {
     vk_id: number;
     @Column({type: 'money', default: 0, select: false})
     balance: string;
+
+    @Column({type: 'boolean', default: false, select: false})
+    purchased: boolean;
+
     @Column('enum', {enum: Roles, default: Roles.User, select: false})
     role: Roles
 

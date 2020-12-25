@@ -1,16 +1,11 @@
 import {Module} from '@nestjs/common';
-import {NestjsPaypalPayoutsModule} from "nestjs-paypal-payouts/dist";
 import {PaypalService} from "./paypal.service";
 import {PaypalController} from "./paypal.controller";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {UsersEntity} from "../entities/users.entity";
 
 @Module({
-    imports: [
-        NestjsPaypalPayoutsModule.register({
-            environment: 'sandbox',
-            clientId: process.env.PAYPAL_CLIENT_ID,
-            clientSecret: process.env.PAYPAL_CLIENT_SECRET
-        }),
-    ],
+    imports: [TypeOrmModule.forFeature([UsersEntity])],
     providers: [PaypalService],
     controllers: [PaypalController]
 })

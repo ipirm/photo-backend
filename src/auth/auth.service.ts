@@ -32,10 +32,11 @@ export class AuthService {
     }
 
     async signAdminIn(adminLoginDto: AdminLoginDto): Promise<any> {
-        const user = await this.user.findOne({email: adminLoginDto.email})
-        if (user.role !== 'admin') {
-            throw new UnauthorizedException('Role must be admin');
-        }
+        const user = await this.user.findOne({email: adminLoginDto.email,password: adminLoginDto.password});
+
+        // if (user.role !== 'admin') {
+        //     throw new UnauthorizedException('Role must be admin');
+        // }
         const payload = {
             id: user.id,
             name: user.name,
