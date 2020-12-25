@@ -14,30 +14,33 @@ export class PaypalController {
     constructor(private paypalService: PaypalService) {
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Get('/')
     async getPay(@Res() res, @User() user: any): Promise<Boolean> {
+        console.log(process.env.PAYPAL_CLIENT_ID)
+        console.log(process.env.PAYPAL_CLIENT_SECRET)
         const create_payment_json = {
             "intent": "sale",
             "payer": {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `https://photo-backend-app.herokuapp.com/api/paypal/success?user_id=${user.id}`,
+                "return_url": `https://photo-backend-app.herokuapp.com/api/paypal/success?user_id=17`,
                 "cancel_url": "https://photo-backend-app.herokuapp.com/api/paypal/cancel"
             },
             "transactions": [{
                 "item_list": {
                     "items": [{
-                        "name": "Contest",
-                        "total": `${process.env.PRICE}.00`,
+                        "name": "item",
+                        "sku": "item",
+                        "price": "1.00",
                         "currency": "USD",
                         "quantity": 1
                     }]
                 },
                 "amount": {
                     "currency": "USD",
-                    "total": `${process.env.PRICE}.00`
+                    "total": "1.00"
                 },
                 "description": "Participation in Contest"
             }]
