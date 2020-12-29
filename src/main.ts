@@ -21,7 +21,7 @@ async function bootstrap() {
     // app.useWebSocketAdapter(new WsAdapter(app));
     SwaggerModule.setup('api', app, document);
     app.enableCors();
-    app.use(helmet());
+    // app.use(helmet());
     config.update({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
