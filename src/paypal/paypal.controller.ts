@@ -39,6 +39,7 @@ export class PaypalController {
         });
 
 // Call API with your client and get a response for your call
+        console.log(request)
         let createOrder  = async function(){
             let response = await client.execute(request);
             // console.log(`Response: ${JSON.stringify(response)}`);
@@ -46,8 +47,9 @@ export class PaypalController {
             // console.log(`Order: ${JSON.stringify(response.result)}`);
             for (let i = 0; i < response.result.links.length; i++) {
                 if (response.result.links[i].rel === 'approve') {
-                    console.log(response.result.links[i].rel)
-                    return res.redirect(response.result.links[i].href)
+                    console.log(response.result.links)
+
+                 return res.redirect(response.result.links[i].href)
                 }
             }
             }
