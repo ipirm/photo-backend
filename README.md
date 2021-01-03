@@ -77,3 +77,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 S3
 pass: AAAA1111bbbb----_
 mail: ilham.pirm@gmail.com
+
+
+AWS_ACCESS_KEY_ID AKIAWPPXR2TTDMOB74WE
+AWS_SECRET_ACCESS_KEY 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
+DATABASE_URL postgres://lqowmqwtxbysaj:c252ea6e013dd9d07f5b7e88a1d6be3781e079449eaa19d63c3169066862fc98@ec2-54-75-244-161.eu-west-1.compute.amazonaws.com:5432/d6d62urde2vnnu
+HOST 0.0.0.0
+NODE_ENV production
+NODE_OPTIONS "--max_old_space_size=2560"
+NPM_CONFIG_PRODUCTION false
+S3_BUCKET name-of-backet-photo
