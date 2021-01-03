@@ -26,12 +26,6 @@ export class ParticipationService {
         if (exist.length)
             return `This user exist in ${concertId} concert`;
 
-        const userData = await this.user.findOne(user.id)
-
-        if(!userData.purchased)
-            return `You have no money sorry`
-
-
         for (const item of files) {
             images.push(await this.uploadPublicFile(item))
         }
