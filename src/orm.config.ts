@@ -20,17 +20,17 @@ export const ormConfig: TypeOrmModuleOptions = {
 
 
     type: 'postgres',
-    host: 'ec2-54-246-67-245.eu-west-1.compute.amazonaws.com',
-    url: 'postgres://xlgvltvzwzfjds:755c4d0ffdec3852f6a95b98fd511bf05ebbf9b58a6c665501ab4a37ce0b559c@ec2-54-246-67-245.eu-west-1.compute.amazonaws.com:5432/d6h6ad27rormcs',
+    host: 'ec2-54-75-244-161.eu-west-1.compute.amazonaws.com',
+    url: 'postgres://lqowmqwtxbysaj:c252ea6e013dd9d07f5b7e88a1d6be3781e079449eaa19d63c3169066862fc98@ec2-54-75-244-161.eu-west-1.compute.amazonaws.com:5432/d6d62urde2vnnu',
     port: 5432,
-    username: 'xlgvltvzwzfjds',
-    password: '755c4d0ffdec3852f6a95b98fd511bf05ebbf9b58a6c665501ab4a37ce0b559c',
-    database: 'd6h6ad27rormcs',
+    username: 'lqowmqwtxbysaj',
+    password: 'c252ea6e013dd9d07f5b7e88a1d6be3781e079449eaa19d63c3169066862fc98',
+    database: 'd6d62urde2vnnu',
     entities: ['dist/**/*.entity.js'],
     migrations: ["dist/migrations/*{.ts,.js}"],
     migrationsTableName: "migrations_typeorm",
     migrationsRun: true,
-    synchronize: true,
+    synchronize: false,
     logging: true,
     cli: {
         migrationsDir: "migrations"
