@@ -17,6 +17,7 @@ import {CreateUserDto} from "./dto/create-user-dto";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
 import {User} from "../decorators/user.decorator";
+import {UpdateUserAdminDto} from "./dto/update-user-admin-dto";
 
 @ApiTags('Users')
 @Controller('user')
@@ -63,5 +64,10 @@ export class UserController {
         return this.user.uploadPublicFile(file, user);
     }
 
+    @Put('/admin')
+    @ApiOperation({summary: 'Make user Admin'})
+    async updateUserAdmin(@Body() updateAdminUser: UpdateUserAdminDto, @User() user: any): Promise<any> {
+        return await this.user.updateAdminUser(updateAdminUser, user);
+    }
 
 }

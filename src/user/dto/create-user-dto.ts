@@ -43,7 +43,4 @@ export class CreateUserDto {
     @ApiProperty({example: 'avatar.png', description: 'avatar'})
     avatar: string;
 
-    @IsEnum(Roles)
-    public role?: Roles;
-
 }

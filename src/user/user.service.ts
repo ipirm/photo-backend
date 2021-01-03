@@ -4,6 +4,7 @@ import {UsersEntity} from "../entities/users.entity";
 import {Repository} from "typeorm";
 import {CreateUserDto} from "./dto/create-user-dto";
 import {S3} from "aws-sdk";
+import {UpdateUserAdminDto} from "./dto/update-user-admin-dto";
 
 @Injectable()
 export class UserService {
@@ -63,6 +64,10 @@ export class UserService {
     async updateUser(createUserDto: CreateUserDto, user): Promise<any> {
         Object.assign(createUserDto, {full_name: createUserDto.name + createUserDto.last_name})
         return await this.user.update(user.id, createUserDto)
+    }
+
+    async updateAdminUser(updateUserAdminDto: UpdateUserAdminDto, user): Promise<any> {
+        return await this.user.update(user.id, updateUserAdminDto)
     }
 
     async findUser(id): Promise<any> {
