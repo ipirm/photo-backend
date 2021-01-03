@@ -39,7 +39,6 @@ export class PaypalController {
         });
 
 // Call API with your client and get a response for your call
-        console.log(request)
         let createOrder  = async function(){
             let response = await client.execute(request);
             // console.log(`Response: ${JSON.stringify(response)}`);
