@@ -11,7 +11,6 @@ import {UserModule} from "./user/user.module";
 import {LikeModule} from './like/like.module';
 import {ServeStaticModule} from '@nestjs/serve-static';
 import {PlaceModule} from './place/place.module';
-import {PaypalModule} from "./paypal/paypal.module";
 
 @Module({
     imports: [
@@ -26,8 +25,7 @@ import {PaypalModule} from "./paypal/paypal.module";
         ParticipationModule,
         UserModule,
         LikeModule,
-        PlaceModule,
-        PaypalModule
+        PlaceModule
     ],
     controllers: [AppController],
     providers: [AppService],
