@@ -44,6 +44,6 @@ export class CreateUserDto {
     avatar: string;
 
     @IsEnum(Roles)
-    public role: Roles;
+    public role?: Roles;
 
 }
