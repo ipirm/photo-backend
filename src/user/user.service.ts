@@ -66,8 +66,8 @@ export class UserService {
         return await this.user.update(user.id, createUserDto)
     }
 
-    async updateAdminUser(updateUserAdminDto: UpdateUserAdminDto, user): Promise<any> {
-        return await this.user.update(user.id, updateUserAdminDto)
+    async updateAdminUser(updateUserAdminDto: UpdateUserAdminDto, id): Promise<any> {
+        return await this.user.update(id, updateUserAdminDto)
     }
 
     async findUser(id): Promise<any> {

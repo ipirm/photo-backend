@@ -64,10 +64,10 @@ export class UserController {
         return this.user.uploadPublicFile(file, user);
     }
 
-    @Put('/admin')
+    @Put('/admin/:id')
     @ApiOperation({summary: 'Make user Admin'})
-    async updateUserAdmin(@Body() updateAdminUser: UpdateUserAdminDto, @User() user: any): Promise<any> {
-        return await this.user.updateAdminUser(updateAdminUser, user);
+    async updateUserAdmin(@Body() updateAdminUser: UpdateUserAdminDto, @Param('id') id: string): Promise<any> {
+        return await this.user.updateAdminUser(updateAdminUser, id);
     }
 
 }
