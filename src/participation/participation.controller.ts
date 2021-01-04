@@ -30,6 +30,7 @@ export class ParticipationController {
             fileFilter: imageFileFilter,
         }
     ))
+
     @ApiOperation({summary: 'Add participation to concert'})
     addParticipationToConcert(
         @UploadedFiles() files,

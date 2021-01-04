@@ -32,7 +32,7 @@ export class ConcertService {
         // Получить учатника по прямой ссылке
         const linkItem = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
-            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .andWhere("concertUsers.approve = :approve", {approve: true})
             .andWhere("concertUsers.userId = :userId", {userId: linkID})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
@@ -42,7 +42,7 @@ export class ConcertService {
         //  Получить количество участников
         let participations = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
-            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .andWhere("concertUsers.approve = :approve", {approve: true})
             .getCount()
 
         //  Получить количество лайков
@@ -54,7 +54,7 @@ export class ConcertService {
 
         const data = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
-            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .andWhere("concertUsers.approve = :approve", {approve: true})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
             .orderBy('concertUsers.likesCount', 'DESC')
@@ -140,6 +140,26 @@ export class ConcertService {
             {ids: [...leaders.filter(v => v !== undefined).map(v => v.id)], links: [linkID]})
 
         return {linkItem, likes, participations, leaders, ...await paginate<ConcertsUsersEntity>(data, {page, limit})}
+    }
+
+
+    async findAdmin({id, page, limit, sort_by}): Promise<any> {
+        const data = await this.concert_users.createQueryBuilder('concertUsers')
+            .where("concertUsers.concertId = :concertId", {concertId: id})
+            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .leftJoinAndSelect("concertUsers.user", "user")
+            .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
+            .orderBy('concertUsers.likesCount', 'DESC')
+
+        if (sort_by === 'likes') {
+            data.orderBy('concertUsers.likesCount', 'DESC')
+        }
+        if (sort_by === 'date') {
+            data.orderBy('concertUsers.createdAt', 'DESC')
+        }
+
+        return await paginate<ConcertsUsersEntity>(data, {page, limit})
+
     }
 
     //  Получить концерт по id

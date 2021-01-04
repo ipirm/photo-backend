@@ -51,6 +51,19 @@ export class ConcertController {
         return this.concert.findConcertUsers({id, page, limit, user, sort_by,linkID});
     }
 
+    @Get('findAdmin/:id')
+    @ApiOperation({summary: 'Get concert users admin by concertId without token'})
+    findAdmin(
+        @Param('id') id: string,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('sort_by') sort_by: string = null
+    ): Promise<any[]> {
+        limit = limit > 100 ? 100 : limit;
+
+        return this.concert.findAdmin({id, page, limit, sort_by});
+    }
+
     @Get(':id')
     @ApiOperation({summary: 'Get concert by id'})
     findConcert(@Param('id') id: string,): Promise<any> {
