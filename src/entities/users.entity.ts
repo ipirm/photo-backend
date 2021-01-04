@@ -48,7 +48,7 @@ export abstract class UsersEntity extends BaseEntity {
     @Column({type: 'boolean', default: false, select: false})
     purchased: boolean;
 
-    @Column('enum', {enum: Roles, default: Roles.User, select: false})
+    @Column('enum', {enum: Roles, default: Roles.User})
     role: Roles
 
 

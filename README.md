@@ -87,3 +87,7 @@ NODE_ENV production
 NODE_OPTIONS "--max_old_space_size=2560"
 NPM_CONFIG_PRODUCTION false
 S3_BUCKET name-of-backet-photo
+
+
+AR,VR Neural Network
+Автотизация бизнеса !
