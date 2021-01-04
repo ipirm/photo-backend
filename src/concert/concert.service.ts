@@ -87,7 +87,7 @@ export class ConcertService {
             if (checkIds.length) {
                 let leaders = await this.concert_users.createQueryBuilder('concertUsers')
                     .where("concertUsers.concertId = :concertId", {concertId: id})
-                    .andWhere("concertUsers.approve = :approve", {approve: false})
+                    .andWhere("concertUsers.approve = :approve", {approve: true})
                     .andWhere("concertUsers.id NOT IN (:...ids)  AND concertUsers.userId NOT IN (:...links)",
                         {ids: [...checkIds], links: [linkID]})
                     .leftJoinAndSelect("concertUsers.user", "user")
@@ -105,7 +105,7 @@ export class ConcertService {
                 firstConcerts = await this.concert_users.createQueryBuilder('concertUsers')
                     .where("concertUsers.id = :id", {id: checkIds[0]})
                     .andWhere("concertUsers.approve = :approve AND concertUsers.userId != :userId", {
-                        approve: false,
+                        approve: true,
                         userId: linkID
                     })
                     .leftJoinAndSelect("concertUsers.user", "user")
@@ -128,7 +128,7 @@ export class ConcertService {
 
         let leaders = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
-            .andWhere("concertUsers.approve = :approve", {approve: false})
+            .andWhere("concertUsers.approve = :approve", {approve: true})
             .andWhere("concertUsers.userId NOT IN (:...ids)", {ids: [linkID]})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
