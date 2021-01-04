@@ -7,7 +7,7 @@ import {ConcertsEntity} from "./concerts.entity";
 
 export abstract class ConcertsUsersEntity extends BaseEntity {
 
-    @Column({type: 'boolean', default: false, select: false})
+    @Column({type: 'boolean', default: false})
     approve: boolean;
 
     @Column({type: 'int', default: 0})

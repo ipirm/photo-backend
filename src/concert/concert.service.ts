@@ -146,7 +146,6 @@ export class ConcertService {
     async findAdmin({id, page, limit, sort_by}): Promise<any> {
         const data = await this.concert_users.createQueryBuilder('concertUsers')
             .where("concertUsers.concertId = :concertId", {concertId: id})
-            .andWhere("concertUsers.approve = :approve", {approve: false})
             .leftJoinAndSelect("concertUsers.user", "user")
             .leftJoinAndSelect("user.likes", "likes", "likes.concertId = :concertId OR likes IS NULL", {concertId: id})
             .orderBy('concertUsers.likesCount', 'DESC')
