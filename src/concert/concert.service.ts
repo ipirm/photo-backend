@@ -8,6 +8,7 @@ import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 import {paginate} from "nestjs-typeorm-paginate";
 import {I18nRepository} from "typeorm-i18n";
 import {LikesEntity} from "../entities/likes.entity";
+import {AprroveConcertDto} from "./dto/aprrove-concert-dto";
 
 @Injectable()
 export class ConcertService {
@@ -185,6 +186,10 @@ export class ConcertService {
     //  Изменить концерт по id
     async updateConcert(id, updateConcertDto: UpdateConcertDto): Promise<any> {
         return await this.concert.update(id, updateConcertDto)
+    }
+
+    async updateConcertUser(id, aprroveConcertDto: AprroveConcertDto): Promise<any> {
+        return await this.concert_users.update(id, aprroveConcertDto)
     }
 
     //  Искать концерт

@@ -5,6 +5,7 @@ import {UpdateConcertDto} from "./dto/update-concert-dto";
 import {ApiTags, ApiOperation} from "@nestjs/swagger";
 import {User} from "../decorators/user.decorator";
 import {JwtAuthGuard} from "../auth/jwt/jwt-auth.guard";
+import {AprroveConcertDto} from "./dto/aprrove-concert-dto";
 
 
 @ApiTags('Concerts')
@@ -82,10 +83,16 @@ export class ConcertController {
         return this.concert.createConcert(createConcertDto);
     }
 
-    @Put(':id')
+    @Put('concert/:id')
     @ApiOperation({summary: 'Update concert'})
     updateConcert(@Param('id') id: string, @Body() updateConcertDto: UpdateConcertDto): Promise<any> {
         return this.concert.updateConcert(id, updateConcertDto);
+    }
+
+    @Put('concertUsers/:id')
+    @ApiOperation({summary: 'Update concert'})
+    updateConcertUsers(@Param('id') id: string, @Body() aprroveConcertDto: AprroveConcertDto): Promise<any> {
+        return this.concert.updateConcertUser(id, aprroveConcertDto);
     }
 
     @Get('search/data')
