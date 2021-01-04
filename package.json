@@ -37,6 +37,7 @@
     "aws-sdk": "^2.802.0",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
+    "compression": "^1.7.4",
     "helmet": "^4.2.0",
     "lodash": "^4.17.20",
     "nestjs-i18n": "^8.0.10",

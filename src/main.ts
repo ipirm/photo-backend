@@ -4,7 +4,7 @@ import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import {ValidationPipe} from "@nestjs/common";
 import * as helmet from 'helmet';
 import {config} from 'aws-sdk';
-
+import * as compression from 'compression';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -24,6 +24,7 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
     app.enableCors();
     app.use(helmet());
+    app.use(compression());
     await app.listen(process.env.PORT || 3000);
 }
 
