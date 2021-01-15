@@ -15,7 +15,7 @@ import {PlaceModule} from './place/place.module';
 @Module({
     imports: [
         ConfigModule.forRoot({
-            envFilePath: '.env',
+            envFilePath: '.main',
             isGlobal: true
         }),
         TypeOrmModule.forRoot(ormConfig),
