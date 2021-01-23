@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import {AddParticipationDto} from "./dto/add-participation-dto";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
@@ -20,6 +20,9 @@ export class ParticipationService {
 
     // Учавствовать в конкурсе !
     async addParticipationToConcert(addParticipationDto: AddParticipationDto, files, user): Promise<any> {
+        if(!user.accept_rules){
+            return new HttpException('Not Accepted Rules',403)
+        }
         let images = []
         const {concertId} = addParticipationDto;
         const exist = await this.concert_users.find({where: {concertId: concertId, userId: user.id}});

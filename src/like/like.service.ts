@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {LikesEntity} from "../entities/likes.entity";
@@ -16,6 +16,9 @@ export class LikeService {
     // Проголосовать за участника
 
     async addLike(addLikeDto: AddLikeDto, user): Promise<any> {
+        if(!user.accept_rules){
+            return new HttpException('Not Accepted Rules',403)
+        }
         const exist = await this.like.findOne({
             where: {
                 user_id: user.id,

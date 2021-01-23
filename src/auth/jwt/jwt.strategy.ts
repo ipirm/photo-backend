@@ -24,6 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             avatar: payload.avatar,
             facebook_id: payload.facebook_id,
             balance: payload.balance,
+            accept_rules: payload.accept_rules
         };
     }
 }

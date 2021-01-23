@@ -24,7 +24,8 @@ export class AuthService {
             email: user.email,
             avatar: user.avatar,
             balance: user.balance,
-            role: user.role
+            role: user.role,
+            accept_rules: user.accept_rules
         };
         return {
             access_token: this.jwtService.sign(payload),
@@ -46,7 +47,8 @@ export class AuthService {
             email: user.email,
             avatar: user.avatar,
             balance: user.balance,
-            role: user.role
+            role: user.role,
+            accept_rules: user.accept_rules
         };
         return {
             access_token: this.jwtService.sign(payload),
