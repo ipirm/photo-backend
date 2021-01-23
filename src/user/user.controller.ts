@@ -71,7 +71,7 @@ export class UserController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get('/accept-rules')
+    @Get('/accept-rules/true')
     acceptRules(@User() user: any): Promise<any> {
         return this.user.acceptRules(user);
     }
