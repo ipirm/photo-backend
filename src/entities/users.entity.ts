@@ -63,5 +63,9 @@ export abstract class UsersEntity extends BaseEntity {
 
     @OneToMany(type => PlacesEntity, place => place.concert, {cascade: true})
     public places?: PlacesEntity;
+
+
+    @Column({type: 'boolean', default: false})
+    accept_rules: boolean;
 }
 

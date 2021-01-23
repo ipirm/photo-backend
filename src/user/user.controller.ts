@@ -70,4 +70,10 @@ export class UserController {
         return await this.user.updateAdminUser(updateAdminUser, id);
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('/accept-rules')
+    acceptRules(@User() user: any): Promise<any> {
+        return this.user.acceptRules(user);
+    }
+
 }

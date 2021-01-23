@@ -110,4 +110,8 @@ export class UserService {
         await this.user.update(user.id, {avatar: uploadResult.Location})
         return await this.user.findOne(user.id)
     }
+
+    async acceptRules(user): Promise<any> {
+        return await this.user.update(user.id, {accept_rules: true})
+    }
 }
