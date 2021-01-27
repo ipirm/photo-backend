@@ -20,7 +20,8 @@ export class ParticipationService {
 
     // Учавствовать в конкурсе !
     async addParticipationToConcert(addParticipationDto: AddParticipationDto, files, user): Promise<any> {
-        if(!user.accept_rules){
+        const concertItem = await this.user.findOne({where:{id:user.id}});
+        if(!concertItem.accept_rules){
             return new HttpException('Not Accepted Rules',403)
         }
         let images = []
