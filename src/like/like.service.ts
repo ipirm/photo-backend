@@ -16,7 +16,8 @@ export class LikeService {
     // Проголосовать за участника
 
     async addLike(addLikeDto: AddLikeDto, user): Promise<any> {
-        if(!user.accept_rules){
+        const concertItem = await this.user.findOne({where:{id:user.id}});
+        if(!concertItem.accept_rules){
             return new HttpException('Not Accepted Rules',403)
         }
         const exist = await this.like.findOne({
@@ -54,6 +55,13 @@ export class LikeService {
     // Удалить голос за участника
 
     async deleteLike(addLikeDto: AddLikeDto, user): Promise<any> {
+        const concertItem = await this.user.findOne({where:{id:user.id}});
+
+        if(!concertItem.accept_rules){
+            return new HttpException('Not Accepted Rules',403)
+        }
+
+
         const exist = await this.like.findOne({where: {user_id: user.id, concertId: addLikeDto.concertId}})
 
         if (!exist)
