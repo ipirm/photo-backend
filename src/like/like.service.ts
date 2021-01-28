@@ -4,11 +4,13 @@ import {Repository} from "typeorm";
 import {LikesEntity} from "../entities/likes.entity";
 import {AddLikeDto} from "./dto/add-like-dto";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
+import {UsersEntity} from "../entities/users.entity";
 
 @Injectable()
 export class LikeService {
     constructor(
         @InjectRepository(LikesEntity) private readonly like: Repository<LikesEntity>,
+        @InjectRepository(UsersEntity) private readonly user: Repository<UsersEntity>,
         @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>
     ) {
     }
@@ -16,9 +18,9 @@ export class LikeService {
     // Проголосовать за участника
 
     async addLike(addLikeDto: AddLikeDto, user): Promise<any> {
-        const concertItem = await this.user.findOne({where:{id:user.id}});
-        if(!concertItem.accept_rules){
-            return new HttpException('Not Accepted Rules',403)
+        const concertItem = await this.user.findOne({where: {id: user.id}});
+        if (!concertItem.accept_rules) {
+            return new HttpException('Not Accepted Rules', 403)
         }
         const exist = await this.like.findOne({
             where: {
@@ -55,10 +57,10 @@ export class LikeService {
     // Удалить голос за участника
 
     async deleteLike(addLikeDto: AddLikeDto, user): Promise<any> {
-        const concertItem = await this.user.findOne({where:{id:user.id}});
+        const concertItem = await this.user.findOne({where: {id: user.id}});
 
-        if(!concertItem.accept_rules){
-            return new HttpException('Not Accepted Rules',403)
+        if (!concertItem.accept_rules) {
+            return new HttpException('Not Accepted Rules', 403)
         }
 
 
