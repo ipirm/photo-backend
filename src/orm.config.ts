@@ -3,11 +3,11 @@ import {TypeOrmModuleOptions} from "@nestjs/typeorm";
 export const ormConfig: TypeOrmModuleOptions = {
 
     type: 'postgres',
-    host: 'photo-db-v.csqbl0tu3qtb.us-west-2.rds.amazonaws.com',
+    host: 'database-1.chmetdob3tul.us-east-2.rds.amazonaws.com',
     port: 5432,
     username: 'root',
     password: "2587889e",
-    database: "photo_db",
+    database: "photo_back",
     entities: ["dist/**/*.entity.js"],
     migrations: ["dist/migrations/*{.ts,.js}"],
     migrationsTableName: "migrations_typeorm",
