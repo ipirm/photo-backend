@@ -49,7 +49,6 @@ export class ConcertService {
         //  Получить количество лайков
         let likes = await this.likes.createQueryBuilder('likes')
             .where("likes.concertId = :concertId", {concertId: id})
-            .andWhere("concertUsers.approve = :approve", {approve: true})
             .getCount()
 
         //  Query для получения пользователей концертаA
