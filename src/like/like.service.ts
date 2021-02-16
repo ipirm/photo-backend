@@ -40,10 +40,10 @@ export class LikeService {
             await this.mailerService.sendMail({
                 to: likedUser.email,
                 from: 'site@beautybattle.net',
-                subject: 'У вас новый лайк на сайте BeautyBattle.net',
+                subject: 'За вас проголосовали на сайте BeautyBattle.net',
                 html: `
                   <h1> У вас появился новый лайк!</h1><br>
-                  <span>перейдите по ссылке, чтоб посмотреть <a href="https://beautybattle.net?referrer=${likedUser.id}">https://beautybattle.net/</a></span><br>
+                  <span>Перейдите по ссылке, чтобы посмотреть <a href="https://beautybattle.net?referrer=${likedUser.id}">https://beautybattle.net/</a></span><br>
                   `,
             })
         }

@@ -9,6 +9,8 @@ import {paginate} from "nestjs-typeorm-paginate";
 import {I18nRepository} from "typeorm-i18n";
 import {LikesEntity} from "../entities/likes.entity";
 import {AprroveConcertDto} from "./dto/aprrove-concert-dto";
+import {UsersEntity} from "../entities/users.entity";
+import {MailerService} from "@nestjs-modules/mailer";
 
 @Injectable()
 export class ConcertService {
@@ -16,6 +18,8 @@ export class ConcertService {
         @InjectRepository(ConcertsEntity) private readonly concert: I18nRepository<ConcertsEntity>,
         @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>,
         @InjectRepository(LikesEntity) private readonly likes: Repository<LikesEntity>,
+        @InjectRepository(UsersEntity) private readonly user: Repository<UsersEntity>,
+        private readonly mailerService: MailerService
     ) {
     }
 
@@ -189,6 +193,19 @@ export class ConcertService {
     }
 
     async updateConcertUser(id, aprroveConcertDto: AprroveConcertDto): Promise<any> {
+        const concertUser = await this.concert_users.findOne(id);
+        const likedUser = await this.user.findOne({where: {id: concertUser.userId}});
+        if (likedUser.email) {
+            await this.mailerService.sendMail({
+                to: likedUser.email,
+                from: 'site@beautybattle.net',
+                subject: 'Вы успешно прошли модерацию на участие в конкурсе !',
+                html: `
+                  <h1>Вы успешно прошли модерацию на участие в конкурсе BeautyBattle.net!</h1><br>
+                  <span>Перейдите по ссылке возможно вы уже получили несколько лайков <a href="https://beautybattle.net">https://beautybattle.net/</a></span>
+                  `,
+            })
+        }
         return await this.concert_users.update(id, aprroveConcertDto)
     }
 

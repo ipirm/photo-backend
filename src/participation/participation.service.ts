@@ -87,22 +87,8 @@ export class ParticipationService {
     //  Подтвердить участие юзера в концерте по id
     async approveConcertUser(id): Promise<any> {
         const concertUser = await this.concert_users.findOne(id);
-        const likedUser = await this.user.findOne({where: {id: concertUser.userId}});
         concertUser.approve = true;
         await this.concert_users.update(id, concertUser)
-        console.log(concertUser.userId);
-        console.log(likedUser);
-        if (likedUser.email) {
-            await this.mailerService.sendMail({
-                to: likedUser.email,
-                from: 'site@beautybattle.net',
-                subject: 'Вы прошли модерацию на участие на конкурсе!',
-                html: `
-                  <h1>Вы прошли модерацию на участие га конкурсе!</h1><br>
-                  <span>Перейдите по ссылке возможно вы уже получили несколько лайков <a href="https://beautybattle.net?referrer=${likedUser.id}">https://beautybattle.net/</a></span>
-                  `,
-            })
-        }
         return {success: true}
     }
 
