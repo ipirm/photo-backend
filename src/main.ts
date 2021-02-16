@@ -22,7 +22,10 @@ async function bootstrap() {
         region: process.env.AWS_REGION
     });
     SwaggerModule.setup('api', app, document);
-    app.enableCors();
+    await app.enableCors({
+        origin: ['http://localhost:8080','http://localhost:3000','https://beautybattle.net','https://www.beautybattle.net','www.beautybattle.net','beautybattle.net'],
+        credentials: true
+    });
     app.use(helmet());
     app.use(compression());
     await app.listen(process.env.PORT || 3000, () => {

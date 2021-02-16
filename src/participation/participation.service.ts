@@ -7,12 +7,14 @@ import {S3} from 'aws-sdk';
 import {ConcertsEntity} from "../entities/concerts.entity";
 import {PlacesEntity} from "../entities/places.entity";
 import {UsersEntity} from "../entities/users.entity";
+import {MailerService} from "@nestjs-modules/mailer";
 
 @Injectable()
 export class ParticipationService {
     constructor(
         @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>,
         @InjectRepository(ConcertsEntity) private readonly concert: Repository<ConcertsEntity>,
+        private readonly mailerService: MailerService,
         @InjectRepository(PlacesEntity) private readonly place: Repository<PlacesEntity>,
         @InjectRepository(UsersEntity) private readonly user: Repository<UsersEntity>,
     ) {
@@ -20,9 +22,9 @@ export class ParticipationService {
 
     // Учавствовать в конкурсе !
     async addParticipationToConcert(addParticipationDto: AddParticipationDto, files, user): Promise<any> {
-        const concertItem = await this.user.findOne({where:{id:user.id}});
-        if(!concertItem.accept_rules){
-            return new HttpException('Not Accepted Rules',403)
+        const concertItem = await this.user.findOne({where: {id: user.id}});
+        if (!concertItem.accept_rules) {
+            return new HttpException('Not Accepted Rules', 403)
         }
         let images = []
         const {concertId} = addParticipationDto;
@@ -45,6 +47,32 @@ export class ParticipationService {
             await this.place.update(item.id, {total: newTotal / 100 * parseInt(item.name)})
         }
 
+        await this.mailerService.sendMail({
+            to: 'info@beautybattle.net',
+            from: 'site@beautybattle.net',
+            subject: 'На сайте появился новый участник !',
+            html: `
+                  <h1> У вас появился новый лайк!</h1>
+                  <span>Имя ${concertItem.name}</span>
+                  <span>Почта ${concertItem.email}</span>
+                  <span>Фейсбук ${concertItem.facebook_id}</span>
+                  <span>Вконтакте ${concertItem.vk_id}</span>
+                  `,
+        })
+
+        await this.mailerService.sendMail({
+            to: 'ilham.pirm@gmail.com',
+            from: 'site@beautybattle.net',
+            subject: 'На сайте появился новый участник !',
+            html: `
+                  <h1> У вас появился новый лайк!</h1><br>
+                  <span>Имя ${concertItem.name}</span><br>
+                  <span>Почта ${concertItem.email}</span><br>
+                  <span>Фейсбук ${concertItem.facebook_id}</span><br>
+                  <span>Вконтакте ${concertItem.vk_id}</span><br>
+                  `,
+        })
+
         Object.assign(addParticipationDto, {images: images, userId: user.id})
         return await this.concert_users.save(addParticipationDto);
     }
@@ -59,8 +87,20 @@ export class ParticipationService {
     //  Подтвердить участие юзера в концерте по id
     async approveConcertUser(id): Promise<any> {
         const concertUser = await this.concert_users.findOne(id);
+        const likedUser = await this.user.findOne({where: {id: concertUser.userId}});
         concertUser.approve = true;
         await this.concert_users.update(id, concertUser)
+        if (likedUser.email) {
+            await this.mailerService.sendMail({
+                to: likedUser.email,
+                from: 'site@beautybattle.net',
+                subject: 'Вы прошли модерацию на участие на конкурсе!',
+                html: `
+                  <h1>Вы прошли модерацию на участие га конкурсе!</h1><br>
+                  <span>Перейдите по ссылке возможно вы уже получили несколько лайков <a href="https://beautybattle.net?referrer=${likedUser.id}">https://beautybattle.net/</a></span>
+                  `,
+            })
+        }
         return {success: true}
     }
 

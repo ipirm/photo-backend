@@ -5,11 +5,13 @@ import {LikesEntity} from "../entities/likes.entity";
 import {AddLikeDto} from "./dto/add-like-dto";
 import {ConcertsUsersEntity} from "../entities/concerts-users.entity";
 import {UsersEntity} from "../entities/users.entity";
+import {MailerService} from "@nestjs-modules/mailer";
 
 @Injectable()
 export class LikeService {
     constructor(
         @InjectRepository(LikesEntity) private readonly like: Repository<LikesEntity>,
+        private readonly mailerService: MailerService,
         @InjectRepository(UsersEntity) private readonly user: Repository<UsersEntity>,
         @InjectRepository(ConcertsUsersEntity) private readonly concert_users: Repository<ConcertsUsersEntity>
     ) {
@@ -29,12 +31,22 @@ export class LikeService {
                 concertId: addLikeDto.concertId
             }
         })
-
         if (exist)
             return {
                 message: 'Exist'
             }
-
+        const likedUser = await this.user.findOne({where: {id: addLikeDto.userId}});
+        if(likedUser.email) {
+            await this.mailerService.sendMail({
+                to: likedUser.email,
+                from: 'site@beautybattle.net',
+                subject: 'У вас новый лайк на сайте BeautyBattle.net',
+                html: `
+                  <h1> У вас появился новый лайк!</h1><br>
+                  <span>перейдите по ссылке, чтоб посмотреть <a href="https://beautybattle.net?referrer=${likedUser.id}">https://beautybattle.net/</a></span><br>
+                  `,
+            })
+        }
         Object.assign(addLikeDto, {
             user_id: user.id,
             name: user.name + ' ' + user.last_name,
@@ -50,6 +62,7 @@ export class LikeService {
             }
         })
         concert.likesCount++;
+
         await this.concert_users.save(concert)
         return {success: true}
     }
