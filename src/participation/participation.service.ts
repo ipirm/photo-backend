@@ -52,7 +52,7 @@ export class ParticipationService {
             from: 'site@beautybattle.net',
             subject: 'На сайте появился новый участник !',
             html: `
-                  <h1> У вас появился новый лайк!</h1>
+                  <h1>На сайте появился новый участник !</h1>
                   <span>Имя ${concertItem.name}</span>
                   <span>Почта ${concertItem.email}</span>
                   <span>Фейсбук ${concertItem.facebook_id}</span>
@@ -65,7 +65,7 @@ export class ParticipationService {
             from: 'site@beautybattle.net',
             subject: 'На сайте появился новый участник !',
             html: `
-                  <h1> У вас появился новый лайк!</h1><br>
+                  <h1> На сайте появился новый участник !</h1><br>
                   <span>Имя ${concertItem.name}</span><br>
                   <span>Почта ${concertItem.email}</span><br>
                   <span>Фейсбук ${concertItem.facebook_id}</span><br>
@@ -90,6 +90,8 @@ export class ParticipationService {
         const likedUser = await this.user.findOne({where: {id: concertUser.userId}});
         concertUser.approve = true;
         await this.concert_users.update(id, concertUser)
+        console.log(concertUser.userId);
+        console.log(likedUser);
         if (likedUser.email) {
             await this.mailerService.sendMail({
                 to: likedUser.email,
